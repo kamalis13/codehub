@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Words Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="wrapper">
+        <h2>Words Calculator</h2>
+        <div class="inputdiv">
+            <textarea type="text" id="input" placeholder="Type here...." cols="30" rows="10"></textarea>
+        </div>
+        <div>
+            <button type="submit" onclick="wordscalculator()">Total Words</button>
+        </div>
+        <div id="result">
+
+        </div>
+    </div>
+    <script>
+        function wordscalculator() {
+            let inputVal = (document.getElementById('input').value);
+            let totalWords = inputVal.length;
+            result.innerHTML = totalWords;
+        }
+    </script>
+</body>
+
+</html>

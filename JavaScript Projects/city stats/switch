@@ -1,0 +1,21 @@
+
+
+/*
+Switch Syntax
+
+switch(expression){
+    case value1:
+        Statements executed when the result of expression matches with value1
+        break;
+    case value2:
+        Statements executed when the result of expression matches with value2
+        break;
+    ....
+    case valueN:
+        Statements executed when the result of expression matches with valueN
+        break;
+    default:
+       Statements executed when none of the values matches with the value of expression
+       break;
+}
+*/
