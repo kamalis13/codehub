@@ -1,0 +1,64 @@
+
+
+*{                 /* make all the margin and padding as 0    */
+    margin: 0;
+    padding: 0;
+}
+/* navbar */
+nav{
+    background-color: black;
+    color: white;
+    padding: 15px;
+}
+ul,h1,li{
+    display: inline;
+}
+ul{
+    margin-left: 60%;
+}
+li{
+    color: grey;
+    cursor: pointer;
+}
+li:hover{              /* whenever I click this text color will be changed */
+    color : white
+}
+
+/* search bar */
+.searchbar{
+    margin: 50px;  
+    text-align: center;
+}
+input{
+    padding: 15px;
+    width: 60%;
+}
+
+/* Products */
+.box{
+    border-color: black;
+    border-width: 2px ;
+    border-style: solid;
+    display: inline-block;
+    width: 612px;
+}
+.products{
+    text-align: center;
+}
+.box:hover{
+    background-color: black;
+    color: white;
+}
+
+.about{
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.contact{
+    text-align: center;
+    background-color: black;
+    color: white;
+    padding: 40px;
+}

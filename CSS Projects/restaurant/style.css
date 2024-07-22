@@ -1,0 +1,66 @@
+
+*{
+    padding: 0;
+    margin: 0;
+}
+.header{
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin: 20px; 
+}
+li{
+    display: inline;
+    cursor: pointer;
+}
+li:hover{
+    color: grey;
+}
+
+.food{
+    text-align: center; 
+}
+.items{
+    display: inline-block;
+    width: 300px;
+
+}
+p{
+    display: inline;
+}
+img{
+    display: inline-block;
+    height: 300px;
+    width: 300px;
+}
+img:hover{
+    border-width:5px ;
+    border-color: black;
+    border-style: solid;
+}
+
+
+
+.contact{
+    background-color: black;
+    color: white;
+    padding: 20px;
+    margin: 20px;
+    text-align: center; 
+  
+}
+table{
+    text-align: center; 
+    display: inline-block;
+    padding: 10px;
+}
+
+button{
+   background-color: yellow;
+   display: inline-block;
+   width: 50%;
+   padding: 2px;
+   text-align: center;
+
+}
