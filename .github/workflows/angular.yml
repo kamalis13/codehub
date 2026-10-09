@@ -23,17 +23,20 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: "Angular Concepts/package-lock.json"
 
       - name: Install dependencies
+        working-directory: Angular Concepts
         run: npm ci
 
       - name: Build Angular
+        working-directory: Angular Concepts
         run: npx ng build --base-href="/Angular%20Concepts/"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/rxjs-learn/browser
+          path: "Angular Concepts/dist/rxjs-learn/browser"
 
   deploy:
     environment:
