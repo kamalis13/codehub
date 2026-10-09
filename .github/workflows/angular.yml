@@ -31,7 +31,7 @@ jobs:
 
       - name: Build Angular
         working-directory: Angular Concepts
-        run: npx ng build --base-href="/Angular%20Concepts/"
+        run: npx ng build --base-href="/codehub/"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
