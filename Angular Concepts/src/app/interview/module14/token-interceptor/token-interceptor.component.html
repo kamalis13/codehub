@@ -1,0 +1,92 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod14">
+    <span class="module-tag">Module 14 — Interceptors</span>
+    <h1>Token Interceptor</h1>
+    <p class="subtitle">Automatically attaches the Bearer JWT to every API request — auth header injection as a cross-cutting concern</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>A <strong>Token Interceptor</strong> is an Angular HTTP interceptor with the single responsibility of reading the current authentication token (JWT) and attaching it as an <code>Authorization: Bearer &lt;token&gt;</code> header to every outgoing HTTP request. Instead of each service method manually adding the auth header, the interceptor handles it transparently — the service calls <code>http.get("/api/data")</code> and the token is added automatically. This is the most common real-world interceptor implementation.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>DRY — add the Authorization header once, applies to all API calls</li>
+      <li>Services stay clean — no token management code in service methods</li>
+      <li>Easily update token logic (e.g., switch storage strategy) in one place</li>
+      <li>Can skip specific endpoints (login, register) using HttpContext tokens</li>
+      <li>Reads token from a centralized AuthService — single source of truth</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>An <code>AuthService</code> stores the access token in memory (safest against XSS). The token interceptor reads from <code>AuthService.getAccessToken()</code>, checks a list of public URLs (login, register), and attaches the Bearer token to all other requests using <code>req.clone(&#123; setHeaders: ... &#125;)</code>. Public endpoint calls use <code>HttpContext</code> with <code>SKIP_AUTH = true</code> for explicit opt-out.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>When <code>HttpClient</code> makes a request, it passes the <code>HttpRequest</code> through the interceptor chain in registration order. The token interceptor runs, reads the current token from <code>AuthService</code>, calls <code>req.clone()</code> to create a new immutable request with the <code>Authorization</code> header added, and passes the cloned request to <code>next(authReq)</code>. The next interceptor in the chain (or the HttpBackend) receives the request already containing the header. The token is read synchronously from memory — no asynchronous operation needed.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Zero boilerplate in service methods — all services benefit automatically</li>
+        <li>Centralized token read logic — change storage strategy once</li>
+        <li>HttpContext tokens enable clean opt-out for public endpoints</li>
+        <li>Works with functional interceptors and inject() for clean DI</li>
+        <li>Simple, synchronous, fast — no RxJS operators needed for basic token attachment</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Applies to ALL HttpClient calls — needs explicit skipping for public/third-party URLs</li>
+        <li>Does not handle token expiry — needs a paired error interceptor for 401 refresh</li>
+        <li>URL-based skipping is fragile — endpoint URLs change across environments</li>
+        <li>Attaches token even to third-party API calls if not guarded (e.g., calls to external CDNs)</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use <code>HttpContextToken</code> (<code>SKIP_AUTH</code>) for opt-out rather than URL string matching</li>
+      <li>Read the token from an <code>AuthService</code> memory property — not directly from localStorage</li>
+      <li>Use <code>setHeaders</code> shorthand in <code>req.clone()</code> — preserves existing headers automatically</li>
+      <li>Guard against adding token to third-party URLs: check <code>req.url.startsWith(environment.apiUrl)</code></li>
+      <li>Keep the token interceptor focused on attachment only — delegate refresh logic to an error interceptor</li>
+      <li>Register token interceptor before error interceptor in the chain</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Reading token directly from localStorage in the interceptor — should use a service abstraction</li>
+      <li>Sending the token to third-party domains — leaks the token to external servers</li>
+      <li>Not skipping the token interceptor for login/register — causes unnecessary 401 on login failures</li>
+      <li>Trying to handle token refresh inside the token interceptor — creates circular complexity</li>
+      <li>Forgetting to guard against null token — throws when user is not authenticated</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

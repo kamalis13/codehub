@@ -1,0 +1,81 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod9">
+    <span class="module-tag">Module 9 — Forms</span>
+    <h1>Validators</h1>
+    <p class="subtitle">Built-in form validation — enforce data integrity with zero boilerplate</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>The Validators class provides a set of static factory functions that return synchronous validator functions. Each validator checks a FormControl's value and returns null when valid, or a ValidationErrors object with descriptive error keys when invalid. Validators are composable — multiple validators can be combined by passing them as an array.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Enforces data integrity without writing custom logic for common rules (required, email, length, range)</li>
+      <li>Provides consistent, well-tested validation behaviour across all reactive forms in the application</li>
+      <li>Composable — combine multiple validators on a single control and Angular runs them all, collecting error keys</li>
+      <li>Integrates cleanly with template error display via control.errors and Angular's form status system</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A user registration form applies multiple built-in validators to each field: the username must be required and between 3 and 20 characters, the email must be valid, age must be between 18 and 120, and the website URL must match an https pattern. Each error type is displayed separately in the template.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Each built-in validator is a factory function that returns a ValidatorFn: (control: AbstractControl) =&gt; ValidationErrors | null. Angular's FormControl calls composed validators on every value change. If a validator returns a non-null object, its keys are merged into control.errors. The control's status transitions to INVALID and statusChanges emits. All sync validators run before any async validators are triggered.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>No boilerplate — covers the most common validation rules with a single import</li>
+        <li>Easily composable — pass an array of validators and Angular applies them all, collecting each error key</li>
+        <li>Well-tested by the Angular team — no risk of edge cases in standard rules like email format checking</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Limited to common cases — business-specific rules (password match, username uniqueness) require custom validators</li>
+        <li>Validators.email uses a simple regex that may accept technically valid but unusual formats</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always show validation errors only when the control is touched or the form is submitted to avoid alarming pristine users</li>
+      <li>Prefer Validators.pattern with a well-documented regex and add a comment explaining what it matches</li>
+      <li>Use Validators.compose() explicitly when building reusable validator sets that need to be shared across components</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Relying on the HTML required or minlength attribute instead of Validators — Angular's control.errors will not reflect it</li>
+      <li>Checking control.errors.required instead of control.errors?.['required'] — the former throws if errors is null</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,110 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod4">
+    <span class="module-tag">Module 4 — Templates</span>
+    <h1>Template Reference Variable</h1>
+    <p class="subtitle">Grab a direct reference to any DOM element, directive, or component right in the template</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      A <strong>Template Reference Variable</strong> is a local label declared in the HTML template using the
+      <code>#variableName</code> syntax. It captures a reference to the element, directive, or component it
+      is attached to, making that reference available anywhere in the same template without touching the
+      TypeScript class. On a plain element, it holds the <code>HTMLElement</code>. On a directive, it holds
+      the directive instance (via <code>#ref="directiveName"</code>). On a component, it holds the component
+      instance, exposing its public methods and properties directly in the template.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Access element without ViewChild</strong> — read <code>inputRef.value</code> or focus an element in the template itself.</li>
+      <li><strong>Pass to methods</strong> — pass <code>#inputRef</code> to a component method to operate on the element.</li>
+      <li><strong>NgForm access</strong> — capture the <code>NgForm</code> directive with <code>#form="ngForm"</code> to read validation state.</li>
+      <li><strong>Component method calls</strong> — call child component methods directly in the template (<code>#player.play()</code>).</li>
+      <li><strong>ng-template handles</strong> — reference templates for use with <code>*ngTemplateOutlet</code>.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A <strong>ContactFormComponent</strong> uses <code>#contactForm="ngForm"</code> to access the form's
+      validation state and call <code>form.resetForm()</code> after submission. A <code>#nameInput</code>
+      reference is passed to a <code>focusField()</code> method that programmatically focuses and selects
+      the input text — all without a single <code>ViewChild</code> or DOM query in the TypeScript class.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      At compile time, Angular's template compiler identifies all <code>#varName</code> declarations and
+      assigns each a unique slot in the view's local variables array (the <em>template context</em>). When
+      the view is created, Angular populates each slot with the appropriate reference — the native element,
+      directive export, or component instance. Template expressions that reference these variables are
+      compiled into direct slot lookups, making access O(1). The scope is limited to the enclosing view
+      node, which is why variables inside <code>*ngIf</code> or <code>*ngFor</code> are not reachable
+      from the outer template.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Zero TypeScript code needed for simple template-only interactions (focus, value read, method call).</li>
+        <li>Provides access to NgForm validation state cleanly via <code>#form="ngForm"</code>.</li>
+        <li>Can call child component public methods directly from the parent template.</li>
+        <li>Works with <code>ng-template</code> for advanced template projection and outlet patterns.</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Only available inside the template — cannot use the variable in the TypeScript class (use <code>&#64;ViewChild</code> instead).</li>
+        <li>Scoped to the current view — not accessible outside structural directives like <code>*ngIf</code> or <code>*ngFor</code>.</li>
+        <li>Over-reliance on template variables for complex logic leads to untestable, hard-to-read templates.</li>
+        <li>Calling component methods directly from the template tightly couples the parent template to child internals.</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use template variables for simple, template-only concerns (focus, value read, reset); use <code>&#64;ViewChild</code> for class-level access.</li>
+      <li>Always export directive instances explicitly: <code>#form="ngForm"</code> rather than relying on the default element reference.</li>
+      <li>Avoid placing a <code>#ref</code> inside <code>*ngIf</code>/<code>*ngFor</code> blocks if you need to access it outside that block.</li>
+      <li>Prefer template variables over manually querying the DOM via <code>document.getElementById</code> or <code>ElementRef.nativeElement</code>.</li>
+      <li>Use <code>ng-template</code> with <code>#tplRef</code> to create reusable template fragments for <code>*ngTemplateOutlet</code>.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Declaring <code>#ref</code> inside an <code>*ngIf</code> block and trying to use it outside — Angular cannot resolve it; it is undefined in the outer scope.</li>
+      <li>Forgetting <code>="ngForm"</code> — <code>#form</code> without the export targets the HTMLFormElement, not the NgForm directive.</li>
+      <li>Accessing a template variable from the TypeScript class — variables only exist in the template; use <code>&#64;ViewChild</code> instead.</li>
+      <li>Using template variables for complex logic — move computation to the component class for testability.</li>
+      <li>Having two elements with the same <code>#name</code> in the same template scope — the second declaration shadows the first, causing confusion.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

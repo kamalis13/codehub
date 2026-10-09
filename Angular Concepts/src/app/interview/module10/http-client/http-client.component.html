@@ -1,0 +1,81 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod10">
+    <span class="module-tag">Module 10 — HTTP</span>
+    <h1>HttpClient</h1>
+    <p class="subtitle">Angular's built-in HTTP service — type-safe, Observable-based API communication</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>HttpClient is Angular's primary service for making HTTP requests. It is provided by <code>&#64;angular/common/http</code> and returns RxJS Observables for all requests — meaning requests are lazy and nothing is sent until you subscribe.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Enables typed HTTP communication with full TypeScript generic support</li>
+      <li>Provides automatic JSON serialisation and deserialisation out of the box</li>
+      <li>Supports interceptors for cross-cutting concerns like authentication, logging, and caching</li>
+      <li>Observable API integrates perfectly with Angular's reactive architecture and the async pipe</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A product management feature uses HttpClient to fetch product lists with typed responses, create new products with auth headers, and handle errors — all while letting the async pipe manage subscription lifecycle automatically.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>HttpClient wraps the browser's XMLHttpRequest (or fetch in newer Angular). Each method call creates a cold Observable — no network activity occurs until subscription. When subscribed, Angular's HttpHandler pipeline passes the request through all registered interceptors in order before dispatching it to the backend. The response travels back through the same interceptor chain in reverse before reaching the subscriber.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Type-safe responses via TypeScript generics reduce runtime errors</li>
+        <li>Cold Observables are cancellable — unsubscribing aborts the in-flight request</li>
+        <li>Interceptor pipeline enables clean separation of concerns such as auth and logging</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Generic typing is a compile-time cast only — shape is not validated at runtime</li>
+        <li>Forgetting to subscribe (or use the async pipe) means no request is ever sent</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always type responses with generics: <code>http.get&lt;Product[]&gt;(url)</code></li>
+      <li>Prefer the async pipe over manual subscribe to avoid memory leaks</li>
+      <li>Register interceptors with <code>provideHttpClient(withInterceptors([...]))</code> for a tree-shakable, functional setup</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Calling <code>http.get()</code> without subscribing and wondering why no data arrives</li>
+      <li>Manually subscribing without unsubscribing, causing memory leaks in long-lived components</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

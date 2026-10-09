@@ -1,0 +1,92 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod12">
+    <span class="module-tag">Module 12 — Lifecycle Hooks</span>
+    <h1>ngOnInit</h1>
+    <p class="subtitle">Called once after first ngOnChanges — the canonical place for HTTP calls and initialization logic</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>ngOnInit</strong> is an Angular lifecycle hook that is called exactly <em>once</em>, after Angular has initialized all <code>&#64;Input()</code> property bindings and run the first change detection pass. It is the recommended entry point for all component initialization logic — HTTP requests, Observable subscriptions, route parameter reading, and derived-state computation. It runs after <code>ngOnChanges</code> (if inputs exist) and never runs again for the same component instance.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>&#64;Input() values are fully resolved here — safe to use in API calls</li>
+      <li>Separates initialization logic from dependency injection (constructor stays clean)</li>
+      <li>Angular Universal (SSR) depends on ngOnInit as the initialization boundary</li>
+      <li>TestBed controls when ngOnInit runs — making unit tests predictable</li>
+      <li>Route parameters via ActivatedRoute are available here</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>An analytics dashboard component receives a <code>dateRange</code> as an <code>&#64;Input()</code> from the parent. In <code>ngOnInit()</code>, it subscribes to route params (with <code>takeUntil</code> for cleanup) and triggers an API call using both the route param and the fully-resolved <code>&#64;Input()</code> value — something impossible to do correctly in the constructor.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>After the constructor runs and DI completes, Angular's component factory calls <code>ngOnChanges()</code> (if the component has any <code>&#64;Input()</code> bindings with initial values), then immediately calls <code>ngOnInit()</code>. This happens synchronously during the first <code>ApplicationRef.tick()</code> (change detection cycle). Angular calls <code>ngOnInit()</code> via a lifecycle hook check — it looks for a method named <code>ngOnInit</code> on the component instance. Implementing <code>OnInit</code> interface is optional but recommended as it makes TypeScript enforce the correct signature and helps IDEs with autocomplete.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>All &#64;Input() bindings are resolved — safe for API calls with input-based parameters</li>
+        <li>Runs only once — no risk of duplicate initialization on re-renders</li>
+        <li>TestBed controls execution — tests can set up mocks before fixture.detectChanges()</li>
+        <li>Consistent pattern across the Angular ecosystem — every Angular developer knows ngOnInit</li>
+        <li>Works seamlessly with Angular Universal SSR</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Does not re-run when &#64;Input() values change — use ngOnChanges for that</li>
+        <li>async ngOnInit errors can be swallowed if not explicitly caught</li>
+        <li>Cannot be called manually — only Angular's runtime invokes it</li>
+        <li>If logic depends on both ngOnInit and ngOnChanges, ordering must be carefully managed</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always implement <code>implements OnInit</code> — TypeScript will catch method name typos</li>
+      <li>Place all HTTP calls, subscriptions, and initialization logic here</li>
+      <li>Pair with <code>ngOnDestroy</code> to unsubscribe from Observables set up in ngOnInit</li>
+      <li>Use <code>takeUntil(this.destroy$)</code> pattern for automatic subscription cleanup</li>
+      <li>Keep ngOnInit readable — delegate complex logic to private helper methods or services</li>
+      <li>For input-reactive logic (re-runs on input change), move it to ngOnChanges instead</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Placing HTTP calls in constructor instead of ngOnInit (most common mistake)</li>
+      <li>Expecting ngOnInit to fire again when &#64;Input() changes — it will not</li>
+      <li>Forgetting <code>fixture.detectChanges()</code> in unit tests — ngOnInit won't be called</li>
+      <li>Using async ngOnInit without try/catch — unhandled promise rejections are silent</li>
+      <li>Duplicating logic between ngOnInit and ngOnChanges, causing double API calls</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,96 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod1">
+    <span class="module-tag">Module 1 — Angular Fundamentals</span>
+    <h1>Angular Versions</h1>
+    <p class="subtitle">From AngularJS 1.x to Angular 19 — understanding the evolution, milestones, and breaking changes.</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Angular has two distinct eras: <strong>AngularJS (1.x)</strong> — a JavaScript MVC framework released in 2010 — and <strong>Angular (2+)</strong> — a complete rewrite in TypeScript released in 2016, following a component-based architecture. The two share only a name; they are architecturally incompatible. Angular 2+ follows semantic versioning with a major release every 6 months, introducing features progressively while maintaining upgrade paths via the official <code>ng update</code> tool.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>AngularJS limitations:</strong> $scope, two-way binding via dirty checking, and MVC architecture did not scale for large apps or mobile.</li>
+      <li><strong>Mobile-first requirement:</strong> AngularJS was built for desktop browsers; Angular 2+ was designed for mobile performance from the ground up.</li>
+      <li><strong>TypeScript adoption:</strong> The rewrite embraced TypeScript for better tooling, type safety, and maintainability at scale.</li>
+      <li><strong>Component model:</strong> The shift from controllers/directives to components aligned Angular with web component standards.</li>
+      <li><strong>Performance:</strong> Each Angular version brings compiler improvements, smaller bundles, and faster rendering.</li>
+      <li><strong>Modern patterns:</strong> Signals (Angular 16+) and standalone components (Angular 15+) modernize the reactive and module systems.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A legacy banking app built on AngularJS 1.5 faces: slow page loads due to $digest cycle overhead, no TypeScript support, difficulty hiring developers, and inability to use modern Angular libraries. The team migrates using the <strong>ngUpgrade</strong> approach — running AngularJS and Angular side by side within the same application, migrating components one by one over 12 months. New features are built in Angular 17 with standalone components and signals, while legacy screens remain in AngularJS until fully replaced.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Each major Angular release is compiled and released as a set of scoped npm packages (<code>&#64;angular/core</code>, <code>&#64;angular/router</code>, etc.) — all versioned together. The Angular team uses <strong>semantic versioning</strong>: major versions may include breaking changes, minor versions add features in a backward-compatible way, and patch versions contain bug fixes. <code>ng update &#64;angular/core &#64;angular/cli</code> uses schematics to automatically migrate code — updating APIs, renaming imports, and transforming deprecated patterns — making upgrades manageable.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Regular 6-month release cadence keeps Angular current with web standards</li>
+        <li>Automated migration via <code>ng update</code> reduces upgrade effort significantly</li>
+        <li>Each version brings real performance improvements (Ivy, esbuild, Vite)</li>
+        <li>LTS (Long Term Support) for 18 months per major version ensures stability</li>
+        <li>Signals and zoneless are major leaps in reactivity and performance</li>
+        <li>Backward compatibility is taken seriously — deprecation periods before removal</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Frequent major versions require teams to dedicate upgrade time regularly</li>
+        <li>Breaking changes between versions (even with ng update) require testing</li>
+        <li>AngularJS to Angular migration is a full rewrite — no easy upgrade path</li>
+        <li>Third-party libraries may lag behind the latest Angular version</li>
+        <li>Keeping up with new concepts (signals vs RxJS, standalone vs NgModule) requires continuous learning</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always use the latest LTS Angular version for new projects</li>
+      <li>Use <code>ng update</code> to upgrade — never update packages manually</li>
+      <li>Keep Angular dependencies updated with each minor release, not just major</li>
+      <li>Use standalone components for new projects (Angular 15+) — future-proof approach</li>
+      <li>Monitor the Angular blog and CHANGELOG for upcoming deprecations</li>
+      <li>Enable strict mode and strictTemplates from the start to catch migration issues early</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Starting new projects on old Angular versions — always start with the latest stable</li>
+      <li>Manually editing package.json to upgrade Angular — always use <code>ng update</code></li>
+      <li>Confusing AngularJS (1.x) concepts ($scope, $http, ng-controller) with Angular (2+)</li>
+      <li>Skipping multiple major versions and trying to upgrade all at once — upgrade one major at a time</li>
+      <li>Not running <code>ng update</code> migrations fully — stopping mid-migration breaks the app</li>
+      <li>Assuming all libraries are compatible with the latest Angular — check peer dependencies</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

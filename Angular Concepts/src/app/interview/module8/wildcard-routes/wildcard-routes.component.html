@@ -1,0 +1,90 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod8">
+    <span class="module-tag">Module 8 — Routing</span>
+    <h1>Wildcard Routes</h1>
+    <p class="subtitle">Catching all unmatched URLs with ** to show a custom 404 page</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>The wildcard route uses the special path ** to match any URL that has not been matched by any prior route in the Routes array. It acts as a catch-all for unknown or mistyped URLs, typically rendering a 404 Not Found page. It is always the final entry in the route table.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Prevent blank white screens when users mistype URLs</li>
+      <li>Provide a friendly 404 page that helps users navigate back</li>
+      <li>Catch stale bookmarks and old links gracefully</li>
+      <li>Enable custom error messaging with context about what failed</li>
+      <li>Redirect legacy URLs to new paths with redirectTo</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A PageNotFoundComponent that reads the attempted URL from the Router service and displays it alongside a friendly message and a link back to home.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's route matching algorithm tries each route from top to bottom. When no path matches the current URL, ** matches as a fallback. The PageNotFoundComponent (or redirect target) is then rendered in the root router-outlet. The ** path uses prefix matching against the full remaining URL, so it catches everything including paths with multiple segments like /foo/bar/baz.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Prevents blank app renders for unknown URLs</li>
+        <li>Fully customizable 404 page with branding and navigation</li>
+        <li>Can redirect rather than show error (graceful fallback)</li>
+        <li>Works inside child route arrays for section-specific 404s</li>
+        <li>Simple to configure — one line</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Misplacing it (not last) breaks all other routes</li>
+        <li>Can mask route configuration errors if used too broadly</li>
+        <li>redirectTo ** loses the context of what URL failed</li>
+        <li>Server must also return index.html for all paths or server-side 404 fires first</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always place ** last in the Routes array</li>
+      <li>Show the failed URL in the 404 component for clarity</li>
+      <li>Include navigation links back to home/dashboard</li>
+      <li>Log 404 events to your analytics service</li>
+      <li>Configure your web server (Nginx, Apache, Firebase) to serve index.html for all routes</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Placing ** before other routes (all routes become 404)</li>
+      <li>Using ** with redirectTo: '**' (infinite redirect loop)</li>
+      <li>Not configuring the server to serve index.html (server returns real 404 before Angular loads)</li>
+      <li>Omitting the wildcard entirely (blank screen for unknown URLs)</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

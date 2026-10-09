@@ -1,0 +1,18 @@
+<div class="operator-box">
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+  <h2>startWith()</h2>
+  <p class="definition">Emits specified values BEFORE the source Observable starts emitting. Useful for providing an initial loading state, default value, or seed value for <code>scan()</code>.</p>
+  <p class="note">Analogy: Like a "Welcome" message that plays before a movie starts — the main content hasn't begun yet but something meaningful shows immediately.</p>
+
+  <div class="demo-section">
+    <h3>Basic Demo — loading state</h3>
+    <p class="note">startWith emits 'Loading...' and 'Connecting...' immediately, then the actual data follows synchronously.</p>
+    <button (click)="run()">Run</button>
+    <ul class="result-list">
+      <li *ngFor="let r of results; let i = index" [class.initial]="i < 2">{{ r }}</li>
+    </ul>
+  </div>
+</div>

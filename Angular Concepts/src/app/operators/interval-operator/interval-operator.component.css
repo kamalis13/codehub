@@ -1,0 +1,4 @@
+.note { font-size: 0.82rem; color: #6b7280; font-style: italic; }
+.syntax-block { background: #1e1e2f; border-radius: 10px; padding: 1rem 1.2rem; }
+.syntax-label { color: #585b70; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+.syntax-block pre { color: #cdd6f4; font-size: 0.8rem; line-height: 1.6; margin: 0; white-space: pre-wrap; }

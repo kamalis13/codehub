@@ -1,0 +1,108 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod4">
+    <span class="module-tag">Module 4 — Templates</span>
+    <h1>Two-way Binding</h1>
+    <p class="subtitle">Synchronise component data and template inputs simultaneously — the "banana in a box" pattern</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      <strong>Two-way Binding</strong> combines property binding and event binding into a single, concise syntax
+      — <code>[(ngModel)]="property"</code>. The square brackets push the component property's value <em>into</em>
+      the DOM element (view ← component), and the parentheses listen for user changes and push the new value
+      <em>back</em> to the component property (view → component). This bidirectional sync is also called the
+      <strong>"banana in a box"</strong> syntax because the parentheses (banana) sit inside the square brackets (box).
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Form inputs</strong> — keeps component state and input value in sync without separate property + event bindings.</li>
+      <li><strong>Live preview</strong> — changes typed by the user are reflected instantly in other parts of the template.</li>
+      <li><strong>Reduced boilerplate</strong> — replaces a separate <code>[value]</code> binding and <code>(input)</code> event handler with one line.</li>
+      <li><strong>Template-driven forms</strong> — <code>ngModel</code> is the foundation of Angular's template-driven form approach.</li>
+      <li><strong>Custom components</strong> — implement two-way binding for child components using <code>&#64;Input</code> + <code>&#64;Output xChange</code> convention.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A <strong>SearchBarComponent</strong> uses <code>[(ngModel)]="searchQuery"</code> so that typing in the
+      input immediately updates <code>searchQuery</code>, which is reflected in the "Searching for:" paragraph
+      below it. The Clear button resets <code>searchQuery = ''</code> and the input field clears simultaneously
+      because of two-way binding — no manual DOM manipulation needed.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      Angular's <code>NgModel</code> directive implements the <code>ControlValueAccessor</code> interface.
+      The <code>[ngModel]</code> part calls <code>writeValue()</code> on the accessor to set the DOM element's
+      value from the component. The <code>(ngModelChange)</code> part listens to the element's native
+      <code>input</code> event (or <code>change</code> for checkboxes/selects), extracts the new value,
+      and calls <code>onChange()</code>, which emits it through the <code>ngModelChange</code> EventEmitter.
+      Angular's change detection then assigns the emitted value back to the component property.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Concise — one binding replaces a separate <code>[value]</code> + <code>(input)</code> pair.</li>
+        <li>Instant sync — changes in the input are immediately available in the component and vice versa.</li>
+        <li>Works with all standard form elements: text, number, checkbox, radio, select, textarea.</li>
+        <li>Custom components can implement it using the <code>&#64;Input</code> + <code>&#64;Output xChange</code> pattern.</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Requires <code>FormsModule</code> import — easy to forget in lazy-loaded or standalone modules.</li>
+        <li>Bidirectional data flow makes debugging harder — a value change could originate from either side.</li>
+        <li>Not suitable for complex forms — use Reactive Forms (<code>FormGroup</code>, <code>FormControl</code>) for validation, async validators, and dynamic fields.</li>
+        <li>Template-driven forms have limited testability compared to Reactive Forms.</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use <code>[(ngModel)]</code> for simple, standalone form inputs; prefer Reactive Forms for complex forms.</li>
+      <li>Always import <code>FormsModule</code> in the module or standalone component where <code>ngModel</code> is used.</li>
+      <li>Use <code>(ngModelChange)="handler($event)"</code> when you need to react to changes with side effects (e.g., API calls).</li>
+      <li>Name <code>&#64;Output</code> as <code>propertyNameChange</code> when implementing two-way binding on custom components.</li>
+      <li>Avoid two-way binding in child components of OnPush parents — use explicit input/output pairs for predictable change detection.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Forgetting to import <code>FormsModule</code> — Angular throws "Can't bind to 'ngModel'" compilation error.</li>
+      <li>Using <code>[(ngModel)]</code> on a form element inside a <code>&lt;form&gt;</code> without a <code>name</code> attribute — required when using <code>ngForm</code>.</li>
+      <li>Mutating the bound object directly instead of reassigning — can cause change detection issues with OnPush components.</li>
+      <li>Using two-way binding for complex forms instead of Reactive Forms — leads to untestable, hard-to-validate forms.</li>
+      <li>Misnaming the <code>&#64;Output</code> on a custom component (e.g., <code>valueUpdated</code> instead of <code>valueChange</code>) — breaks the <code>[(value)]</code> two-way binding convention.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

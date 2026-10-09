@@ -1,0 +1,15 @@
+<div class="operator-box">
+
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+
+  <h2>switchMap()</h2>
+  <p class="definition">Cancels the previous inner Observable when a new source value arrives. Only the latest request matters.</p>
+  <input #searchInput (input)="search$.next(searchInput.value)" placeholder="Type to search..." />
+  <p class="note">Only the latest keystroke triggers a result. Previous ones are cancelled.</p>
+  <ul>
+    <li *ngFor="let item of results">{{ item }}</li>
+  </ul>
+</div>

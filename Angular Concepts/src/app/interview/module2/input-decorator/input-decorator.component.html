@@ -1,0 +1,107 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod2">
+    <span class="module-tag">Module 2 — Components</span>
+    <h1>&#64;Input Decorator</h1>
+    <p class="subtitle">One-way data binding — passing data from parent to child component</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      <code>&#64;Input()</code> is a decorator that marks a class property as an <strong>input binding</strong>,
+      allowing a parent component to pass data into a child component via property binding syntax
+      (<code>[propertyName]="expression"</code>). Data flows <em>one way</em>: from parent down to child.
+      The child receives the value but should not mutate it directly — changes should flow back up via
+      <code>&#64;Output</code>.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Configurability</strong> — The same component can render different data depending on what the parent passes in.</li>
+      <li><strong>Reusability</strong> — A <code>ProductCardComponent</code> becomes generic when it accepts any product object as input.</li>
+      <li><strong>Unidirectional data flow</strong> — Parent owns the data; child only reads it, keeping state changes traceable.</li>
+      <li><strong>OnPush compatibility</strong> — When inputs are immutable objects, OnPush change detection works optimally.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A <strong>ProductCardComponent</strong> receives a <code>Product</code> object from a parent product list.
+      It uses <code>&#64;Input(&#123; required: true &#125;)</code> (Angular 16+) to enforce that the parent always
+      provides a product. It implements <code>ngOnChanges</code> to log when the product changes — useful
+      when the user navigates between different products.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      During compilation, Angular's template compiler generates a property setter for each <code>&#64;Input</code>
+      binding. When the parent's expression value changes, Angular's change detection engine calls that setter,
+      which assigns the new value to the child's property and schedules an update. With
+      <code>ChangeDetectionStrategy.OnPush</code>, Angular only triggers change detection on the child
+      when an <code>&#64;Input</code> <em>reference</em> changes (shallow equality check), not when nested
+      properties mutate. <code>ngOnChanges</code> fires after each input update with a <code>SimpleChanges</code>
+      map detailing previous and current values.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Explicit, readable, and type-safe data passing</li>
+        <li>Makes components configurable and reusable</li>
+        <li>Works seamlessly with OnPush for performance</li>
+        <li><code>&#64;Input(&#123; required: true &#125;)</code> (Angular 16+) enforces contracts at compile time</li>
+        <li>Aliases keep the public API stable while internals change</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Prop drilling through many layers is verbose and tedious</li>
+        <li>Only detects reference changes by default — deep mutations require ngOnChanges or DoCheck</li>
+        <li>Requires discipline to avoid mutating the input object inside the child</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use <code>&#64;Input(&#123; required: true &#125;)</code> for inputs that must always be provided (Angular 16+).</li>
+      <li>Use an alias when the external API name should differ from the internal property name.</li>
+      <li>Validate input values in a setter: <code>set value(v) &#123; this._value = v &lt; 0 ? 0 : v; &#125;</code>.</li>
+      <li>Never mutate the input object — treat it as read-only and emit changes upward via <code>&#64;Output</code>.</li>
+      <li>Pass immutable (spread or new object) values to child inputs to leverage OnPush efficiently.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Mutating the <code>&#64;Input</code> object directly — breaks unidirectional data flow.</li>
+      <li>Forgetting to declare the <code>&#64;Input</code> decorator — the property is silently ignored in the template.</li>
+      <li>Accessing the input value in the constructor — it is not set until <code>ngOnInit</code> at the earliest.</li>
+      <li>Using <code>&#64;Input</code> when a shared service would be more appropriate for deeply nested or sibling components.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

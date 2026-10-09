@@ -1,0 +1,96 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod1">
+    <span class="module-tag">Module 1 — Angular Fundamentals</span>
+    <h1>Angular Compilation</h1>
+    <p class="subtitle">How Angular transforms TypeScript + templates into optimized JavaScript that runs in the browser.</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Angular compilation is the multi-stage process of transforming <strong>TypeScript source files</strong> and <strong>Angular templates</strong> into optimized JavaScript that browsers can execute. The <strong>Ivy compiler</strong> (Angular's current engine since v9) processes <code>&#64;Component</code>, <code>&#64;NgModule</code>, and other decorators, converting HTML templates into efficient JavaScript DOM rendering instructions. This compilation can happen either <strong>ahead of time</strong> (at build time — AOT, the default) or <strong>just in time</strong> (in the browser at runtime — JIT, legacy).</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Browsers don't understand Angular:</strong> Browsers execute plain JavaScript, not TypeScript or Angular template syntax.</li>
+      <li><strong>Type safety:</strong> TypeScript compilation catches type errors before the code reaches production.</li>
+      <li><strong>Template validation:</strong> The Angular compiler validates template bindings against component properties at build time.</li>
+      <li><strong>Performance optimization:</strong> The compiler enables tree-shaking — removing unused Angular framework code.</li>
+      <li><strong>Security:</strong> Pre-compiling templates eliminates the need to parse Angular expressions at runtime, reducing injection risks.</li>
+      <li><strong>Optimization:</strong> The compiler generates minimal, direct DOM-manipulation code — no runtime overhead for template parsing.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>When a team deploys an Angular banking app to production, the <code>ng build --configuration=production</code> command runs the full compilation pipeline. A 5 MB development build becomes a 280 KB gzipped production bundle. Template type errors (like calling a non-existent method in HTML) are caught by the compiler as build failures — stopping broken code before it can reach users. The CI/CD pipeline runs this build on every pull request, making compilation errors first-class build failures.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's <strong>Ivy compiler (ngtsc)</strong> is implemented as a TypeScript compiler plugin. During compilation, it reads <code>&#64;Component</code> and <code>&#64;NgModule</code> decorators and generates equivalent static properties (<code>ɵcmp</code>, <code>ɵfac</code>, <code>ɵmod</code>) on the class. The template compiler converts Angular template syntax into a <strong>two-phase rendering function</strong>: the <em>create phase</em> (render flag 1) builds the initial DOM structure, and the <em>update phase</em> (render flag 2) applies changes during subsequent change detection cycles. <strong>Incremental compilation</strong> (enabled by Ivy's locality principle) recompiles only changed files, making rebuilds fast. The bundler then performs tree-shaking — any Angular APIs not referenced in the compiled output are eliminated.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Catches template binding errors at build time — not in production</li>
+        <li>Ivy enables excellent tree-shaking — unused framework code is removed</li>
+        <li>Locality principle enables incremental compilation — fast rebuilds</li>
+        <li>Smaller bundles — no Angular compiler shipped to the browser in AOT</li>
+        <li>Better debugging — source-mapped stack traces point to original TypeScript</li>
+        <li>Template type checking with <code>strictTemplates</code> catches type mismatches</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Longer build times for large apps (though incremental compilation mitigates this)</li>
+        <li>Compilation errors from templates can be cryptic for beginners</li>
+        <li>Dynamic component loading patterns are harder with strict AOT</li>
+        <li>Third-party libraries must also be compiled with Ivy for compatibility</li>
+        <li>Strict template checking may require significant type annotation work in legacy projects</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Enable <code>strictTemplates: true</code> in tsconfig.json from project start</li>
+      <li>Fix all compilation warnings — they often become errors in future Angular versions</li>
+      <li>Use <code>ng build</code> (with AOT) regularly during development, not just before deployment</li>
+      <li>Set bundle size budgets in angular.json to catch size regressions in CI</li>
+      <li>Use <code>ng build --stats-json</code> and webpack-bundle-analyzer to understand bundle composition</li>
+      <li>Keep TypeScript strict mode enabled — it works hand-in-hand with template type checking</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Disabling <code>strictTemplates</code> to avoid fixing type errors — this defeats the purpose</li>
+      <li>Using <code>any</code> type in components to bypass template type checking</li>
+      <li>Not testing production builds locally — JIT and AOT can surface different errors</li>
+      <li>Ignoring bundle size budget warnings until they become critical</li>
+      <li>Using <code>eval()</code> or dynamic template strings — these break AOT compilation</li>
+      <li>Dynamically constructing component metadata — Angular's compiler needs static analysis</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

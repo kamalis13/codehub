@@ -1,0 +1,109 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod3">
+    <span class="module-tag">Module 3 — Modules</span>
+    <h1>Standalone Components</h1>
+    <p class="subtitle">Angular 14+ components that own their dependencies — no NgModule wrapper required</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      A <strong>Standalone Component</strong> is an Angular component decorated with <code>standalone: true</code>
+      inside <code>&#64;Component</code>. It manages its own dependency imports (other components, directives, pipes,
+      and modules) directly in its <code>imports</code> array, bypassing the NgModule declaration system entirely.
+      Introduced in <strong>Angular 14</strong> and made the default scaffolding target in <strong>Angular 17</strong>,
+      standalone components simplify the architecture by co-locating a component with everything it needs.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Reduced boilerplate</strong> — no need to declare in a module, manage exports, or maintain a separate module file.</li>
+      <li><strong>Better tree-shaking</strong> — bundlers can statically determine exactly what each component uses and eliminate the rest.</li>
+      <li><strong>Simpler mental model</strong> — dependencies are listed where the component is defined, not in a separate module file.</li>
+      <li><strong>Granular lazy loading</strong> — routes can use <code>loadComponent</code> to load a single file, not a whole module.</li>
+      <li><strong>Easier testing</strong> — <code>TestBed</code> only needs the component and its direct imports, not an entire module tree.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A new Angular 17 app scaffolds with <code>bootstrapApplication</code> and standalone routes. The
+      <strong>DashboardComponent</strong> and <strong>UserProfileComponent</strong> are each loaded on demand
+      using <code>loadComponent</code>. Each imports only the components and directives it needs, resulting
+      in smaller per-route bundles and faster initial page load.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      In AOT compilation, Angular analyses each standalone component's <code>imports</code> array at build time.
+      It creates a standalone component factory that contains a compiled template with direct references to
+      imported dependencies — no NgModule factory is needed as an intermediary. When <code>loadComponent</code>
+      triggers a dynamic <code>import()</code>, only the component file and its transitive standalone imports
+      are bundled in that chunk. Angular's compiler performs dead-code elimination at the import graph level,
+      removing unused directives and pipes from the bundle.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Eliminates NgModule boilerplate — fewer files, less cognitive overhead.</li>
+        <li>Optimal tree-shaking — unused imports are not bundled.</li>
+        <li>Supports <code>loadComponent</code> for single-component lazy loading.</li>
+        <li>Simpler unit tests — no module setup needed in <code>TestBed</code>.</li>
+        <li>Default in Angular 17+ — aligns with the framework's future direction.</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Migration effort — large existing NgModule apps require incremental conversion.</li>
+        <li>Each component must import its own dependencies — can feel repetitive for large shared sets.</li>
+        <li>Some older libraries have not yet published standalone APIs.</li>
+        <li>Developers new to Angular may confuse component-level imports with module-level imports.</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use <code>standalone: true</code> for all new components in Angular 14+ projects.</li>
+      <li>Configure providers in <code>app.config.ts</code> using <code>provideRouter</code>, <code>provideHttpClient</code>, etc.</li>
+      <li>Use <code>loadComponent</code> in routes for per-page lazy loading without module wrappers.</li>
+      <li>Migrate existing apps incrementally — convert leaf components first, then move up the tree.</li>
+      <li>Run <code>ng generate --standalone</code> as the default schematic flag for new projects.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Adding a standalone component to an NgModule's <code>declarations</code> — use <code>imports</code> instead.</li>
+      <li>Forgetting to import <code>CommonModule</code> (or specific directives like <code>NgIf</code>, <code>NgFor</code>) — template errors at runtime.</li>
+      <li>Importing <code>BrowserModule</code> inside a standalone component — only needed in the root bootstrapper.</li>
+      <li>Using <code>loadChildren</code> for standalone components — use <code>loadComponent</code> instead.</li>
+      <li>Mixing <code>bootstrapModule(AppModule)</code> with standalone routing without migration steps — results in configuration conflicts.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

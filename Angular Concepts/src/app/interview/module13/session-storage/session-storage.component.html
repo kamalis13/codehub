@@ -1,0 +1,93 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod13">
+    <span class="module-tag">Module 13 — Authentication</span>
+    <h1>Session Storage</h1>
+    <p class="subtitle">Per-tab, per-session key-value storage — automatically cleared when the tab closes, ideal for wizard/form state</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>sessionStorage</strong> is a Web Storage API that provides key-value storage scoped to a single browser tab session. Data persists as long as the tab is open (surviving page reloads and Angular route changes within the tab) but is automatically deleted when the tab or browser window is closed. Unlike localStorage, sessionStorage is isolated per tab — two tabs from the same origin have completely separate, independent sessionStorage instances.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Auto-cleanup on tab close — no manual eviction needed for temporary session data</li>
+      <li>Tab isolation — different tabs can have different view states for the same app</li>
+      <li>Multi-step wizard state — data persists across route navigation but not across sessions</li>
+      <li>Temporary OAuth state (PKCE verifier, nonce) that should not persist</li>
+      <li>Security — sensitive temp data is automatically discarded when the tab closes</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A multi-step registration wizard saves form data at each step to sessionStorage. If the user navigates back (browser back button or Angular Router navigation), the previous step's data is pre-populated from sessionStorage. When the form is submitted, sessionStorage is cleared. If the user abandons the form and closes the tab, the data is automatically discarded — no stale registration data in storage.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>sessionStorage is maintained by the browser per browsing context (tab). Each tab gets its own isolated storage bucket, even for the same origin. The browser automatically clears it when the browsing context (tab or window) is destroyed. In Angular SPAs, route changes do NOT clear sessionStorage because Angular Router navigates without destroying the browsing context. sessionStorage uses the same underlying storage mechanism as localStorage (typically SQLite or browser-native storage) but with different lifetime and isolation semantics.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Automatic cleanup on tab close — no manual eviction logic needed</li>
+        <li>Tab-isolated — different tabs can maintain independent application states</li>
+        <li>Survives page reloads and Angular route changes within the same tab</li>
+        <li>Same simple API as localStorage — easy to use</li>
+        <li>No expiry dates to manage — session-based lifetime is implicit</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Data lost when tab closes — not suitable for persistent preferences</li>
+        <li>Not shared across tabs — cannot synchronize state between windows</li>
+        <li>XSS-vulnerable — JavaScript on the same origin can read it</li>
+        <li>Not available in SSR (Node.js) — requires platform guards</li>
+        <li>~5MB limit — same as localStorage, insufficient for large datasets</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use for transient state that should auto-expire: wizards, multi-step forms, temporary filters</li>
+      <li>Namespace keys with a prefix to avoid collisions: <code>reg_step1</code>, <code>checkout_cart</code></li>
+      <li>Wrap in an Angular service with try-catch for QuotaExceededError and JSON errors</li>
+      <li>Guard with <code>isPlatformBrowser(platformId)</code> for Angular Universal compatibility</li>
+      <li>Explicitly call <code>sessionStorage.removeItem()</code> on form submission for immediate cleanup</li>
+      <li>Never store sensitive credentials — sessionStorage is still JS-accessible (XSS risk)</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using sessionStorage for data that should persist across sessions (use localStorage)</li>
+      <li>Expecting sessionStorage to be shared across tabs — each tab is isolated</li>
+      <li>Not using JSON.parse/stringify for object storage</li>
+      <li>Accessing sessionStorage in Angular Universal without SSR guard</li>
+      <li>Storing sensitive data (tokens, passwords) in sessionStorage — XSS can read it</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

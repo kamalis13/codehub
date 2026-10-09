@@ -1,0 +1,96 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod1">
+    <span class="module-tag">Module 1 — Angular Fundamentals</span>
+    <h1>SPA — Single Page Application</h1>
+    <p class="subtitle">How Angular powers fast, app-like experiences by rendering views client-side without full page reloads.</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>A <strong>Single Page Application (SPA)</strong> is a web application that loads a single HTML file on the initial request and dynamically updates the page content by swapping JavaScript-rendered components rather than fetching new HTML pages from the server. Navigation is handled entirely on the client using the browser's <strong>History API</strong>, making the experience feel instant and app-like. Angular's built-in <code>Router</code> makes it a natural platform for building SPAs.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>No full page reloads:</strong> Only the changed view portion updates, avoiding the white-flash and latency of traditional multi-page apps.</li>
+      <li><strong>Faster user experience:</strong> After the initial load, navigation is near-instant since only data (JSON) is fetched — not entire HTML pages.</li>
+      <li><strong>App-like feel:</strong> Smooth transitions, persistent UI elements (navbars, sidebars), and state preserved across navigation.</li>
+      <li><strong>Reduced server load:</strong> The server serves only a REST/GraphQL API — no server-side HTML rendering per request.</li>
+      <li><strong>Decoupled frontend/backend:</strong> The frontend SPA and backend API are independently deployable and maintainable.</li>
+      <li><strong>Component reuse:</strong> Layout components (header, footer, sidebar) render once and persist across all route changes.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>Gmail is the classic SPA example. The page shell (header, sidebar, compose button) loads once. When you click "Inbox", "Sent", or "Drafts", only the email list area updates — Angular Router swaps the active component in the <code>&lt;router-outlet&gt;</code>. No full page reload occurs; the URL changes (via History API) and the browser's Back button works correctly. Unread counts update via WebSocket without any navigation at all.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>When the browser loads the Angular SPA, it receives <code>index.html</code> and the compiled JS bundles. Angular's <code>Router</code> subscribes to browser URL change events (via <code>Location</code> service). When a navigation occurs (click on a <code>routerLink</code> or programmatic <code>router.navigate()</code>), the Router matches the URL against the route configuration, resolves any route guards and resolvers, then destroys the current routed component and creates the new one in the <code>&lt;router-outlet&gt;</code>. The History API's <code>pushState</code> updates the URL without a server round-trip. The server must be configured to return <code>index.html</code> for all routes (wildcard redirect) so direct URL access and refreshes work correctly.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Instant navigation after initial load — no server round-trip per view change</li>
+        <li>Rich, app-like user experience with smooth transitions</li>
+        <li>Persistent layout components (header, sidebar) across views</li>
+        <li>Clear separation of frontend and backend concerns</li>
+        <li>Lazy loading reduces initial bundle — load features on demand</li>
+        <li>Works offline with service workers (Progressive Web App)</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>SEO challenges — crawlers may not execute JavaScript to see content</li>
+        <li>Larger initial load time — all JavaScript must be downloaded first</li>
+        <li>Requires server configuration (wildcard redirect to index.html) for deep linking</li>
+        <li>Browser history management adds complexity for nested/modal routes</li>
+        <li>Memory leaks are possible if subscriptions and DOM references are not cleaned up</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use lazy loading for all feature routes from the start — <code>loadComponent</code> or <code>loadChildren</code></li>
+      <li>Configure Angular Universal (SSR) for SEO-sensitive applications</li>
+      <li>Use route resolvers to pre-fetch data before a component renders</li>
+      <li>Always configure a wildcard route (<code>path: '**'</code>) for 404 handling</li>
+      <li>Use <code>RouterLink</code> instead of <code>href</code> — it uses the Angular Router (no reload)</li>
+      <li>Configure your web server to redirect all routes to index.html for SPA deep linking</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using <code>&lt;a href="/route"&gt;</code> instead of <code>&lt;a routerLink="/route"&gt;</code> — href causes a full page reload</li>
+      <li>Forgetting to configure the server for HTML5 routing (wildcard to index.html)</li>
+      <li>Not implementing lazy loading — loading all routes eagerly kills initial performance</li>
+      <li>Navigating with <code>window.location.href</code> instead of <code>this.router.navigate()</code></li>
+      <li>Ignoring SEO — not adding Angular Universal or prerendering for public content</li>
+      <li>Not handling browser Back button behavior for modal or dialog routes</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

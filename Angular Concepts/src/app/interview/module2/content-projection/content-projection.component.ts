@@ -1,0 +1,112 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-content-projection',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './content-projection.component.html',
+  styleUrl: './content-projection.component.css',
+})
+export class ContentProjectionComponent {
+  syntaxCode = [
+    '// ── Single-slot projection (default slot) ──────────────────',
+    '// child template (card.component.html)',
+    '<div class="card">',
+    '  <ng-content></ng-content>   <!-- all projected content goes here -->',
+    '</div>',
+    '',
+    '// parent usage',
+    '<app-card>',
+    '  <p>This paragraph is projected into the card.</p>',
+    '</app-card>',
+    '',
+    '// ── Multi-slot projection (named slots) ────────────────────',
+    '// child template (modal.component.html)',
+    '<div class="modal">',
+    '  <div class="modal-header">',
+    '    <ng-content select="[slot=header]"></ng-content>',
+    '  </div>',
+    '  <div class="modal-body">',
+    '    <ng-content select="[slot=body]"></ng-content>',
+    '  </div>',
+    '  <div class="modal-footer">',
+    '    <ng-content select="[slot=footer]"></ng-content>',
+    '  </div>',
+    '</div>',
+    '',
+    '// parent usage — named slots via attribute selector',
+    '<app-modal>',
+    '  <h2 slot="header">Confirm Delete</h2>',
+    '  <p slot="body">Are you sure?</p>',
+    '  <button slot="footer">OK</button>',
+    '</app-modal>',
+  ].join('\n');
+
+  exampleCode = [
+    '// modal.component.ts — reusable modal with named content slots',
+    "@Component({",
+    "  selector: 'app-modal',",
+    '  standalone: true,',
+    '  template: `',
+    '    <div class="modal-overlay" *ngIf="isOpen">',
+    '      <div class="modal-container">',
+    '        <header class="modal-header">',
+    '          <ng-content select="[modal-header]"></ng-content>',
+    '          <button (click)="close()">✕</button>',
+    '        </header>',
+    '        <section class="modal-body">',
+    '          <ng-content select="[modal-body]"></ng-content>',
+    '        </section>',
+    '        <footer class="modal-footer">',
+    '          <ng-content select="[modal-footer]"></ng-content>',
+    '        </footer>',
+    '      </div>',
+    '    </div>',
+    '  `',
+    '})',
+    'export class ModalComponent {',
+    '  isOpen = false;',
+    '  open()  { this.isOpen = true; }',
+    '  close() { this.isOpen = false; }',
+    '}',
+    '',
+    '// parent.component.html — using the modal',
+    '<app-modal #deleteModal>',
+    '  <h2 modal-header>Confirm Deletion</h2>',
+    '  <p modal-body>This action cannot be undone. Proceed?</p>',
+    '  <div modal-footer>',
+    '    <button (click)="deleteModal.close()">Cancel</button>',
+    '    <button (click)="onConfirm()">Delete</button>',
+    '  </div>',
+    '</app-modal>',
+    '<button (click)="deleteModal.open()">Delete Item</button>',
+  ].join('\n');
+
+  interviewQA = [
+    {
+      q: 'What is content projection in Angular and what problem does it solve?',
+      a: 'Content projection (implemented via <ng-content>) allows a parent component to inject HTML content into a child component\'s template. It solves the problem of building truly reusable container components (cards, modals, tabs, accordions) where the outer shell (borders, padding, layout) is defined once in the child, but the inner content varies per use. Without projection, you\'d need @Input properties for every possible content variation.',
+    },
+    {
+      q: 'What is the difference between single-slot and multi-slot content projection?',
+      a: 'Single-slot uses one <ng-content> tag with no selector — all projected content goes into that one slot. Multi-slot uses multiple <ng-content select="..."> tags with CSS selectors, allowing different pieces of projected content to land in different locations in the child template. The select attribute supports element selectors, attribute selectors ([slot=header]), and class selectors (.my-class).',
+    },
+    {
+      q: 'What is the difference between light DOM and shadow DOM in the context of ng-content?',
+      a: 'Light DOM refers to the content passed in by the consumer of a component — this is what you write between a component\'s tags (e.g., <app-card><p>text</p></app-card>). Shadow DOM is a browser feature for true style and DOM encapsulation. Angular\'s ng-content uses the light DOM concept: projected content remains in the parent\'s DOM tree with the parent\'s change detection, not the child\'s. Angular\'s ViewEncapsulation.ShadowDom uses actual shadow DOM.',
+    },
+    {
+      q: 'How does content projection interact with change detection?',
+      a: 'Projected content belongs to the projecting parent\'s change detector, not the host child\'s. This means if the projected content uses OnPush, it is checked by the parent\'s change detection context, not the child\'s. This is an important distinction: the child cannot trigger change detection on the projected content — only the parent can. It also means performance characteristics of projected content are controlled by the parent.',
+    },
+    {
+      q: 'What happens to projected content that does not match any ng-content selector?',
+      a: 'Unmatched projected content is silently discarded — it does not appear in the rendered output and generates no error. This is intentional: a component may choose to accept only certain slots. Always ensure your select selectors cover all expected projected content. You can have a catch-all <ng-content></ng-content> (no selector) at the end to render any content that did not match a named slot.',
+    },
+    {
+      q: 'Can you use *ngIf or *ngFor on ng-content elements?',
+      a: '<ng-content> itself cannot have structural directives — you cannot write *ngIf="show" on <ng-content>. The workaround is to wrap <ng-content> in an <ng-container> or a div with the structural directive applied there. Alternatively, use ngTemplateOutlet with a conditional — the child accepts an @Input of type TemplateRef and renders it conditionally via [ngTemplateOutlet].',
+    },
+  ];
+}

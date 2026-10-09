@@ -1,0 +1,96 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod1">
+    <span class="module-tag">Module 1 — Angular Fundamentals</span>
+    <h1>Angular Bootstrapping</h1>
+    <p class="subtitle">How Angular starts — from main.ts to the first rendered pixel in the browser.</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>Bootstrapping</strong> is the process of initializing and starting an Angular application. It begins when the browser parses <code>index.html</code> and loads the compiled JavaScript bundle, which executes <code>main.ts</code> — the application's entry point. Angular then creates the <strong>root injector</strong>, compiles and renders the <strong>root component</strong> (<code>AppComponent</code>) into the <code>&lt;app-root&gt;</code> element, sets up <strong>change detection</strong> and <strong>Zone.js</strong>, and triggers the initial router navigation. The result is a live, interactive Angular application.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Application initialization:</strong> Angular needs a defined entry point to set up its runtime environment (injector, change detection, router).</li>
+      <li><strong>Provider configuration:</strong> The bootstrap call is where app-wide providers (HttpClient, Router, Animations) are registered.</li>
+      <li><strong>Root component mounting:</strong> Angular must know which component is the root of the UI component tree.</li>
+      <li><strong>Platform abstraction:</strong> The bootstrap API abstracts away platform differences — the same app code can be bootstrapped in a browser, a web worker, or server (Angular Universal).</li>
+      <li><strong>Async initialization:</strong> APP_INITIALIZER allows async setup (loading config, authenticating) before the UI renders.</li>
+      <li><strong>Error handling:</strong> The <code>.catch()</code> on bootstrapApplication provides a centralized place for startup error handling.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A healthcare portal must load patient permissions from an API before any UI renders (to prevent a flash of unauthorized content). Using <code>APP_INITIALIZER</code> in <code>appConfig.providers</code>, an <code>PermissionsService.loadPermissions()</code> call is made during bootstrapping. Angular holds rendering until this Promise resolves. The <code>appConfig</code> also registers an auth interceptor via <code>provideHttpClient(withInterceptors([authInterceptor]))</code>, ensuring every HTTP request carries the Bearer token — all configured before the first component renders.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>When <code>bootstrapApplication(AppComponent, appConfig)</code> is called: (1) Angular creates the <strong>ApplicationRef</strong> — the top-level owner of the component tree. (2) A <strong>root EnvironmentInjector</strong> is created from <code>appConfig.providers</code>, registering all provided services and features. (3) <strong>Zone.js</strong> patches all async browser APIs (if not using zoneless mode). (4) Angular's <strong>ComponentFactory</strong> creates an instance of <code>AppComponent</code> and renders its template into the <code>&lt;app-root&gt;</code> DOM element found in <code>index.html</code>. (5) The <strong>Router</strong>'s initial navigation fires, matching the current URL and rendering the appropriate routed component in the <code>&lt;router-outlet&gt;</code>. (6) Change detection begins its ongoing cycle.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Clear, single entry point for all app initialization logic</li>
+        <li>APP_INITIALIZER enables async pre-loading (config, auth, permissions)</li>
+        <li>Standalone bootstrap (Angular 15+) eliminates AppModule boilerplate</li>
+        <li>Platform abstraction allows targeting browser, server (SSR), or web workers</li>
+        <li>Centralized provider registration in appConfig.ts for clean DI setup</li>
+        <li>Modern <code>provideRouter</code>, <code>provideHttpClient</code> APIs are tree-shakeable</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>APP_INITIALIZER failures block the entire app from loading</li>
+        <li>Long-running initializers delay Time-to-Interactive for users</li>
+        <li>NgModule bootstrap (legacy) requires understanding AppModule, BrowserModule</li>
+        <li>Debugging bootstrap errors can be challenging — stack traces are deep</li>
+        <li>Two approaches (NgModule vs standalone) can cause confusion in mixed projects</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use standalone <code>bootstrapApplication()</code> for all new Angular 15+ projects</li>
+      <li>Keep <code>main.ts</code> minimal — all configuration belongs in <code>app.config.ts</code></li>
+      <li>Use <code>APP_INITIALIZER</code> for essential async init only — keep it fast (under 2 seconds)</li>
+      <li>Always handle the <code>.catch()</code> in bootstrapApplication for startup error logging</li>
+      <li>Use <code>provideHttpClient(withInterceptors([...]))</code> instead of the class-based interceptor token</li>
+      <li>Configure <code>provideRouter(routes, withViewTransitions())</code> for smooth navigation</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Importing <code>BrowserModule</code> multiple times — only import it once in AppModule or use bootstrapApplication</li>
+      <li>Placing business logic in APP_INITIALIZER that should be lazy-loaded instead</li>
+      <li>Forgetting <code>.catch(err => console.error(err))</code> — silent bootstrap failures are hard to debug</li>
+      <li>Not providing HttpClient — making HTTP requests without <code>provideHttpClient()</code> throws a NullInjectorError</li>
+      <li>Calling <code>bootstrapModule(AppModule)</code> and <code>bootstrapApplication()</code> together — pick one approach</li>
+      <li>Forgetting <code>provideAnimations()</code> when using Angular Material — causes silent animation failures</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

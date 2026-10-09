@@ -1,0 +1,15 @@
+<div class="operator-box">
+
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+
+  <h2>mergeMap()</h2>
+  <p class="definition">For each value, starts an inner Observable concurrently. Results arrive as each inner stream completes.</p>
+  <button (click)="run()">Run mergeMap()</button>
+  <p class="note">Notice: responses arrive in order of completion, not order of input.</p>
+  <ul>
+    <li *ngFor="let item of results">{{ item }}</li>
+  </ul>
+</div>

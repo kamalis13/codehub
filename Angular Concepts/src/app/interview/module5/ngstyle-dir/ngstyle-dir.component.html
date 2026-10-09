@@ -1,0 +1,91 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod5">
+    <span class="module-tag">Module 5 — Directives</span>
+    <h1>ngStyle</h1>
+    <p class="subtitle">Set inline styles dynamically — bind CSS properties directly to component state</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>[ngStyle]</strong> is a built-in attribute directive that sets one or more inline styles on a DOM element using an object expression. Keys are CSS property names (camelCase or kebab-case in quotes) and values are the style values including units. It is used when style values are truly dynamic (e.g., user-chosen colors, calculated widths, progress percentages) and cannot be predetermined in a CSS class.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Set styles whose values are dynamic — not known at compile time (e.g., percentage widths)</li>
+      <li>Apply user-customizable themes (colors, font sizes selected by the user)</li>
+      <li>Animate component-input dimensions (progress bars, charts, draggable elements)</li>
+      <li>Compute style objects from component state without cluttering the template</li>
+      <li>No need for direct ElementRef.nativeElement.style manipulation</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A reusable <strong>ProgressBar</strong> component that uses <code>[ngStyle]</code> to set width (from progress input), background color, and transition — demonstrating dynamic style binding for an animated UI element.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>The <code>NgStyle</code> directive subscribes to the bound object expression. During change detection, it compares the new style object to the previous one using a KeyValueDiffer. For each changed property, it calls <code>Renderer2.setStyle(element, prop, value)</code>. For removed properties, it calls <code>Renderer2.removeStyle()</code>. Using Renderer2 instead of direct DOM access ensures SSR compatibility and security.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Cleanly binds multiple dynamic styles from a single expression</li>
+        <li>Works with both camelCase and kebab-case CSS property names</li>
+        <li>Uses Renderer2 internally — SSR-compatible and secure</li>
+        <li>Supports CSS transitions for animated style changes</li>
+        <li>Merges with existing inline styles; does not replace them all</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Inline styles have high specificity — hard to override with classes</li>
+        <li>Not ideal for static/predictable styles (use CSS classes instead)</li>
+        <li>Object literal in template triggers unnecessary diff checks each cycle</li>
+        <li>Reduces separation of concerns — styling logic mixes into TypeScript</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Compute the style object in a <strong>getter</strong>, not as an inline object literal in the template</li>
+      <li>Use <code>[style.property.unit]</code> (e.g., <code>[style.width.%]</code>) for single-property bindings</li>
+      <li>Prefer CSS classes and <code>[ngClass]</code> over <code>[ngStyle]</code> for predictable values</li>
+      <li>Reserve <code>[ngStyle]</code> for truly dynamic values: user-input colors, calculated dimensions</li>
+      <li>Include <code>transition</code> in the style object to get smooth CSS animations for free</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using <code>[ngStyle]</code> instead of a CSS class for styles that don't change at runtime</li>
+      <li>Forgetting to include units in values: <code>'font-size': '14'</code> instead of <code>'14px'</code></li>
+      <li>Passing an inline object literal — creates new reference every change detection cycle</li>
+      <li>Using <code>[ngStyle]</code> when <code>[style.width.%]</code> is cleaner for a single property</li>
+      <li>Forgetting to import <code>NgStyle</code> or <code>CommonModule</code> in standalone components</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

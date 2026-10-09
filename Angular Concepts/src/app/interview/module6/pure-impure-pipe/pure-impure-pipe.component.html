@@ -1,0 +1,91 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod6">
+    <span class="module-tag">Module 6 — Pipes</span>
+    <h1>Pure vs Impure Pipe</h1>
+    <p class="subtitle">Understand pipe execution strategy — the hidden performance lever in Angular</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Every Angular pipe is either <strong>pure</strong> or <strong>impure</strong>. A <strong>pure pipe</strong> (default, <code>pure: true</code>) only re-executes when its input value changes by reference — Angular caches the result and reuses it until a new reference is detected. An <strong>impure pipe</strong> (<code>pure: false</code>) re-executes on <em>every change detection cycle</em>, regardless of whether the input changed. The <code>async</code> pipe is a well-known impure pipe.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Pure pipes provide significant performance optimization through memoization</li>
+      <li>Impure pipes are necessary when input data is mutated without changing object reference</li>
+      <li>Understanding this distinction prevents subtle bugs (pipe not updating) and performance issues</li>
+      <li>The async pipe must be impure to check for new Observable emissions every cycle</li>
+      <li>Forces better patterns — immutable data with pure pipes leads to more predictable state</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A <strong>Task List</strong> component demonstrating the difference: a pure filter pipe misses mutations (push, property change) while an impure pipe always sees current state — plus best-practice patterns for immutable updates with pure pipes.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>During Angular change detection, for each pipe binding in a template, Angular checks if the pipe is pure or impure. For <strong>pure pipes</strong>: it compares the current inputs to the previous inputs using <code>===</code>. If equal, it skips calling <code>transform()</code> and returns the cached result. For <strong>impure pipes</strong>: <code>transform()</code> is called on every single change detection run — even if the component's own state hasn't changed. This is why impure pipes can severely impact performance in large applications.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li><strong>Pure pipe:</strong> Excellent performance — memoized, only runs when needed</li>
+        <li><strong>Pure pipe:</strong> Predictable — runs deterministically based on input references</li>
+        <li><strong>Impure pipe:</strong> Always reflects current state — no stale data</li>
+        <li><strong>Impure pipe:</strong> Necessary for Observable-driven transforms (async pipe)</li>
+        <li>Both integrate with Angular's change detection automatically</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li><strong>Pure pipe:</strong> Misses mutations inside arrays/objects (no new reference)</li>
+        <li><strong>Impure pipe:</strong> Runs on every CD cycle — severe performance impact for complex transforms</li>
+        <li><strong>Impure pipe:</strong> Easy to accidentally create performance bottlenecks</li>
+        <li><strong>Pure pipe:</strong> Requires immutable data patterns (might need refactoring)</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always prefer <strong>pure pipes</strong> (the default) — they are optimized by design</li>
+      <li>Use immutable array/object updates (<code>[...arr, newItem]</code>) to trigger pure pipe re-evaluation</li>
+      <li>Move complex filtering/transformation to the component class, not an impure pipe</li>
+      <li>If you must use an impure pipe, make the <code>transform()</code> as lightweight as possible</li>
+      <li>Avoid making API calls or heavy computation inside any pipe (pure or impure)</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Creating an impure pipe for filtering mutable arrays — use immutable updates instead</li>
+      <li>Doing expensive computation (HTTP, complex sorting) inside an impure pipe</li>
+      <li>Not understanding why a pure pipe appears "stuck" — the array/object reference didn't change</li>
+      <li>Assuming async pipe is pure — it is impure by necessity (checks every CD cycle)</li>
+      <li>Using impure pipes in components with Default change detection at scale — major perf hit</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

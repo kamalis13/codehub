@@ -1,0 +1,20 @@
+.definition { font-size: 0.92rem; color: #374151; line-height: 1.6; margin-bottom: 0.5rem; }
+.note { font-size: 0.82rem; color: #6b7280; font-style: italic; }
+.syntax-block { background: #1e1e2f; border-radius: 10px; padding: 1rem 1.2rem; margin-bottom: 1rem; }
+.syntax-label { color: #585b70; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+.syntax-block pre { color: #cdd6f4; font-size: 0.8rem; line-height: 1.6; margin: 0; white-space: pre-wrap; }
+.vs-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; font-size: 0.88rem; }
+.vs-divider { font-weight: 700; color: #6b7280; flex-shrink: 0; }
+.demo-section { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1.2rem; }
+.demo-section h3 { margin: 0 0 0.5rem; font-size: 1rem; }
+.stats-bar { font-size: 0.85rem; margin-bottom: 0.75rem; }
+.stats-bar strong { color: #7c3aed; }
+.btn-row { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+.secondary-btn { background: #6b7280 !important; }
+.log-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.log-col { border-radius: 8px; padding: 0.75rem; }
+.throttle-col { background: #f0fdf4; border: 1px solid #bbf7d0; }
+.debounce-col { background: #eff6ff; border: 1px solid #bfdbfe; }
+.log-title { font-weight: 600; font-size: 0.78rem; margin-bottom: 0.5rem; }
+.result-list { margin: 0; padding-left: 1.2rem; font-size: 0.8rem; font-family: monospace; line-height: 1.9; }
+.empty { color: #9ca3af; font-style: italic; }

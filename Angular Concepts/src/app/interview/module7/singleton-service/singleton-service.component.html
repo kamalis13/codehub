@@ -1,0 +1,90 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod7">
+    <span class="module-tag">Module 7 — Services</span>
+    <h1>Singleton Service</h1>
+    <p class="subtitle">One instance shared across the entire application</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>A singleton service is a service of which Angular creates exactly one instance, shared across the entire application. Any component or service that injects it gets the same object reference. This makes singletons ideal for shared state, caching, and cross-component communication.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Share authenticated user state across the entire app</li>
+      <li>Cache HTTP responses once, reuse everywhere</li>
+      <li>Enable cross-component communication without &#64;Input/&#64;Output chains</li>
+      <li>Coordinate application-wide operations (auth, analytics, feature flags)</li>
+      <li>Reduce memory by reusing one object instead of many</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>An <code>AuthService</code> holds the currently logged-in user. The header component, dashboard, and settings all inject the same <code>AuthService</code> instance and see the same user. Logging out in one place is instantly reflected everywhere.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>When <code>providedIn: 'root'</code> is used, Angular's tree-shaking-aware compiler registers the service with the root injector during app bootstrap. The first injection triggers instantiation; subsequent injections return the cached instance from the root injector's registry. The instance lives for the entire application lifetime.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>One authoritative source of truth for shared data</li>
+        <li>Memory efficient — single instance throughout app life</li>
+        <li>State changes are instantly visible to all consumers</li>
+        <li>Easy cross-component communication via Observables</li>
+        <li>Built-in with Angular — no extra libraries needed</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Global mutable state is hard to reason about</li>
+        <li>Singleton state persists across navigation (can be stale)</li>
+        <li>Testing requires resetting shared state between test cases</li>
+        <li>Hard to isolate in component-level unit tests</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use BehaviorSubject/Signal for reactive shared state</li>
+      <li>Keep singleton services focused on one concern</li>
+      <li>Provide a <code>reset()</code> method for testing and logout flows</li>
+      <li>Avoid storing UI state in services — keep it in components</li>
+      <li>Use Angular DevTools to inspect service instances</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Re-providing a root service in a component or module (creates duplicate)</li>
+      <li>Storing component-specific state in a singleton (state pollution)</li>
+      <li>Not resetting singleton state on user logout</li>
+      <li>Mutating arrays in place instead of creating new references (change detection misses it)</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

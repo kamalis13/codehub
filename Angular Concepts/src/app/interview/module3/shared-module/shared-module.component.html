@@ -1,0 +1,108 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod3">
+    <span class="module-tag">Module 3 — Modules</span>
+    <h1>Shared Module</h1>
+    <p class="subtitle">Centralise reusable components, pipes, and directives — import once, use everywhere</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      A <strong>Shared Module</strong> is an <code>NgModule</code> that declares and <em>exports</em> reusable
+      building blocks — UI components (buttons, spinners, modals), custom pipes (currency format, truncate), and
+      directives (highlight, tooltip) — that multiple feature modules need. Any feature module can import
+      <code>SharedModule</code> to gain instant access to all these shared pieces without duplicating declarations,
+      following the <strong>DRY (Don't Repeat Yourself)</strong> principle.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Avoid duplicate imports</strong> — a component can only be <em>declared</em> in one module; SharedModule is the correct single declaration point.</li>
+      <li><strong>DRY principle</strong> — write once, export, and reuse across all feature modules.</li>
+      <li><strong>Consistency</strong> — ensures every feature uses the same Button, Spinner, and Pipe implementations.</li>
+      <li><strong>Less boilerplate</strong> — feature modules import one <code>SharedModule</code> instead of listing five separate imports.</li>
+      <li><strong>Easier maintenance</strong> — updating a shared component propagates the change to all consumers automatically.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      An e-commerce app's <strong>SharedModule</strong> exports a <code>ButtonComponent</code>,
+      <code>LoadingSpinnerComponent</code>, and <code>CurrencyFormatPipe</code>. Both the
+      <em>ProductsModule</em> and the <em>CartModule</em> import <code>SharedModule</code> and immediately
+      access all three without any duplication.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      When Angular compiles a feature module that imports <code>SharedModule</code>, it merges the exports of
+      <code>SharedModule</code> into the feature module's compilation scope. This means templates in
+      <code>ProductListComponent</code> can reference <code>&lt;app-button&gt;</code> or
+      <code>currencyFormat</code> pipe as if they were declared locally. Under AOT compilation, Angular resolves
+      all template references at build time, so unused exports from <code>SharedModule</code> are still bundled
+      unless you migrate to standalone components, which support true per-component tree-shaking.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Eliminates the "declared in multiple modules" error by centralising declarations.</li>
+        <li>Single source of truth for shared UI — one change propagates everywhere.</li>
+        <li>Simplifies feature module imports: one import gives access to many components.</li>
+        <li>Re-exporting <code>CommonModule</code> gives feature modules <code>ngIf</code> and <code>ngFor</code> for free.</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Do NOT provide services here — each import creates a fresh instance, breaking singletons.</li>
+        <li>SharedModule can become bloated over time, bundling components a module never uses.</li>
+        <li>Not compatible with optimal tree-shaking — standalone components handle this better.</li>
+        <li>Must be explicitly imported in every lazy-loaded module; inheritance does not apply.</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Only export what multiple modules actually use — keep SharedModule lean.</li>
+      <li>Never register services or provide tokens in SharedModule; use <code>providedIn: 'root'</code> instead.</li>
+      <li>Re-export <code>CommonModule</code> for convenience, but avoid re-exporting heavy modules unnecessarily.</li>
+      <li>Consider splitting into sub-shared modules (<code>UiSharedModule</code>, <code>FormSharedModule</code>) as the app grows.</li>
+      <li>Migrate shared pieces to standalone components in Angular 14+ projects for better tree-shaking.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Providing services in SharedModule — creates multiple service instances, one per importing module.</li>
+      <li>Exporting everything — causes large bundle size; only export what consumers need.</li>
+      <li>Not exporting CommonModule — feature module templates fail to find <code>ngIf</code> / <code>ngFor</code>.</li>
+      <li>Importing SharedModule in CoreModule, which itself is imported in AppModule — unnecessary duplication.</li>
+      <li>Declaring the same component in both SharedModule and a feature module — Angular compilation error.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

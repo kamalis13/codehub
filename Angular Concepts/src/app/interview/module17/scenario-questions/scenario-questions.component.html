@@ -1,0 +1,12 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod17">
+    <span class="module-tag">Module 17 — Scenario-Based</span>
+    <h1>100 Real Interview Questions</h1>
+    <p class="subtitle">Real-world Angular scenarios asked in interviews</p>
+  </div>
+
+  <div class="qa-item" *ngFor="let s of scenarios; let i = index">
+    <div class="qa-q">{{ i + 1 }}. {{ s.q }}</div>
+    <div class="qa-a">{{ s.a }}</div>
+  </div>
+</div>

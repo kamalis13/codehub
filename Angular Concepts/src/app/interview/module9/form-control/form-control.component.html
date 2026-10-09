@@ -1,0 +1,81 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod9">
+    <span class="module-tag">Module 9 — Forms</span>
+    <h1>FormControl</h1>
+    <p class="subtitle">Individual form field — tracks value, validation state, and user interaction</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>The fundamental building block of reactive forms. FormControl manages the value and validation state of a single form input. It emits valueChanges on every change and statusChanges when validity changes. FormControl extends AbstractControl and supports both synchronous and asynchronous validators.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Fine-grained control over individual fields — update, disable, or reset without touching the whole form</li>
+      <li>Supports synchronous and asynchronous validators, enabling complex server-side checks like username availability</li>
+      <li>Enables reactive programming via valueChanges and statusChanges observables for real-time UI reactions</li>
+      <li>Tracks user interaction state precisely (dirty/pristine, touched/untouched) to show errors only at the right moment</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A registration form's username field uses an async validator to check availability in real time, with debouncing to limit API calls. The template reacts to pending, invalid, and taken states to give instant feedback to the user.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>FormControl extends AbstractControl. When a user types, the bound directive (formControlName or ngModel) calls control.setValue(), which runs all sync validators synchronously and emits valueChanges. If sync validators pass, async validators are invoked and the status transitions to PENDING. Once async validators complete, statusChanges emits VALID or INVALID. Angular's change detection picks up the new state and re-renders error messages automatically.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Granular reactive control — manipulate a single field programmatically without patching the whole form</li>
+        <li>Observable-based — compose with RxJS operators for sophisticated UX (debounce, switchMap, distinctUntilChanged)</li>
+        <li>Supports async validators for server-side uniqueness checks while keeping the control's status accurate</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>More verbose than template-driven ngModel for simple forms — requires explicit wiring in the component class</li>
+        <li>Async validators add latency and complexity; need careful debouncing and cancellation to avoid race conditions</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always pipe valueChanges with debounceTime and distinctUntilChanged before triggering API calls to avoid excessive requests</li>
+      <li>Show validation errors only when a control is touched or the form has been submitted — not on initial load</li>
+      <li>Use getRawValue() instead of form.value when you need disabled control values included in the server payload</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Forgetting to unsubscribe from valueChanges — use takeUntilDestroyed() or the async pipe to avoid memory leaks</li>
+      <li>Using setValue when patchValue is needed for partial updates, causing runtime errors when some keys are missing</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

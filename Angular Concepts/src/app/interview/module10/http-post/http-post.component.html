@@ -1,0 +1,81 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod10">
+    <span class="module-tag">Module 10 — HTTP</span>
+    <h1>HTTP POST</h1>
+    <p class="subtitle">Send data to create new resources — the foundation of form submission</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><code>http.post&lt;T&gt;(url, body, options)</code> sends an HTTP POST request with a request body. Angular automatically serialises JavaScript objects to JSON and sets <code>Content-Type: application/json</code>. Returns an Observable of the server's response typed as T.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Creating new resources on the server such as users, orders, and posts</li>
+      <li>Submitting form data to a REST API in a structured, typed way</li>
+      <li>Sending data that is too large or sensitive to include in query parameters</li>
+      <li>Triggering server-side operations like sending emails or processing payments</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A user registration flow calls a POST endpoint with the form data as a typed DTO. The component sets a loading flag before subscribing and clears it on completion or error. An order creation service uses an auth header and applies optimistic UI updates via tap, rolling back on failure inside catchError.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>When <code>http.post()</code> is subscribed to, Angular serialises the body object to a JSON string and sets Content-Type automatically. The request passes through the interceptor chain, is dispatched via XMLHttpRequest, and the raw response bytes are parsed. The Observable emits the typed body (or the full HttpResponse when <code>observe: 'response'</code> is set) and then completes, making it safe to subscribe without explicit cleanup.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Automatic JSON serialisation and Content-Type header — no manual setup required</li>
+        <li>Typed request and response interfaces provide full compile-time safety</li>
+        <li>Observable-based — easily composable with operators like catchError, retry, and tap</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Not idempotent — retrying on network failure can create duplicate resources without server-side deduplication</li>
+        <li>Body serialisation to JSON loses non-serialisable values such as functions, undefined, and circular references</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Define typed DTOs for both the request body and the response to catch contract mismatches at compile time</li>
+      <li>Use an HTTP interceptor to attach auth tokens instead of adding headers manually in each service method</li>
+      <li>Always handle errors with <code>catchError</code> and inform the user — never silently swallow POST failures</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Manually setting <code>Content-Type: application/json</code> when Angular already does it — this is redundant and can conflict with multipart form submissions</li>
+      <li>Forgetting to handle the error callback in subscribe, causing uncaught errors when the server returns 4xx or 5xx responses</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

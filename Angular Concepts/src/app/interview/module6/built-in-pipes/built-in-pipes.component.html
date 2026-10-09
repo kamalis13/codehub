@@ -1,0 +1,91 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod6">
+    <span class="module-tag">Module 6 — Pipes</span>
+    <h1>Built-in Pipes</h1>
+    <p class="subtitle">Transform data in templates — format dates, numbers, strings, and more</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Angular <strong>built-in pipes</strong> are pre-built data transformation functions that format values directly in templates using the <code>|</code> operator. They transform display values without changing the underlying data. Available pipes include: <code>date</code>, <code>currency</code>, <code>number</code>, <code>percent</code>, <code>uppercase</code>, <code>lowercase</code>, <code>titlecase</code>, <code>slice</code>, <code>json</code>, <code>keyvalue</code>, and <code>async</code>. Pipes can be chained using multiple <code>|</code> operators.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Format data for display without polluting component logic with formatting code</li>
+      <li>Reusable — one pipe declaration works across the entire application</li>
+      <li>Declarative in templates — <code ngNonBindable>{{ price | currency }}</code> is self-documenting</li>
+      <li>Localization support via <code>LOCALE_ID</code> (date, currency, number pipes)</li>
+      <li>Async pipe handles Observable subscriptions and cleanup automatically</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A <strong>Product Listing</strong> page demonstrating all major built-in pipes: titlecase for product name, currency for pricing, percent for discount, date for timestamps, keyvalue for metadata, slice for tags, and async for Observable product data.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular evaluates pipe expressions during the template rendering phase of change detection. Each pipe is a class implementing <code>PipeTransform</code> with a <code>transform(value, ...args)</code> method. Pure pipes (the default) are only called when the input reference changes. Impure pipes run on every change detection cycle. Angular optimizes by caching pure pipe results — if the input hasn't changed, the previous output is reused.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Clean separation of formatting from business logic</li>
+        <li>Pure pipes are highly optimized — cached results, no unnecessary re-computation</li>
+        <li>Built-in pipes cover most common formatting needs out of the box</li>
+        <li>Localization support via Angular i18n for date, number, currency</li>
+        <li>Chainable — compose multiple transformations in one expression</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Pipe transform errors can be hard to debug (template errors are cryptic)</li>
+        <li>Complex chained pipes reduce template readability</li>
+        <li>Cannot use pipes in &#64;Component class code — must use DI injection pattern</li>
+        <li>Some pipes (async) are impure and run every change detection cycle</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use the <code>async</code> pipe instead of manual Observable subscriptions in templates</li>
+      <li>Prefer <code>date:'medium'</code> over complex custom format strings for readability</li>
+      <li>Use <code>json</code> pipe for debugging — remove it before production</li>
+      <li>Inject and use pipes in services when needed in component code (not just templates)</li>
+      <li>Chain pipes sparingly — for complex transformations, compute in the component</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using <code ngNonBindable>{{ date | date }}</code> on a string — pass a Date object or timestamp</li>
+      <li>Expecting pipes to update on mutable object property changes (use new references)</li>
+      <li>Using <code>json</code> pipe in production templates — exposes data structure</li>
+      <li>Forgetting to import <code>CommonModule</code> or specific pipe classes in standalone components</li>
+      <li>Chaining too many pipes in one expression — extract to a component getter instead</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,59 @@
+<div class="operator-box">
+  <div class="concept-header">
+    <span class="badge">Core Concept</span>
+    <h1>Hot vs Cold Observables</h1>
+    <p class="tagline">Two ways a stream can behave when subscribed to</p>
+  </div>
+
+  <div class="definition-card">
+    <div class="def-row"><span class="icon">🧊</span><div><strong>Cold Observable</strong> — creates a new, independent data producer for EACH subscriber. Like a Netflix movie: every viewer starts from the beginning.</div></div>
+    <div class="def-row"><span class="icon">🔥</span><div><strong>Hot Observable</strong> — shares one running producer with ALL subscribers. Like live TV: you join mid-broadcast and miss what already aired.</div></div>
+  </div>
+
+  <div class="comparison-row">
+    <div class="compare-card cold-card">
+      <div class="compare-title">🧊 Cold Observable</div>
+      <ul>
+        <li>Producer created PER subscriber</li>
+        <li>Late subscriber gets full stream</li>
+        <li>Examples: <code>of()</code>, <code>from()</code>, <code>interval()</code>, HTTP calls</li>
+      </ul>
+    </div>
+    <div class="compare-card hot-card">
+      <div class="compare-title">🔥 Hot Observable</div>
+      <ul>
+        <li>Producer shared across all subscribers</li>
+        <li>Late subscriber misses past values</li>
+        <li>Examples: <code>Subject</code>, DOM events, WebSockets</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="syntax-block">
+    <div class="syntax-label">Cold — each subscriber restarts</div>
+    <pre [innerText]="coldCode"></pre>
+  </div>
+
+  <div class="demo-section">
+    <h3>Cold Demo</h3>
+    <p class="note">Sub1 starts immediately. Sub2 joins 1.2s later but still gets 0,1,2,3 from scratch.</p>
+    <button (click)="runCold()">Run Cold Demo</button>
+    <ul class="result-list">
+      <li *ngFor="let r of coldLog">{{ r }}</li>
+    </ul>
+  </div>
+
+  <div class="syntax-block" style="margin-top:1.5rem">
+    <div class="syntax-label">Hot — late subscriber misses past values</div>
+    <pre [innerText]="hotCode"></pre>
+  </div>
+
+  <div class="demo-section">
+    <h3>Hot Demo</h3>
+    <p class="note">Sub1 sees all values. Sub2 joins after 1.8s and only sees values emitted after it subscribed.</p>
+    <button (click)="startHot()">Run Hot Demo</button>
+    <ul class="result-list">
+      <li *ngFor="let r of hotLog">{{ r }}</li>
+    </ul>
+  </div>
+</div>

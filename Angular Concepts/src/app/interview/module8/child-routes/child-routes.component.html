@@ -1,0 +1,90 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod8">
+    <span class="module-tag">Module 8 — Routing</span>
+    <h1>Child Routes</h1>
+    <p class="subtitle">Building hierarchical navigation with nested router-outlet</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Child routes are route configurations nested inside a parent route using the children property. The parent component acts as a layout shell containing shared UI (sidebar, header, tabs) and a router-outlet where child components render. This creates hierarchical navigation that reflects the structure of complex UIs.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Build admin dashboards with persistent sidebar + changing content area</li>
+      <li>Create tabbed interfaces where each tab is a separate routable view</li>
+      <li>Implement wizards where each step has its own URL</li>
+      <li>Organize routes to mirror the UI hierarchy</li>
+      <li>Enable relative navigation between related views</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A product page component with tab-based child routes for details, reviews, and specs — each tab navigates to a different child URL while the product header persists.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>When Angular navigates to a child route like /admin/users, it first renders the parent component (AdminLayoutComponent) in the root router-outlet. It then looks for a second router-outlet inside AdminLayoutComponent's template and renders the child component (UserListComponent) there. Parent route's guards and resolvers run first, then child's. The parent component's lifecycle hooks are not re-run when only the child changes.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Persistent layout UI (sidebar, header) across child navigation</li>
+        <li>Organized route hierarchy mirrors UI structure</li>
+        <li>Parent-level guards protect all children at once</li>
+        <li>Relative navigation within child routes is clean</li>
+        <li>Shared resolvers can provide data to all children</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Each nesting level requires a router-outlet in the parent</li>
+        <li>Accessing parent route params from children adds complexity</li>
+        <li>Very deep nesting is hard to debug</li>
+        <li>Route configuration becomes verbose for many nested levels</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Keep nesting depth to 2-3 levels maximum</li>
+      <li>Use parent route for layout, children for content</li>
+      <li>Add canActivate on the parent to protect all children at once</li>
+      <li>Use redirectTo with pathMatch: 'full' for default child routes</li>
+      <li>Access parent params via this.route.parent.paramMap</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Forgetting router-outlet in the parent template (child renders nowhere)</li>
+      <li>Using absolute paths in child route templates (breaking relative navigation)</li>
+      <li>Not setting a default child route (empty sub-path with redirectTo)</li>
+      <li>Duplicating guards on each child when parent-level guard suffices</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

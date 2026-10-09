@@ -1,0 +1,174 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod1">
+    <span class="module-tag">Module 1 — Angular Fundamentals</span>
+    <h1>Latest Angular Updates</h1>
+    <p class="subtitle">Angular 17, 18, 19 &amp; 20 — new features, breaking changes, and migration</p>
+  </div>
+
+  <!-- Version Timeline Cards -->
+  <div class="version-grid">
+    <div class="v-card v17">
+      <div class="v-badge">v17</div>
+      <div class="v-date">Nov 2023</div>
+      <h3>Angular 17</h3>
+      <ul>
+        <li>&#64;if / &#64;for / &#64;switch control flow</li>
+        <li>&#64;defer — declarative lazy loading</li>
+        <li>Vite + esbuild by default</li>
+        <li>Standalone components by default (CLI)</li>
+        <li>Signals stable API</li>
+        <li>SSR improvements (hydration stable)</li>
+      </ul>
+    </div>
+    <div class="v-card v18">
+      <div class="v-badge">v18</div>
+      <div class="v-date">May 2024</div>
+      <h3>Angular 18</h3>
+      <ul>
+        <li>Zoneless change detection (experimental)</li>
+        <li>ng-content fallback content</li>
+        <li>Angular Material 3 stable</li>
+        <li>Route-level render mode (SSR)</li>
+        <li>Stable control flow (&#64;if/&#64;for)</li>
+        <li>&#64;let template variable (preview)</li>
+      </ul>
+    </div>
+    <div class="v-card v19">
+      <div class="v-badge">v19</div>
+      <div class="v-date">Nov 2024</div>
+      <h3>Angular 19</h3>
+      <ul>
+        <li>input() / output() / model() signals</li>
+        <li>viewChild() / contentChild() signals</li>
+        <li>linkedSignal() — writable derived signal</li>
+        <li>Incremental hydration</li>
+        <li>Resource API (experimental)</li>
+        <li>&#64;let template variable (stable)</li>
+      </ul>
+    </div>
+    <div class="v-card v20">
+      <div class="v-badge">v20</div>
+      <div class="v-date">May 2025</div>
+      <h3>Angular 20</h3>
+      <ul>
+        <li>Zoneless change detection (stable)</li>
+        <li>httpResource() stable</li>
+        <li>Signal-based forms progress</li>
+        <li>TypeScript 5.8 support</li>
+        <li>Enhanced tree-shaking</li>
+        <li>Improved SSR/hydration perf</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Angular 17 -->
+  <section class="t-card">
+    <h2>&#128190; Angular 17 — New Control Flow Syntax</h2>
+    <p>
+      Angular 17 replaced structural directives (*ngIf, *ngFor, ngSwitch) with a new built-in control flow
+      syntax. The new syntax is compiled directly by the Angular template compiler — no need to import
+      CommonModule. <code>&#64;for</code> requires a <code>track</code> expression (enforcing performance
+      best practices), and <code>&#64;empty</code> handles empty collections without extra ngIf wrappers.
+    </p>
+    <div class="t-code"><pre [innerText]="v17Code"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>&#9203; Angular 17 — &#64;defer (Declarative Lazy Loading)</h2>
+    <p>
+      <code>&#64;defer</code> lets you declaratively code-split and lazy-load parts of your template.
+      The content inside the block is bundled separately and only loaded when the trigger fires.
+      It supports <code>&#64;placeholder</code> (shown before loading), <code>&#64;loading</code>
+      (shown during loading), and <code>&#64;error</code> blocks. This eliminates complex IntersectionObserver
+      code or route-level lazy loading just to delay a single widget.
+    </p>
+    <div class="t-code"><pre [innerText]="v17DeferCode"></pre></div>
+  </section>
+
+  <!-- Angular 18 -->
+  <section class="t-card">
+    <h2>&#128161; Angular 18 — Zoneless &amp; Key Features</h2>
+    <p>
+      Angular 18 introduced experimental <strong>zoneless change detection</strong>, removing the Zone.js
+      dependency. Change detection becomes signal-driven — Angular only updates components whose signals
+      changed. Also notable: <strong>ng-content fallback</strong> (default projected content when nothing
+      is provided), <strong>Material 3 stable</strong>, and <strong>route-level SSR render modes</strong>
+      (prerender, server-render, or client-render per route).
+    </p>
+    <div class="t-code"><pre [innerText]="v18Code"></pre></div>
+  </section>
+
+  <!-- Angular 19 -->
+  <section class="t-card">
+    <h2>&#128293; Angular 19 — Signal-Based Component APIs</h2>
+    <p>
+      Angular 19 completed the signal-based component API surface. <strong>input()</strong> creates
+      a signal-typed <code>&#64;Input</code>. <strong>output()</strong> replaces <code>&#64;Output + EventEmitter</code>.
+      <strong>model()</strong> creates a two-way bindable signal (replaces the <code>&#64;Input + &#64;Output(xChange)</code>
+      pair). <strong>viewChild()</strong> and <strong>contentChild()</strong> return signals that automatically
+      reflect the current DOM state without needing <code>ngAfterViewInit</code>.
+      <strong>linkedSignal()</strong> creates a derived but manually-settable signal.
+    </p>
+    <div class="t-code"><pre [innerText]="v19Code"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>&#127754; Angular 19 — Incremental Hydration &amp; Resource API</h2>
+    <p>
+      <strong>Incremental hydration</strong> lets SSR pages hydrate in chunks instead of all at once.
+      Sections marked with <code>&#64;defer (hydrate on viewport)</code> only load their JS bundle
+      when the user scrolls to them. The <strong>Resource API</strong> is a signal-based data-fetching
+      primitive: it ties an HTTP request to a signal (the request parameters), and re-fetches
+      automatically when parameters change — no manual subscribe/unsubscribe.
+    </p>
+    <div class="t-code"><pre [innerText]="v19HydrationCode"></pre></div>
+  </section>
+
+  <!-- Angular 20 -->
+  <section class="t-card">
+    <h2>&#127775; Angular 20 — Stable APIs &amp; Polish</h2>
+    <p>
+      Angular 20 (May 2025) graduates several experimental features to stable:
+      <strong>zoneless change detection</strong> (now <code>provideZonelessChangeDetection()</code>),
+      <strong>httpResource()</strong> for signal-based HTTP, and further improvements to SSR hydration
+      performance and tree-shaking. TypeScript 5.8 is supported.
+    </p>
+    <div class="t-code"><pre [innerText]="v20Code"></pre></div>
+  </section>
+
+  <!-- Migration -->
+  <section class="t-card best-practices">
+    <h2>&#128295; Migration Guide</h2>
+    <p>Angular provides automated schematics for most migrations. Always upgrade one major version at a time:</p>
+    <div class="t-code"><pre [innerText]="migrationCode"></pre></div>
+  </section>
+
+  <!-- Comparison -->
+  <section class="t-card">
+    <h2>&#128200; Old vs New — Quick Reference</h2>
+    <div class="compare-table">
+      <div class="compare-row header-row">
+        <span>Old API</span><span>New API (v17-20)</span><span>Since</span>
+      </div>
+      <div class="compare-row"><span><code>*ngIf</code></span><span><code>&#64;if / &#64;else</code></span><span>v17</span></div>
+      <div class="compare-row"><span><code>*ngFor + trackBy</code></span><span><code>&#64;for (track)</code></span><span>v17</span></div>
+      <div class="compare-row"><span><code>[ngSwitch]</code></span><span><code>&#64;switch / &#64;case</code></span><span>v17</span></div>
+      <div class="compare-row"><span><code>loadChildren (lazy)</code></span><span><code>&#64;defer</code></span><span>v17</span></div>
+      <div class="compare-row"><span><code>&#64;Input() prop</code></span><span><code>prop = input()</code></span><span>v19</span></div>
+      <div class="compare-row"><span><code>&#64;Output() event</code></span><span><code>event = output()</code></span><span>v19</span></div>
+      <div class="compare-row"><span><code>&#64;Input + &#64;Output(xChange)</code></span><span><code>val = model()</code></span><span>v19</span></div>
+      <div class="compare-row"><span><code>&#64;ViewChild()</code></span><span><code>viewChild()</code></span><span>v19</span></div>
+      <div class="compare-row"><span><code>Zone.js required</code></span><span><code>Zoneless (stable)</code></span><span>v20</span></div>
+      <div class="compare-row"><span><code>http.get().subscribe()</code></span><span><code>httpResource(url)</code></span><span>v20</span></div>
+    </div>
+  </section>
+
+  <!-- Q&A -->
+  <section class="t-card">
+    <h2>&#127919; Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

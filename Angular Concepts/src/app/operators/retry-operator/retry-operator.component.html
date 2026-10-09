@@ -1,0 +1,14 @@
+<div class="operator-box">
+
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+
+  <h2>retry()</h2>
+  <p class="definition">Automatically re-subscribes to the source when an error occurs, up to N times.</p>
+  <button (click)="run()">Simulate flaky request (retries 3x)</button>
+  <ul>
+    <li *ngFor="let item of results">{{ item }}</li>
+  </ul>
+</div>

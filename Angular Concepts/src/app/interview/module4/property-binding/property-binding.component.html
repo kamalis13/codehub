@@ -1,0 +1,107 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod4">
+    <span class="module-tag">Module 4 — Templates</span>
+    <h1>Property Binding</h1>
+    <p class="subtitle">One-way data flow from component to DOM — set any element property dynamically</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      <strong>Property Binding</strong> is a one-way Angular data-binding mechanism that evaluates a TypeScript
+      expression and assigns its result to a <em>DOM property</em> (or a child component's <code>&#64;Input</code>).
+      Written as <code>[property]="expression"</code>, Angular wraps the target in square brackets to distinguish
+      it from a plain HTML attribute. Data flows in one direction — from component to view — and Angular keeps
+      the property in sync on every change detection cycle.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Dynamic DOM properties</strong> — set <code>src</code>, <code>href</code>, <code>disabled</code>, and other properties from component data.</li>
+      <li><strong>Type safety</strong> — unlike interpolation (always a string), property binding passes the actual type — boolean, number, or object.</li>
+      <li><strong>Component communication</strong> — primary mechanism to pass data down to child components via <code>&#64;Input</code>.</li>
+      <li><strong>Reactive UI</strong> — the DOM updates automatically when the bound expression's value changes.</li>
+      <li><strong>Accessibility</strong> — dynamically set <code>aria-*</code> attributes via <code>[attr.aria-label]</code>.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A <strong>ProductFormComponent</strong> dynamically sets the product image <code>src</code>, disables
+      the Submit button while submitting or when the form is invalid, applies a CSS class based on stock level,
+      and controls the button's loading state — all driven by component properties without a single DOM query.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      At AOT compilation time, Angular resolves <code>[property]="expr"</code> into a DOM property assignment
+      in the generated view factory. At runtime, during change detection, Angular evaluates the expression in
+      the component's scope. If the value differs from the previous tick (dirty check), Angular calls
+      <code>renderer.setProperty(element, 'property', newValue)</code> on the target DOM element. This is
+      more efficient than full DOM diffing because Angular knows exactly which property to update. For
+      attribute binding (<code>[attr.x]</code>), Angular calls <code>renderer.setAttribute()</code> instead.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Passes correct types (boolean, number, object) — no string coercion issues.</li>
+        <li>Covers all DOM properties including those without HTML attribute equivalents.</li>
+        <li>Works for child component <code>&#64;Input</code> — the backbone of component communication.</li>
+        <li>Supports class, style, and attribute sub-bindings for rich UI control.</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>One-way only — use two-way binding or event binding to propagate changes back to the component.</li>
+        <li>Cannot bind to HTML attributes that don't map to DOM properties (use <code>[attr.x]</code> instead).</li>
+        <li>Slight learning curve around the attributes-vs-properties distinction for newcomers.</li>
+        <li>Heavy computed expressions run on every change detection cycle — use memoised getters.</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Prefer property binding over interpolation whenever the target needs a non-string value.</li>
+      <li>Use <code>[class.name]="bool"</code> for single-class toggles and <code>[ngClass]</code> for multiple.</li>
+      <li>Use <code>[style.prop.unit]="number"</code> for numeric CSS values (px, %, em) to avoid string concatenation.</li>
+      <li>Use <code>[attr.x]</code> for ARIA attributes, table attributes (<code>colspan</code>), and SVG properties.</li>
+      <li>Define complex expressions as component getters — easier to test and memoised by the browser.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using <code ngNonBindable>disabled="{{ isDisabled }}"</code> — the string "false" still disables the element; always use <code>[disabled]="isDisabled"</code>.</li>
+      <li>Confusing <code>[value]</code> (DOM property, current value) with <code>value="..."</code> (HTML attribute, initial value).</li>
+      <li>Using <code>[innerHTML]</code> with unsanitised user input — opens XSS vulnerabilities; use Angular's DomSanitizer.</li>
+      <li>Binding to non-existent DOM properties — Angular silently ignores unknown properties in non-strict mode; enable <code>strictTemplates</code> in tsconfig to catch these.</li>
+      <li>Using <code>[attr.colspan]</code> where <code>[colSpan]</code> (camelCase DOM property) would work — both are valid, but be consistent.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

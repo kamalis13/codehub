@@ -1,0 +1,92 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod13">
+    <span class="module-tag">Module 13 — Authentication</span>
+    <h1>Refresh Token</h1>
+    <p class="subtitle">Long-lived credential enabling silent access token renewal — keeping users logged in without re-authentication</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>A <strong>refresh token</strong> is a long-lived credential (typically 7–30 days) issued by the authentication server alongside the short-lived access token. Its sole purpose is to obtain new access tokens without requiring the user to log in again. When the access token expires (after 5–15 minutes), the client silently exchanges the refresh token for a fresh access token — creating a seamless experience. Refresh tokens are stored server-side and can be revoked, unlike stateless JWTs.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Short access token expiry limits breach window; refresh token enables session continuity</li>
+      <li>Provides server-side revocation — can invalidate a refresh token on logout or breach detection</li>
+      <li>Enables "remember me" functionality across browser sessions</li>
+      <li>Token rotation detects stolen refresh tokens by invalidating used tokens</li>
+      <li>Smooth UX — users never see a login prompt when their access token silently expires</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>An Angular interceptor handles the full refresh flow. When a 401 is received, it checks a <code>isRefreshing</code> flag to prevent duplicate refresh calls. A <code>BehaviorSubject</code> queues concurrent 401 requests until the refresh completes, then retries all of them with the new token. If the refresh itself fails, the user is logged out.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>At login, the server issues two tokens: a short-lived access JWT (in response body or memory) and a long-lived refresh token (in an httpOnly cookie). The access token is sent in every API request's Authorization header. When the server returns 401 (token expired), the Angular interceptor calls <code>POST /auth/refresh</code>. The browser automatically sends the httpOnly refresh token cookie. The server validates it, issues a new access JWT, and optionally a new refresh token (rotation). The interceptor updates the in-memory access token and retries the original request.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Short access token expiry limits damage from token theft</li>
+        <li>Server-side revocation enables immediate logout across all sessions</li>
+        <li>httpOnly cookie storage makes refresh token inaccessible to JavaScript (XSS-safe)</li>
+        <li>Token rotation enables theft detection</li>
+        <li>Transparent to users — no repeated login prompts during normal usage</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Complexity — refresh logic, queueing, and rotation add significant interceptor code</li>
+        <li>Refresh token must be stored server-side for revocation (adds state to otherwise stateless auth)</li>
+        <li>Race condition risk — multiple simultaneous 401s need careful queueing</li>
+        <li>Refresh token theft (e.g., from cookie) is still a risk if SameSite is not configured</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Store refresh tokens in httpOnly, Secure, SameSite=Strict cookies — never localStorage</li>
+      <li>Implement token rotation — issue a new refresh token on every refresh request</li>
+      <li>Use a BehaviorSubject queue in the interceptor to handle concurrent 401s</li>
+      <li>Force logout (clear token, navigate to /login) when refresh itself returns 401/403</li>
+      <li>Set refresh token expiry based on business need — shorter for sensitive apps, longer for consumer apps</li>
+      <li>Store refresh tokens in a DB with user association — enables server-side revocation on logout</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Storing refresh tokens in localStorage — XSS can steal them, enabling permanent account access</li>
+      <li>Not handling concurrent 401s — multiple parallel refresh calls invalidate each other</li>
+      <li>Not implementing token rotation — stolen refresh tokens are reusable indefinitely</li>
+      <li>Infinite retry loop — not catching the case where the refresh endpoint itself returns 401</li>
+      <li>Setting access token expiry too long (hours/days) — defeats the security purpose</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

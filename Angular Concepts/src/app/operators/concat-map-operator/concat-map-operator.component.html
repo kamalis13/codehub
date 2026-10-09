@@ -1,0 +1,15 @@
+<div class="operator-box">
+
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+
+  <h2>concatMap()</h2>
+  <p class="definition">Processes each inner Observable one at a time, in order — waits for each to complete before starting next.</p>
+  <button (click)="run()">Run concatMap()</button>
+  <p class="note">Notice: results arrive in strict order, even though delays differ.</p>
+  <ul>
+    <li *ngFor="let item of results">{{ item }}</li>
+  </ul>
+</div>

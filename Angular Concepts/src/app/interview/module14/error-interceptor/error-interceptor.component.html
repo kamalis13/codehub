@@ -1,0 +1,94 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod14">
+    <span class="module-tag">Module 14 — Interceptors</span>
+    <h1>Error Interceptor</h1>
+    <p class="subtitle">Centralized HTTP error handling — catch 401/403/500 errors once, show global notifications, and redirect as needed</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>An <strong>Error Interceptor</strong> is an Angular HTTP interceptor that uses the RxJS <code>catchError</code> operator to intercept <code>HttpErrorResponse</code> objects from failed HTTP requests. Instead of writing error handling logic in every service method and component, the error interceptor centralizes it — detecting specific HTTP error codes (401, 403, 404, 500), taking appropriate action (redirect, toast, retry, logging), and then re-throwing the error for any local handling that components need to do.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>DRY — HTTP error handling logic in one place instead of every service</li>
+      <li>401 → automatic logout and redirect to /login across all API calls</li>
+      <li>403 → redirect to /access-denied without repeating logic in each component</li>
+      <li>500 → show a global toast notification automatically</li>
+      <li>Logging — send every HTTP error to an observability service (Datadog, Sentry)</li>
+      <li>Retry — automatically retry transient server errors (5xx) with backoff</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A production error interceptor combines: smart retry (only for 5xx, not 4xx), structured logging to a monitoring service, 401 handling with token refresh attempt before forcing logout, 403 redirect to /access-denied, 5xx toast notification, and always re-throwing so components can handle local error states (disable submit button, show inline error).</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>The error interceptor wraps <code>next(req)</code> with a <code>pipe(catchError(...))</code>. When any HTTP call in the Angular app returns a non-2xx status, Angular's <code>HttpBackend</code> creates an <code>HttpErrorResponse</code> and propagates it as an Observable error through the interceptor chain. <code>catchError</code> intercepts this error Observable and can either handle it (return a new Observable), recover from it (return EMPTY or a default value), or re-throw with <code>throwError(() => error)</code>. The chain processes from innermost to outermost interceptor on errors — opposite to the outgoing request direction.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Single place for all HTTP error logic — reduces code duplication significantly</li>
+        <li>Automatic 401 → logout redirect without touching any service or component</li>
+        <li>Retry logic for transient failures without changing individual services</li>
+        <li>Easy to add new error types or change handling without touching service code</li>
+        <li>Works with logging services for production observability (Sentry, Datadog)</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Can hide errors from components if re-throw is forgotten (always re-throw!)</li>
+        <li>Complex when combined with token refresh — risk of infinite 401 loops</li>
+        <li>Generic error handling may not suit every component's specific needs</li>
+        <li>Over-centralization — some errors are better handled locally with specific UX</li>
+        <li>Race conditions with refresh token BehaviorSubject queue need careful implementation</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always re-throw with <code>throwError(() => error)</code> — never swallow errors silently</li>
+      <li>Guard against infinite loops: skip refresh logic when the request IS the refresh endpoint</li>
+      <li>Use <code>retry()</code> before <code>catchError()</code> for transient 5xx errors; never retry 4xx</li>
+      <li>Inject a logging service and log all errors for production observability</li>
+      <li>Register the error interceptor LAST in the chain so it catches all errors from other interceptors</li>
+      <li>Handle status 0 separately — indicates a network error (no internet, CORS, server offline)</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Not re-throwing the error — components never know the request failed</li>
+      <li>Retrying 4xx errors — these are client-side issues that retrying cannot fix</li>
+      <li>Creating an infinite refresh loop — refresh endpoint itself returns 401, triggering another refresh</li>
+      <li>Showing generic "Unknown error" toast for 401/403 — specific messages improve UX</li>
+      <li>Logging out the user on a 403 — they are authenticated, just not authorized for this resource</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

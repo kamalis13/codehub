@@ -1,0 +1,113 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod2">
+    <span class="module-tag">Module 2 — Components</span>
+    <h1>Dynamic Components</h1>
+    <p class="subtitle">Creating and injecting components at runtime using ViewContainerRef</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      <strong>Dynamic components</strong> are Angular components created <em>imperatively at runtime</em>
+      via <code>ViewContainerRef.createComponent(ComponentClass)</code>, rather than declared statically
+      in a template. Angular instantiates the component, creates its host DOM element, runs its change
+      detection, and inserts it into the specified container. The caller receives a
+      <code>ComponentRef&lt;T&gt;</code> that gives programmatic access to the component's instance,
+      DOM element, and lifecycle.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Toast / notification systems</strong> — Create transient UI elements on demand without polluting the static template.</li>
+      <li><strong>Modal dialogs</strong> — Render modals from anywhere in the app without a static placeholder.</li>
+      <li><strong>Plugin / widget systems</strong> — Load and render component types determined at runtime (e.g., from a CMS or registry).</li>
+      <li><strong>Lazy rendering</strong> — Combine with lazy loading to create component types that aren't bundled until needed.</li>
+      <li><strong>Code splitting</strong> — Dynamically import a component file, then create it, keeping the initial bundle lean.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A <strong>ToastService</strong> holds a reference to a <code>ViewContainerRef</code> registered
+      by <code>AppComponent</code>. Any component in the app injects <code>ToastService</code> and calls
+      <code>show('File saved!', 'success')</code>. The service creates a <code>ToastComponent</code>
+      dynamically, sets its <code>&#64;Input</code> properties directly on <code>ref.instance</code>, and
+      schedules <code>ref.destroy()</code> after 3 seconds — all without any static template wiring.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      <code>ViewContainerRef</code> represents a logical position in the DOM where views can be inserted.
+      <code>createComponent()</code> uses Angular's internal component factory to: (1) instantiate the
+      component class and resolve its dependencies via the injector; (2) create the component's host DOM
+      element; (3) initialize change detection for the new component; (4) insert the host element as
+      a sibling after the container anchor comment node. Before Angular 13, this required
+      <code>ComponentFactoryResolver</code>. Modern Angular (13+) accepts the component class directly.
+      Standalone components work seamlessly since they self-declare their dependencies.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Full runtime flexibility — component type can be decided at runtime</li>
+        <li>Enables centralized notification / overlay systems</li>
+        <li>Works with lazy loading for optimal code splitting</li>
+        <li>Complete lifecycle control (create, update inputs, destroy)</li>
+        <li>No need for global <code>*ngIf</code> placeholders throughout the template</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>More complex than static template declarations</li>
+        <li>Must manually trigger change detection for OnPush components after input assignment</li>
+        <li>Memory leaks if <code>ref.destroy()</code> is not called</li>
+        <li>Bypasses Angular's declarative template model — harder to reason about</li>
+        <li>Debugging is harder — component doesn't appear in the static template</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always call <code>ref.destroy()</code> when the dynamic component is no longer needed.</li>
+      <li>Use a central <code>&lt;ng-container #host&gt;&lt;/ng-container&gt;</code> as the injection point for global overlays.</li>
+      <li>For OnPush dynamic components, call <code>ref.changeDetectorRef.detectChanges()</code> after setting inputs.</li>
+      <li>Combine with <code>import()</code> for lazy loading: <code>const &#123; MyComp &#125; = await import('./my.component'); vcr.createComponent(MyComp);</code></li>
+      <li>Encapsulate the creation logic in a service so components don't directly depend on <code>ViewContainerRef</code>.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Forgetting to call <code>ref.destroy()</code> — causes memory leaks and orphaned DOM nodes.</li>
+      <li>Accessing <code>&#64;ViewChild</code> container before <code>ngAfterViewInit</code> — it will be <code>undefined</code>.</li>
+      <li>Setting inputs after creation without calling <code>detectChanges()</code> on an OnPush component — the view won't update.</li>
+      <li>Using the deprecated <code>ComponentFactoryResolver</code> in Angular 13+ — use <code>createComponent(ComponentClass)</code> directly.</li>
+      <li>Creating dynamic components without providing the correct <code>EnvironmentInjector</code> — dependencies fail to resolve.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

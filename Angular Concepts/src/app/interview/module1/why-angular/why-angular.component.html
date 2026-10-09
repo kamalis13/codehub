@@ -1,0 +1,97 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod1">
+    <span class="module-tag">Module 1 — Angular Fundamentals</span>
+    <h1>Why Angular?</h1>
+    <p class="subtitle">Why choose Angular over vanilla JavaScript, jQuery, or other frameworks for enterprise applications.</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Angular is Google's answer to the question: <em>"How do you build large, maintainable, team-scale web applications?"</em> It is an <strong>opinionated, batteries-included framework</strong> that provides a structured architecture, built-in tooling, and a consistent programming model — solving the problems that vanilla JavaScript, jQuery, and even lighter frameworks leave unaddressed at enterprise scale.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Vanilla JS lacks structure:</strong> Without a framework, large apps become unmaintainable spaghetti code with no clear component model.</li>
+      <li><strong>jQuery is a DOM utility, not a framework:</strong> It has no routing, state management, or component lifecycle.</li>
+      <li><strong>TypeScript-first development:</strong> Angular enforces type safety, catching bugs at compile time before they reach production.</li>
+      <li><strong>Built-in tooling:</strong> CLI, testing, linting, and bundling are all configured — no decision fatigue assembling a tech stack.</li>
+      <li><strong>Enterprise scalability:</strong> Dependency injection, lazy loading, and module boundaries enable large teams to work independently.</li>
+      <li><strong>Reactive programming:</strong> First-class RxJS and Signals support handles complex async data flows elegantly.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>An enterprise HR portal at a 10,000-employee company needs: authentication, role-based access, a dashboard with real-time data, a forms-heavy payroll section, and an audit trail. Angular handles this with: <code>AuthService</code> (DI-provided singleton), route guards for authorization, lazy-loaded feature modules for HR and Payroll (independent teams ship independently), reactive forms with complex validation, and RxJS for real-time WebSocket data — all in a single, coherent codebase maintained by 20+ developers.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's DI system builds an injector tree that mirrors the module/component hierarchy. When a component requests a service, Angular walks up the injector tree to find the nearest provider — enabling scoped services at feature boundaries. The <strong>module system</strong> enforces clear public API boundaries: only what a module <code>exports</code> is available to other modules. This encapsulation, combined with lazy loading (modules loaded on demand via dynamic import()), keeps the application maintainable as it grows to hundreds of components.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Complete framework — no need to assemble a tech stack</li>
+        <li>Enforced structure ensures consistency across large teams</li>
+        <li>TypeScript catches bugs at compile time, not in production</li>
+        <li>Angular CLI handles build, test, and deployment complexity</li>
+        <li>Hierarchical DI enables testable, loosely coupled services</li>
+        <li>Long-term Google support with regular, versioned releases</li>
+        <li>Rich ecosystem: Angular Material, CDK, NgRx, Angular Universal</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Opinionated — less flexibility than React for non-standard UI patterns</li>
+        <li>Heavier learning curve: TypeScript + RxJS + DI + decorators simultaneously</li>
+        <li>Larger initial bundle size compared to React or Vue minimal setups</li>
+        <li>Overkill for simple sites, landing pages, or small projects</li>
+        <li>Migration effort between major versions (though ngUpdate helps)</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use Angular for complex SPAs; evaluate React/Vue for simple UI-only projects</li>
+      <li>Enable TypeScript strict mode from project inception — never relax it later</li>
+      <li>Embrace Angular's conventions (naming, structure) to maximize team consistency</li>
+      <li>Use lazy loading from day one — do not wait until performance becomes a problem</li>
+      <li>Prefer reactive forms (FormGroup) over template-driven for complex validation</li>
+      <li>Use the Angular DevTools Chrome extension for performance profiling</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using Angular for a simple static site where a SSG (Hugo, Astro) is more appropriate</li>
+      <li>Fighting Angular's conventions instead of embracing them</li>
+      <li>Using any type everywhere, defeating TypeScript's purpose</li>
+      <li>Not using the Angular CLI — manually creating files breaks consistency</li>
+      <li>Skipping RxJS learning — Angular's async model requires RxJS proficiency</li>
+      <li>Putting all code in AppModule — lazy-loaded feature modules are essential at scale</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

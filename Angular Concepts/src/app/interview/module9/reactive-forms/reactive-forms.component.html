@@ -1,0 +1,80 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod9">
+    <span class="module-tag">Module 9 — Forms</span>
+    <h1>Reactive Forms</h1>
+    <p class="subtitle">TypeScript-first forms with explicit form model — scalable, testable, powerful</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Reactive Forms define the form model in TypeScript using <strong>FormGroup</strong>, <strong>FormControl</strong>, and <strong>FormArray</strong>. The template binds to this model via <code>[formGroup]</code> and <code>formControlName</code> directives. <code>ReactiveFormsModule</code> provides these directives. The model is created synchronously in the component class and remains the single source of truth.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Explicit form model in TypeScript makes forms fully unit-testable without a DOM</li>
+      <li>Supports RxJS observables (<code>valueChanges</code>, <code>statusChanges</code>) for real-time validation feedback and reactive data flows</li>
+      <li>Far better for complex forms: dynamic field addition/removal, cross-field validators, conditional fields, and async validators are straightforward</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A user registration form built with <code>FormBuilder</code>. It demonstrates <code>setValue</code> vs <code>patchValue</code> for pre-filling data, a <code>valueChanges</code> subscription for live logging, and a submit handler that resets the form on success.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>You create a <code>FormGroup</code> tree in TypeScript synchronously. The template links to it via <code>[formGroup]="form"</code> and <code>formControlName="field"</code>. Angular synchronises the model and DOM bidirectionally: DOM input events update the <code>FormControl</code> value, and programmatic changes (e.g. <code>setValue</code>) update the DOM. <code>valueChanges$</code> fires on every keystroke as an RxJS <code>Observable</code>, enabling debounce, switchMap for async validators, and any other RxJS operator chain without additional glue code.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Fully unit-testable — create the FormGroup in a test, set values, and assert validity without rendering a template</li>
+        <li>Dynamic forms are trivial: add or remove controls at runtime with <code>addControl</code> / <code>removeControl</code> and <code>FormArray</code> methods</li>
+        <li>First-class RxJS integration via <code>valueChanges</code> and <code>statusChanges</code> observables for reactive, declarative logic</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>More boilerplate than Template-Driven Forms for simple, static forms — you must wire up the model in the class and bind it in the template</li>
+        <li>Steeper learning curve for developers unfamiliar with RxJS and the FormGroup / FormControl API</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use getter methods (<code>get email() &#123; return this.form.get("email"); &#125;</code>) for concise template access to controls without calling <code>form.get()</code> repeatedly</li>
+      <li>Unsubscribe from <code>valueChanges</code> in <code>ngOnDestroy</code> (or use the <code>takeUntilDestroyed</code> operator) to prevent memory leaks</li>
+      <li>Place cross-field validators at the <code>FormGroup</code> level (as the second argument to <code>fb.group</code>), not on individual controls, so they have access to all sibling values</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using <code>setValue</code> with a partial object — it throws an error if any control is missing; use <code>patchValue</code> for partial updates instead</li>
+      <li>Forgetting to import <code>ReactiveFormsModule</code> in the standalone component's <code>imports</code> array — <code>formControlName</code> won't be recognised and the template will silently fail to bind</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

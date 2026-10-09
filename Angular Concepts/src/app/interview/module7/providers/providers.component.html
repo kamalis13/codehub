@@ -1,0 +1,90 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod7">
+    <span class="module-tag">Module 7 — Services</span>
+    <h1>Providers</h1>
+    <p class="subtitle">How Angular registers and creates service instances</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>A provider is a configuration object that tells Angular's injector how to create or locate a value for a given token. Providers are the bridge between a DI token (what you ask for) and its implementation (what you get). They can map tokens to classes, values, factories, or aliases.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Decouple the token (interface/class) from the concrete implementation</li>
+      <li>Enable environment-specific configurations (dev vs prod)</li>
+      <li>Allow injection of non-class values like strings, numbers, configs</li>
+      <li>Support aliasing and backward-compatible API evolution</li>
+      <li>Enable fine-grained control over service scope and lifetime</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>An <code>API_URL</code> InjectionToken lets the app switch between development and production endpoints without changing service code. The <code>LoggerService</code> swaps between verbose and silent implementations based on environment.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>When Angular bootstraps, it reads all provider configurations and populates the injector's registry. When a dependency is requested, the injector looks up its token in the registry and executes the provider recipe: <code>new ClassName()</code> for <code>useClass</code>, the literal for <code>useValue</code>, factory function result for <code>useFactory</code>, or redirects to another token for <code>useExisting</code>.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Flexible — same token can map to different implementations</li>
+        <li>Supports environment-based switching</li>
+        <li>InjectionToken prevents naming collisions</li>
+        <li>Tree-shakable providers reduce bundle size</li>
+        <li>Backward-compatible aliasing with <code>useExisting</code></li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li><code>useFactory</code> with many deps can become verbose</li>
+        <li>Mistyped token references fail silently until runtime</li>
+        <li>Understanding when to use each type requires experience</li>
+        <li>Multi-providers (<code>multi: true</code>) can be surprising</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use <code>InjectionToken</code> for all non-class values</li>
+      <li>Prefer <code>providedIn</code> over NgModule providers for tree-shaking</li>
+      <li>Use <code>useClass</code> to swap implementations for testing</li>
+      <li>Keep factory functions pure and testable</li>
+      <li>Document each custom provider with a comment</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Forgetting <code>deps</code> array in <code>useFactory</code> (services won't be injected)</li>
+      <li>Using string tokens instead of InjectionToken (collision risk)</li>
+      <li>Providing the same service in both root and a module (dual instances)</li>
+      <li>Not using <code>multi: true</code> for HTTP_INTERCEPTORS</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

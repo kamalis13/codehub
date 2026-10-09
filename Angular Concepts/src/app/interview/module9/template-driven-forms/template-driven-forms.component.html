@@ -1,0 +1,80 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod9">
+    <span class="module-tag">Module 9 — Forms</span>
+    <h1>Template-Driven Forms</h1>
+    <p class="subtitle">HTML-first forms using directives — fast to build, great for simple scenarios</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Angular's forms approach where structure, binding, and validation live in the HTML template using directives like <strong>ngModel</strong>, <strong>ngForm</strong>, and <strong>ngModelGroup</strong>. The <code>FormsModule</code> provides these directives and automatically creates a hidden <code>FormGroup</code> / <code>FormControl</code> tree behind the scenes.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Enables rapid form creation without writing TypeScript form-model boilerplate</li>
+      <li>Provides declarative validation via familiar HTML attributes (<code>required</code>, <code>email</code>, <code>minlength</code>)</li>
+      <li>Offers automatic two-way data binding with <code>[(ngModel)]</code>, keeping the model and view in sync effortlessly</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A login form with email and password fields — each field shows tailored error messages only after the user has touched it, and the submit button stays disabled until the entire form is valid.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>When the form is rendered, Angular's <code>FormsModule</code> directive (<strong>NgForm</strong>) scans all child inputs that carry <code>ngModel</code>. For each one it creates a hidden <code>FormControl</code> and registers it under the <code>name</code> attribute key inside a root <code>FormGroup</code>. Change detection synchronises the DOM value with the model on every input event, tracks validity against the declared validator directives, and exposes the entire form state through the <code>#f="ngForm"</code> template reference. No explicit TypeScript form-model code is required.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Quick to write — very little TypeScript required for common form scenarios</li>
+        <li>Familiar HTML-centric approach, approachable for developers coming from AngularJS or plain HTML</li>
+        <li>Automatic two-way binding and built-in Angular CSS classes (<code>ng-valid</code>, <code>ng-dirty</code>) simplify state tracking</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Harder to unit test because the form logic is tied to the DOM template</li>
+        <li>Difficult to dynamically add or remove controls at runtime; validation logic is scattered across the template rather than centralised in one class</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always set the <code>name</code> attribute on every input — Angular uses it to register the control in the hidden FormGroup</li>
+      <li>Show validation messages only when a control is both <code>touched</code> and <code>invalid</code> to avoid premature red borders on page load</li>
+      <li>Prefer Template-Driven Forms for simple, static forms; switch to Reactive Forms once the form needs dynamic fields or complex cross-field validation</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Forgetting to import <code>FormsModule</code> — the <code>ngModel</code> directive simply won't be recognised, causing a cryptic template error</li>
+      <li>Omitting the <code>name</code> attribute on an input that uses <code>[(ngModel)]</code> — Angular throws an error because it cannot register the control without a key</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

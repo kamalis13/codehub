@@ -1,0 +1,81 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod9">
+    <span class="module-tag">Module 9 — Forms</span>
+    <h1>FormArray</h1>
+    <p class="subtitle">Dynamic list of form controls — add or remove fields at runtime</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>FormArray manages an ordered list of AbstractControl instances (FormControl, FormGroup, or nested FormArray). Unlike FormGroup, controls are indexed numerically rather than keyed by name. It is ideal for dynamic, repeating form sections where the number of inputs is unknown at design time.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Handles an unknown number of inputs at design time — skills, addresses, invoice items that users can add or remove</li>
+      <li>Provides a clean push/removeAt/insert API for runtime modifications without rebuilding the entire form</li>
+      <li>Aggregates validity across all items — the FormArray is valid only if every contained control is valid</li>
+      <li>Pairs cleanly with the formArrayName directive and *ngFor for a minimal, maintainable template pattern</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A user profile form allows candidates to list an arbitrary number of skills. Each skill is a FormControl inside a FormArray. Users can add a new skill input with a button or remove any existing one, with the form remaining valid only when every skill field is non-empty.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>FormArray extends AbstractControl, just like FormGroup. Internally it maintains an ordered array of child AbstractControl references. When push() or removeAt() is called, Angular updates the internal controls array and recalculates the aggregate value (an array of child values) and the aggregate validity status. The formArrayName directive in the template bridges the DOM to the FormArray, and [formControlName]="i" maps each input to its index position in the array.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Fully dynamic — controls are added and removed at runtime without reinitialising the form</li>
+        <li>Aggregate validity and value — form.value automatically includes all array items as an array</li>
+        <li>Composable — supports FormArray of FormGroups for complex repeating sections with multiple fields per row</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Controls are index-based, not named — losing track of the index in complex UIs can cause binding errors</li>
+        <li>Requires a typed getter and a cast (as FormArray) because FormGroup.get() returns AbstractControl</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always expose the FormArray through a typed getter method to avoid repeated casting throughout the component</li>
+      <li>Add a minimum-length validator directly on the FormArray to enforce at least one entry when required</li>
+      <li>Use FormArray of FormGroups when each dynamic row has more than one field to keep the model clean and typed</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Directly pushing to controls array instead of using the FormArray API — this bypasses Angular's change detection</li>
+      <li>Forgetting the formArrayName directive in the template, causing the form binding to silently fail</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

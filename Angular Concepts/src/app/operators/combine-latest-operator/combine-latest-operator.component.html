@@ -1,0 +1,13 @@
+<div class="operator-box">
+
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+
+  <h2>combineLatest()</h2>
+  <p class="definition">Combines multiple Observables; emits the latest value of EACH whenever any one of them changes.</p>
+  <label>First Name: <input (input)="firstName$.next($any($event.target).value)" value="John" /></label>
+  <label>Last Name: <input (input)="lastName$.next($any($event.target).value)" value="Doe" /></label>
+  <p><strong>Full Name:</strong> {{ fullName }}</p>
+</div>

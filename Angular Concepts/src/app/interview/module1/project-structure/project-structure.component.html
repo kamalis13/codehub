@@ -1,0 +1,96 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod1">
+    <span class="module-tag">Module 1 — Angular Fundamentals</span>
+    <h1>Angular Project Structure</h1>
+    <p class="subtitle">Understanding every folder, file, and their purpose in a well-organized Angular application.</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>An Angular project has a <strong>standardized folder structure</strong> scaffolded by the Angular CLI. The <code>src/</code> directory contains the application source code, organized into <code>app/</code> (components, services, routes), <code>assets/</code> (static files), <code>environments/</code> (environment-specific config), and root files (<code>main.ts</code>, <code>index.html</code>, <code>styles.css</code>). Configuration files (<code>angular.json</code>, <code>tsconfig.json</code>, <code>package.json</code>) live at the project root and control the CLI, TypeScript compiler, and npm dependencies respectively.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Standardization:</strong> Any Angular developer joining a project knows exactly where to find components, services, and configuration.</li>
+      <li><strong>Separation of concerns:</strong> core/, shared/, and features/ folders enforce clear architectural boundaries.</li>
+      <li><strong>Scalability:</strong> The feature-based folder structure (features/products/, features/auth/) keeps large apps navigable.</li>
+      <li><strong>CLI integration:</strong> The CLI reads angular.json to know where to generate files, build outputs, and test configs.</li>
+      <li><strong>Environment management:</strong> environments/ allows different API URLs and flags for development vs. production without code changes.</li>
+      <li><strong>Encapsulation:</strong> Keeping core singletons in core/ and reusable pieces in shared/ prevents accidental coupling.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A banking app is structured so the <code>core/</code> folder holds <code>AuthService</code>, <code>TokenInterceptor</code>, and <code>AuthGuard</code> — all singletons provided at root. The <code>shared/</code> folder contains a <code>ButtonComponent</code>, <code>LoaderComponent</code>, and <code>CurrencyFormatPipe</code> used across all features. The <code>features/accounts/</code> folder is a lazy-loaded module with its own components, services, and routes — the accounts team works entirely within this folder without touching the rest of the codebase. <code>environments/</code> holds separate API URLs for QA, staging, and production.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p><code>angular.json</code> is the master configuration that tells the CLI where all the pieces live. When you run <code>ng serve</code>, the CLI reads <code>angular.json</code> to find the entry point (<code>main.ts</code>), styles (<code>styles.css</code>), assets folder, and TypeScript config path. <code>main.ts</code> is the Webpack/esbuild entry point — the bundler follows all imports from this file to build the complete dependency graph. For production builds, the <code>fileReplacements</code> config in <code>angular.json</code> swaps <code>environment.ts</code> with <code>environment.prod.ts</code> automatically — no code changes needed between environments.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Standardized structure means zero ramp-up time for developers switching projects</li>
+        <li>Feature-based organization scales from 5 to 500+ components</li>
+        <li>Environment files enable clean configuration management</li>
+        <li>CLI enforces consistent naming and placement via <code>ng generate</code></li>
+        <li>Clear boundaries between core, shared, and feature code</li>
+        <li>angular.json centralizes all build/serve/test configuration</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Initial structure may feel complex for small projects</li>
+        <li>Without discipline, features/ can accumulate miscellaneous files over time</li>
+        <li>angular.json is verbose and can be intimidating to modify manually</li>
+        <li>Teams may disagree on organization within features (by type vs. by feature)</li>
+        <li>Deep nesting can make import paths long without path aliases</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Organize by feature (features/products/) not by type (components/services/) for large apps</li>
+      <li>Keep core/ for truly app-wide singletons — do not let it become a dumping ground</li>
+      <li>Configure TypeScript path aliases in tsconfig.json to shorten deep import paths</li>
+      <li>Use barrel files (index.ts) inside feature folders to simplify imports</li>
+      <li>Keep environment files small — only configuration, never business logic</li>
+      <li>Add bundle size budgets to angular.json to enforce performance constraints</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Dumping all components in <code>src/app/</code> without any folder organization</li>
+      <li>Putting reusable components inside feature folders — they should be in shared/</li>
+      <li>Hardcoding API URLs in services instead of using environment files</li>
+      <li>Ignoring angular.json and modifying build tools directly</li>
+      <li>Not using path aliases — deep relative imports like <code>../../../../core/auth.service</code></li>
+      <li>Committing environment.prod.ts with real credentials to version control</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

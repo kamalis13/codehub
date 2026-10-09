@@ -1,0 +1,107 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod3">
+    <span class="module-tag">Module 3 — Modules</span>
+    <h1>Feature Module</h1>
+    <p class="subtitle">Group related functionality into cohesive, independently loadable modules</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      A <strong>Feature Module</strong> is an <code>NgModule</code> that encapsulates all Angular building blocks
+      (components, directives, pipes, services, and routing) for a specific domain or feature of the application —
+      such as <em>Products</em>, <em>Orders</em>, or <em>Authentication</em>. Feature modules are imported into
+      <code>AppModule</code> eagerly or registered as lazy-loaded routes, keeping each slice of functionality
+      self-contained and independently maintainable.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Code organisation</strong> — keeps domain code together instead of scattering it across a monolithic AppModule.</li>
+      <li><strong>Lazy loading</strong> — Angular can split feature modules into separate JS bundles loaded on demand.</li>
+      <li><strong>Separation of concerns</strong> — teams can own individual feature modules without merge conflicts.</li>
+      <li><strong>Independent testing</strong> — feature modules can be compiled and tested in isolation.</li>
+      <li><strong>Reusability</strong> — a feature module can be included in multiple projects with minimal changes.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      In an e-commerce app, the <strong>ProductsModule</strong> owns <code>ProductListComponent</code>,
+      <code>ProductDetailComponent</code>, <code>ProductsRoutingModule</code>, and <code>ProductService</code>.
+      The router lazy-loads this module only when the user navigates to <code>/products</code>, keeping the
+      initial bundle small and improving time-to-interactive.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      When Angular's router encounters a lazy route, it uses Webpack's dynamic <code>import()</code> to fetch
+      the feature module's chunk from the server. Angular's module loader then compiles (or reads the AOT factory of)
+      that chunk, creates a child <code>NgModuleRef</code> with its own injector (child of the root injector),
+      and renders the routed component. Services provided directly in the feature module are scoped to this child
+      injector — each lazy load creates a fresh instance unless the service uses <code>providedIn: 'root'</code>.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Enables lazy loading, dramatically reducing initial bundle size.</li>
+        <li>Enforces domain-driven design and clear architectural boundaries.</li>
+        <li>Allows parallel development by separate teams without conflicts.</li>
+        <li>Makes unit and integration testing more focused and faster.</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>More files and boilerplate compared to a single-module or standalone approach.</li>
+        <li>Circular dependencies between modules can cause hard-to-debug build errors.</li>
+        <li>Lazy-loaded modules need <code>FormsModule</code> / <code>ReactiveFormsModule</code> imported explicitly — easy to forget.</li>
+        <li>Service scoping in lazy modules can surprise developers expecting singletons.</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always create a dedicated routing module (<code>XyzRoutingModule</code>) inside each feature module.</li>
+      <li>Use <code>RouterModule.forChild(routes)</code> — never <code>forRoot()</code> — in feature routing.</li>
+      <li>Import only what the feature needs; avoid importing SharedModule if only one component is needed.</li>
+      <li>Place feature-scoped services directly in the feature module or use <code>providedIn: 'root'</code> for singletons.</li>
+      <li>Prefer lazy loading for any route the user may never visit in a session.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Creating circular imports — Module A imports Module B and vice versa. Extract shared pieces to SharedModule.</li>
+      <li>Importing <code>FormsModule</code> in AppModule and expecting it in lazy-loaded feature modules — it won't work.</li>
+      <li>Using <code>RouterModule.forRoot()</code> in a feature module — creates a second router, breaking navigation.</li>
+      <li>Declaring a component in two modules — Angular throws a "declared in multiple modules" error.</li>
+      <li>Not grouping feature assets in a folder — leads to a flat, hard-to-navigate project structure.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

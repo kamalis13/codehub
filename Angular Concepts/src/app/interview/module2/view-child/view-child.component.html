@@ -1,0 +1,108 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod2">
+    <span class="module-tag">Module 2 — Components</span>
+    <h1>&#64;ViewChild</h1>
+    <p class="subtitle">Programmatic access to child components and DOM elements from the parent class</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      <code>&#64;ViewChild</code> is a property decorator that queries the component's <strong>own template</strong>
+      for a matching child component, directive, or DOM element and injects a reference into the parent class.
+      You can query by component/directive class, template reference variable (<code>#name</code>), or a
+      provider token. <code>&#64;ViewChildren</code> (plural) retrieves all matches as a live
+      <code>QueryList&lt;T&gt;</code>.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Imperative child control</strong> — Call child methods directly (e.g., <code>form.reset()</code>, <code>chart.refresh()</code>).</li>
+      <li><strong>DOM access</strong> — Get a reference to a native DOM element via <code>ElementRef</code> for focus management or measurements.</li>
+      <li><strong>Third-party library integration</strong> — Initialise a chart, map, or D3 visualization that needs a real DOM element.</li>
+      <li><strong>Template refs</strong> — Access <code>TemplateRef</code> instances for dynamic rendering via <code>ngTemplateOutlet</code>.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A <strong>WizardComponent</strong> contains a <code>StepFormComponent</code>. The wizard needs
+      to check if the form is valid before advancing to the next step and reset the form when the user
+      clicks "Reset". Using <code>&#64;ViewChild</code>, the wizard gets a direct reference to the form
+      component and calls its <code>isValid()</code> and <code>resetForm()</code> methods from
+      <code>ngAfterViewInit</code> onward.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      Angular's view query system runs after the component's view (template) is compiled and rendered.
+      With <code>static: false</code> (default), the query is resolved <strong>after the first change
+      detection run</strong>, which is why <code>ngAfterViewInit</code> is the earliest safe hook.
+      With <code>static: true</code>, the query is resolved at compile time before change detection,
+      making the reference available in <code>ngOnInit</code> — but only if the element is not
+      conditionally rendered. <code>&#64;ViewChildren</code> returns a live <code>QueryList</code> that
+      emits on its <code>changes</code> observable whenever items are added or removed.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Enables imperative control when declarative <code>&#64;Input</code>/<code>&#64;Output</code> is insufficient</li>
+        <li>Direct DOM access for integrating third-party libraries</li>
+        <li>Strongly typed reference to child component's public API</li>
+        <li><code>&#64;ViewChildren</code> provides a live list that auto-updates</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Creates tight coupling between parent and child implementation details</li>
+        <li>Direct <code>nativeElement</code> access breaks server-side rendering (Angular Universal)</li>
+        <li>Accessing before <code>ngAfterViewInit</code> yields <code>undefined</code></li>
+        <li>Makes refactoring the child harder — parent may depend on its internal structure</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Prefer <code>&#64;Input</code>/<code>&#64;Output</code> for standard data flow — use <code>&#64;ViewChild</code> only when imperative access is truly needed.</li>
+      <li>Access <code>&#64;ViewChild</code> only inside <code>ngAfterViewInit</code> or later hooks.</li>
+      <li>Use <code>Renderer2</code> instead of <code>nativeElement</code> to keep code SSR-safe.</li>
+      <li>Use the <code>?.</code> optional chaining operator when accessing <code>&#64;ViewChild</code> that may be conditionally rendered.</li>
+      <li>Document why <code>&#64;ViewChild</code> is used — it signals a non-standard communication pattern.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Accessing <code>&#64;ViewChild</code> in <code>ngOnInit</code> — it is <code>undefined</code> until <code>ngAfterViewInit</code>.</li>
+      <li>Using <code>static: true</code> on a conditionally rendered element (<code>*ngIf</code>) — will always be <code>undefined</code>.</li>
+      <li>Mutating the child's internal state directly instead of calling its public API methods.</li>
+      <li>Directly manipulating <code>nativeElement</code> for styling — use <code>[class]</code> or <code>[style]</code> bindings instead.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,91 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod6">
+    <span class="module-tag">Module 6 — Pipes</span>
+    <h1>Custom Pipe</h1>
+    <p class="subtitle">Create reusable data transformation functions for your templates</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>A <strong>Custom Pipe</strong> is a user-defined pipe created with the <code>&#64;Pipe</code> decorator that implements the <code>PipeTransform</code> interface. You define a <code>transform(value, ...args)</code> method that receives the piped value and optional arguments, and returns the transformed result. Custom pipes enable reusable template-level data transformations like truncating text, formatting phone numbers, converting relative times, and more.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Reuse data transformation logic across many templates without duplication</li>
+      <li>Keep transformation logic out of component class and template expressions</li>
+      <li>Angular's built-in pipes don't cover all business requirements (e.g., phone format, truncate)</li>
+      <li>Pure custom pipes are memoized — efficient even in large lists</li>
+      <li>Configurable via pipe arguments — one pipe, many behaviors</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>Two real-world custom pipes: <strong>TruncatePipe</strong> (shorten long article text with configurable limit and suffix) and <strong>PhoneFormatPipe</strong> (format raw digit strings into US/India/UK phone formats) — both pure, standalone, and with null-safe transforms.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's template compiler identifies <code>| pipeName</code> expressions and replaces them with calls to the pipe's <code>transform()</code> method during template compilation. At runtime, Angular creates a pipe instance (or reuses it as a singleton in many cases) and calls <code>transform(value, ...args)</code> during change detection. Pure pipes cache the result by storing the previous inputs — if unchanged, the cached output is returned without calling <code>transform()</code> again.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Reusable across the entire application with zero code duplication</li>
+        <li>Pure pipes are memoized — very efficient even in *ngFor loops</li>
+        <li>Configurable via arguments — flexible, single-purpose design</li>
+        <li>Testable in isolation — just unit test the transform() method</li>
+        <li>Integrates with Angular DI — can inject services into pipes</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Cannot directly use in component class code without DI injection</li>
+        <li>Impure pipes in *ngFor can severely impact performance</li>
+        <li>Transform errors in templates produce cryptic error messages</li>
+        <li>Each pipe is a separate class/file — adds to project file count</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always implement <code>PipeTransform</code> for proper TypeScript type checking</li>
+      <li>Handle <code>null</code> and <code>undefined</code> inputs defensively — always check before processing</li>
+      <li>Keep pipes <strong>pure</strong> (default) — use immutable inputs to trigger re-evaluation</li>
+      <li>Organize custom pipes in a <code>shared/pipes/</code> folder for discoverability</li>
+      <li>Write unit tests for the <code>transform()</code> method — it is a plain function, easy to test</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Forgetting to handle <code>null</code>/<code>undefined</code> in <code>transform()</code> — causes template errors</li>
+      <li>Making a pipe impure without measuring the performance impact first</li>
+      <li>Doing expensive computation or HTTP calls inside the transform() method</li>
+      <li>Forgetting to import the pipe in the component's <code>imports</code> array (standalone)</li>
+      <li>Using <code>new MyPipe().transform(val)</code> in component code instead of DI injection</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

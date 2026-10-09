@@ -1,0 +1,91 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod8">
+    <span class="module-tag">Module 8 — Routing</span>
+    <h1>Route Guards</h1>
+    <p class="subtitle">Intercepting navigation to enforce authentication and permissions</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Route guards are functions (or classes) that Angular invokes before activating, deactivating, or loading a route. They return true (allow), false (block), or a UrlTree (redirect). Guards implement access control, unsaved-changes warnings, and data prefetching at the routing layer — before any component is rendered.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Prevent unauthorized access to protected pages (dashboard, admin)</li>
+      <li>Warn users before leaving a page with unsaved form data</li>
+      <li>Prefetch required data before rendering (avoid loading spinners)</li>
+      <li>Block lazy bundle downloads for unauthorized routes</li>
+      <li>Centralize access-control logic outside of components</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>An edit product page protected by auth and admin guards, with an unsaved-changes deactivate guard and a resolver that pre-fetches the product before the component renders.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's navigation pipeline runs guards in a defined sequence: canMatch → canActivate → canActivateChild → resolve → (render component). If any guard returns false or a UrlTree, Angular stops the pipeline and either blocks or redirects. Guards can return synchronous values, Promises, or Observables — Angular waits for async guards to resolve before proceeding.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Centralized access control — not scattered across components</li>
+        <li>Component is never rendered for unauthorized users</li>
+        <li>canDeactivate prevents accidental data loss</li>
+        <li>resolve ensures components have data before rendering</li>
+        <li>Functional guards are simple and tree-shakable</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>canActivate does not prevent lazy bundle download (use canMatch for that)</li>
+        <li>Complex guard chains are hard to debug</li>
+        <li>Async guards that error crash silently without error handling</li>
+        <li>Over-using resolve guards can slow navigation if the fetch is slow</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use functional guards (inject()-based) in Angular 14+ projects</li>
+      <li>Return UrlTree for redirects, not router.navigate() (causes double navigation)</li>
+      <li>Use canMatch on lazy routes for unauthorized users</li>
+      <li>Keep guard logic thin — delegate to AuthService/PermissionService</li>
+      <li>Handle observable errors in guards with catchError</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Returning undefined instead of true/false from a guard</li>
+      <li>Using canActivate on lazy routes when canMatch is needed</li>
+      <li>Using router.navigate() inside a guard instead of returning UrlTree</li>
+      <li>Not passing returnUrl queryParam when redirecting to login</li>
+      <li>Forgetting to provide class-based guards in the module</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

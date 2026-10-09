@@ -1,0 +1,14 @@
+<div class="operator-box">
+
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+
+  <h2>debounceTime()</h2>
+  <p class="definition">Waits for N ms of silence after the last emission before passing it through. Useful for search inputs.</p>
+  <input (input)="keystrokes$.next($any($event.target).value)" placeholder="Type quickly..." />
+  <p class="note">Only updates after you stop typing for 600ms.</p>
+  <p><strong>Debounced value:</strong> {{ debouncedValue }}</p>
+  <p><strong>Raw keystroke count:</strong> {{ rawCount }}</p>
+</div>

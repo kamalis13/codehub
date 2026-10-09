@@ -1,0 +1,23 @@
+<div class="operator-box">
+
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+
+  <h2>BehaviorSubject</h2>
+  <p class="definition">Like Subject, but stores and replays the latest value to any new subscriber immediately on subscribe.</p>
+  <button (click)="increment()">Increment count</button>
+  <button (click)="addLateSubscriber()">Add late subscriber</button>
+  <p class="note">Late subscriber instantly receives the current value.</p>
+  <div style="display:flex; gap:2rem">
+    <div>
+      <strong>Early Subscriber</strong>
+      <ul><li *ngFor="let item of earlyLog">{{ item }}</li></ul>
+    </div>
+    <div>
+      <strong>Late Subscriber(s)</strong>
+      <ul><li *ngFor="let item of lateLog">{{ item }}</li></ul>
+    </div>
+  </div>
+</div>

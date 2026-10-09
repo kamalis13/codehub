@@ -1,0 +1,90 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod8">
+    <span class="module-tag">Module 8 — Routing</span>
+    <h1>Route Configuration</h1>
+    <p class="subtitle">Mapping URL paths to components with a declarative Routes array</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Route configuration is the Routes array that serves as Angular's routing table — a declarative map between URL paths and the components, modules, or redirects they should activate. Each entry in the array is a Route object with properties like path, component, loadChildren, canActivate, and data.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Define which component renders for each URL path</li>
+      <li>Support dynamic segments (:id), wildcards (**), and redirects</li>
+      <li>Attach route guards, resolvers, and metadata declaratively</li>
+      <li>Enable lazy loading of entire feature sets</li>
+      <li>Set document titles automatically per route</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>An e-commerce application route table mapping home, products, cart, checkout, admin (lazy + guarded), and a catch-all 404 route.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's Router reads the Routes array once at startup. On each navigation, it runs a matching algorithm from top to bottom — first exact matches, then prefix matches. The matched route's component is instantiated and rendered inside router-outlet. If loadChildren is specified, Angular dynamically imports the module/routes file. Guards execute before rendering; resolvers fetch data before rendering.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Fully declarative — easy to read and maintain</li>
+        <li>Type-safe (Routes type in TypeScript)</li>
+        <li>Supports nested, lazy, and guarded routes in one config</li>
+        <li>route title property improves SEO automatically</li>
+        <li>Wildcard catch-all prevents blank pages</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Large apps can have sprawling route tables</li>
+        <li>Order dependency is a source of bugs (wildcard misplaced)</li>
+        <li>redirectTo + pathMatch rules confuse beginners</li>
+        <li>Dynamic route generation at runtime is not supported</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Keep routes in app.routes.ts, not inline in AppModule</li>
+      <li>Always place ** last</li>
+      <li>Use pathMatch: 'full' on empty-path redirects</li>
+      <li>Add title to every route for accessibility/SEO</li>
+      <li>Group feature routes in their own routes files</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Placing ** before specific routes (blocks all other routes)</li>
+      <li>Omitting pathMatch: 'full' on empty path redirect (redirects everything)</li>
+      <li>Mixing component and loadChildren on same route</li>
+      <li>Forgetting canActivate on protected routes</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,92 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod12">
+    <span class="module-tag">Module 12 — Lifecycle Hooks</span>
+    <h1>ngAfterViewInit</h1>
+    <p class="subtitle">Called once after the component's view is fully rendered — the only safe place to access &#64;ViewChild and initialize DOM-dependent libraries</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>ngAfterViewInit</strong> is an Angular lifecycle hook that fires <em>once</em> after Angular has fully created, rendered, and initialized the component's own view and all its child component views. At this point, <code>&#64;ViewChild</code> and <code>&#64;ViewChildren</code> queries are resolved, all template reference variables (e.g., <code>#myInput</code>) are bound to real DOM elements or component instances, and child components have completed their own initialization lifecycle.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><code>&#64;ViewChild</code> is <code>undefined</code> until this hook — it is the only safe access point</li>
+      <li>DOM elements are rendered and available — required for third-party libraries (Chart.js, D3, Mapbox)</li>
+      <li>Child component instances are fully initialized — safe to call their methods</li>
+      <li>Allows auto-focusing inputs, measuring element dimensions, and initializing canvas/WebGL contexts</li>
+      <li>Provides a clear, guaranteed "view ready" signal from Angular's lifecycle system</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A location picker component needs to auto-focus a search input and initialize a Mapbox GL map inside a div. Both operations require actual DOM elements — impossible before the view renders. In <code>ngAfterViewInit()</code>, both <code>&#64;ViewChild</code> references are available. The map instance is stored for cleanup in <code>ngOnDestroy()</code>.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's lifecycle order: Constructor → ngOnChanges → ngOnInit → ngDoCheck → ngAfterContentInit → ngAfterContentChecked → <strong>ngAfterViewInit</strong> → ngAfterViewChecked. Angular processes all child component views recursively before calling the parent's ngAfterViewInit. So by the time ngAfterViewInit fires in the parent, all child components have fully initialized their own views. Angular resolves &#64;ViewChild/&#64;ViewChildren queries by scanning the component's template DOM subtree for matching selectors, types, or template reference variables.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Guaranteed DOM availability — &#64;ViewChild always resolves here</li>
+        <li>All child component instances fully initialized — safe to call child methods</li>
+        <li>Fires only once — no risk of re-initializing libraries on every CD cycle</li>
+        <li>Works with &#64;ViewChildren and QueryList.changes for dynamic view children</li>
+        <li>Standard pattern recognized by all Angular developers for third-party lib initialization</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Modifying parent-bound properties here causes ExpressionChangedAfterItHasBeenCheckedError</li>
+        <li>Fires only once — dynamic view child changes require QueryList.changes subscription</li>
+        <li>Direct DOM manipulation (nativeElement) bypasses Angular's abstraction — breaks SSR</li>
+        <li>Heavy initialization here can delay the first visible render to the user</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always initialize DOM-dependent third-party libraries in ngAfterViewInit, never earlier</li>
+      <li>Store library instances in component properties for cleanup in ngOnDestroy</li>
+      <li>Use <code>ChangeDetectorRef.detectChanges()</code> when you must update bound properties in this hook</li>
+      <li>Add <code>if (isPlatformBrowser(this.platformId))</code> guard for SSR compatibility</li>
+      <li>Subscribe to <code>&#64;ViewChildren.changes</code> in ngAfterViewInit for dynamic child tracking</li>
+      <li>Implement <code>implements AfterViewInit</code> for TypeScript type checking</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Accessing <code>&#64;ViewChild</code> in ngOnInit — always returns undefined (most common mistake)</li>
+      <li>Forgetting to clean up third-party library instances in ngOnDestroy (memory leaks)</li>
+      <li>Modifying parent-bound properties in ngAfterViewInit without detectChanges()</li>
+      <li>Using nativeElement access without an SSR platform guard</li>
+      <li>Calling child component methods in ngOnInit instead of ngAfterViewInit</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

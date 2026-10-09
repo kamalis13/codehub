@@ -1,0 +1,30 @@
+<div class="operator-box">
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax — Angular HTTP caching pattern</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+  <h2>shareReplay()</h2>
+  <p class="definition">Multicasts the source Observable, replays the last N values to new subscribers, and caches the result. This is the standard Angular pattern for sharing HTTP calls across multiple components — so the request fires only once.</p>
+  <p class="note">Analogy: Like a conference call recording — instead of briefing each person separately, you record it once and play it back to anyone who asks.</p>
+
+  <div class="demo-grid">
+    <div class="demo-section bad-demo">
+      <h3>❌ Without shareReplay</h3>
+      <p class="note">3 subscribers = 3 HTTP calls</p>
+      <button (click)="runWithout()">Run (3 subscribers)</button>
+      <div class="call-count" *ngIf="withoutLog.length">HTTP calls: <strong>{{ httpCallCount }}</strong></div>
+      <ul class="result-list">
+        <li *ngFor="let r of withoutLog">{{ r }}</li>
+      </ul>
+    </div>
+    <div class="demo-section good-demo">
+      <h3>✅ With shareReplay(1)</h3>
+      <p class="note">3 subscribers = 1 HTTP call</p>
+      <button (click)="runWith()">Run (3 subscribers + late)</button>
+      <div class="call-count" *ngIf="withLog.length">HTTP calls: <strong>{{ sharedHttpCallCount }}</strong></div>
+      <ul class="result-list">
+        <li *ngFor="let r of withLog">{{ r }}</li>
+      </ul>
+    </div>
+  </div>
+</div>

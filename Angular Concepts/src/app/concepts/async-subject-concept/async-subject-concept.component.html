@@ -1,0 +1,44 @@
+<div class="operator-box">
+  <div class="concept-header">
+    <span class="badge">Core Concept</span>
+    <h1>AsyncSubject</h1>
+    <p class="tagline">Only emits the LAST value, and only when complete() is called</p>
+  </div>
+
+  <div class="definition-card">
+    <div class="def-row"><span class="icon">📦</span><div><strong>AsyncSubject</strong> — acts like a Promise. It collects all values pushed to it, but only delivers the very last one to subscribers — and only when <code>complete()</code> is called.</div></div>
+    <div class="def-row"><span class="icon">💡</span><div>Use it when you have a stream that eventually produces one final result, and you don't care about intermediate values.</div></div>
+  </div>
+
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+
+  <div class="demo-section">
+    <h3>Live Demo</h3>
+    <p class="note">Push multiple values — nothing is emitted yet. Only after complete() does Sub1 receive the last value pushed.</p>
+    <div class="btn-row">
+      <button (click)="push(1)">Push 1</button>
+      <button (click)="push(2)">Push 2</button>
+      <button (click)="push(3)">Push 3</button>
+      <button class="complete-btn" (click)="complete()" [disabled]="isCompleted">complete()</button>
+    </div>
+    <div class="log-grid">
+      <div class="log-col">
+        <div class="log-title">Event log</div>
+        <ul class="result-list">
+          <li *ngFor="let r of log">{{ r }}</li>
+        </ul>
+      </div>
+      <div class="log-col">
+        <div class="log-title">Late subscriber</div>
+        <ul class="result-list">
+          <li *ngFor="let r of lateLog">{{ r }}</li>
+        </ul>
+        <button class="secondary-btn" (click)="addLateSubscriber()" style="margin-top:0.5rem">Add Late Subscriber</button>
+      </div>
+    </div>
+    <button class="secondary-btn" (click)="reset()" style="margin-top:0.75rem">Reset</button>
+  </div>
+</div>

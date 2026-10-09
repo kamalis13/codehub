@@ -1,0 +1,90 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod8">
+    <span class="module-tag">Module 8 — Routing</span>
+    <h1>RouterModule</h1>
+    <p class="subtitle">Enabling navigation between views in a single-page application</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>RouterModule is Angular's built-in module that provides the complete client-side routing infrastructure — the Router service, RouterOutlet directive, RouterLink directive, and ActivatedRoute service. In standalone apps, provideRouter() provides the same capabilities without an NgModule wrapper.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Enable single-page application navigation without full page reloads</li>
+      <li>Map URL paths to specific components</li>
+      <li>Maintain browser history (back/forward buttons)</li>
+      <li>Support deep linking (bookmarkable URLs)</li>
+      <li>Enable lazy loading of feature modules for performance</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>An e-commerce app defines routes for home, product listing, and 404 — connected via routerLink in the nav bar and displayed in router-outlet.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>RouterModule.forRoot() (or provideRouter()) registers the Router service in the root injector and configures it with the provided Routes array. When the URL changes (via navigation, browser back/forward, or direct entry), the Router matches the URL against the Routes array in order, finds the first match, and renders the matched component inside the nearest router-outlet. Route guards and resolvers run before the component is rendered.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Full SPA navigation without page reloads</li>
+        <li>Built-in browser history support</li>
+        <li>Deep-linkable, bookmarkable URLs</li>
+        <li>Declarative route configuration</li>
+        <li>Integration with guards, resolvers, and lazy loading</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Initial configuration can be verbose for large apps</li>
+        <li>Multiple router-outlets (auxiliary routes) are complex to manage</li>
+        <li>Route debugging requires familiarity with Router events</li>
+        <li>forRoot/forChild confusion in multi-module apps</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Define routes in a dedicated app.routes.ts file</li>
+      <li>Use provideRouter() in standalone apps</li>
+      <li>Apply routerLinkActiveOptions exact:true on home/root links</li>
+      <li>Use withPreloading(PreloadAllModules) for better UX</li>
+      <li>Use withComponentInputBinding() to simplify route data access</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Calling RouterModule.forRoot() in multiple modules (causes router re-initialization)</li>
+      <li>Forgetting router-outlet in the template</li>
+      <li>Using href instead of routerLink (triggers full page reload)</li>
+      <li>Not exporting RouterModule from a shared module</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

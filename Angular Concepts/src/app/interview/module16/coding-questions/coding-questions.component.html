@@ -1,0 +1,13 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod16">
+    <span class="module-tag">Module 16 — Angular Coding</span>
+    <h1>50 Angular Coding Questions</h1>
+    <p class="subtitle">Practice questions with code and explanations</p>
+  </div>
+
+  <div class="coding-q" *ngFor="let q of questions">
+    <div class="q-header">{{ q.id }}. {{ q.title }}</div>
+    <div class="t-code"><pre [innerText]="q.code"></pre></div>
+    <div class="q-explanation">{{ q.explanation }}</div>
+  </div>
+</div>

@@ -1,0 +1,96 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod1">
+    <span class="module-tag">Module 1 — Angular Fundamentals</span>
+    <h1>Angular CLI</h1>
+    <p class="subtitle">The official command-line tool for scaffolding, building, testing, and maintaining Angular applications.</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>The <strong>Angular CLI</strong> (Command Line Interface) is an official Node.js-based tool maintained by the Angular team for automating every aspect of Angular development. It provides commands to <strong>create new projects</strong>, <strong>generate code artifacts</strong> (components, services, modules, pipes), <strong>serve locally with hot reload</strong>, <strong>build for production</strong>, <strong>run tests</strong>, and <strong>add third-party libraries</strong> via schematics — all with best-practice configuration baked in, so teams can focus on writing application code rather than build tooling.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Eliminates build configuration:</strong> Webpack/esbuild, TypeScript, Karma, and ESLint are pre-configured — no manual setup.</li>
+      <li><strong>Consistent scaffolding:</strong> Generated files follow naming conventions and boilerplate automatically.</li>
+      <li><strong>Reduces human error:</strong> Developers don't forget to declare components or add import statements — the CLI does it.</li>
+      <li><strong>Unified workflow:</strong> One tool for development, testing, building, and deploying across the entire team.</li>
+      <li><strong>Schematics ecosystem:</strong> Third-party libraries (NgRx, Angular Material) provide their own ng add schematics for auto-configuration.</li>
+      <li><strong>Build optimization:</strong> Production builds include tree-shaking, minification, lazy chunking, and differential loading automatically.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A team starting a new e-commerce Angular project runs <code>ng new ecommerce-app --routing --style=scss --strict</code> to scaffold the full project in under a minute. They run <code>ng add &#64;angular/material</code> to set up Angular Material with theme, fonts, and animations configured. Feature developers run <code>ng g c features/products/product-list</code> and the CLI creates all 3 files and updates any relevant module or config — no manual boilerplate. Before each release, <code>ng build --configuration=production</code> generates optimized, gzip-compressed bundles ready for deployment to a CDN.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>The Angular CLI uses <strong>Angular DevKit</strong> (a collection of tools: Architect, Schematics, and Workspace) under the hood. <code>ng serve</code> uses <strong>esbuild</strong> (since Angular 16) as the module bundler and <strong>Vite</strong> as the development server, providing millisecond-fast incremental rebuilds via native ES module hot replacement. <code>ng build</code> runs the full compilation pipeline: TypeScript type checking → Ivy template compilation → esbuild bundling → minification → bundle budget analysis. <code>ng generate</code> uses <strong>Schematics</strong> — code transformation scripts that read and modify the workspace, creating files and updating <code>angular.json</code> atomically.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Zero configuration — build tooling is pre-configured and maintained by the Angular team</li>
+        <li>Consistent code generation ensures naming conventions and boilerplate are always correct</li>
+        <li>Automated library setup with <code>ng add</code> schematics</li>
+        <li>Built-in bundle size budgets — warns/errors when bundles exceed thresholds</li>
+        <li>Environment-specific builds via file replacements</li>
+        <li>Fast rebuilds with esbuild and incremental compilation</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Abstracts the underlying build tools — harder to debug edge-case build issues</li>
+        <li>Customizing webpack configuration requires builders or ejecting (complex)</li>
+        <li>CLI updates can introduce breaking changes in build behavior</li>
+        <li>Large <code>node_modules</code> — CLI dependencies add to project weight</li>
+        <li>Not flexible enough for highly customized monorepo setups (use Nx instead)</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always use <code>ng generate</code> rather than creating files manually — it updates config files automatically</li>
+      <li>Use <code>--dry-run</code> flag to preview what <code>ng generate</code> will create before committing</li>
+      <li>Set bundle size budgets in <code>angular.json</code> to catch bundle bloat early</li>
+      <li>Use <code>ng update</code> for all Angular version upgrades — never update packages manually</li>
+      <li>Enable strict mode (<code>--strict</code>) when creating new projects</li>
+      <li>Use <code>--skip-tests</code> sparingly — always generate spec files for testability</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Creating component files manually without running <code>ng g component</code></li>
+      <li>Running <code>npm install &#64;angular/material</code> instead of <code>ng add &#64;angular/material</code> — missing auto-configuration</li>
+      <li>Not using <code>ng update</code> for Angular upgrades, leading to version mismatches</li>
+      <li>Ignoring bundle size budget warnings in production builds</li>
+      <li>Using <code>ng eject</code> (deprecated) to expose webpack config — use custom builders instead</li>
+      <li>Running <code>ng build</code> without <code>--configuration=production</code> and deploying the dev build</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

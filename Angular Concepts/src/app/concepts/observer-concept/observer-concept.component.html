@@ -1,0 +1,112 @@
+<div class="concept-box">
+
+  <div class="concept-header observer-header">
+    <span class="badge">🔢 Concept 5</span>
+    <h2>Observer</h2>
+    <p class="tagline">"The listener — reacts to every value, error, and completion from an Observable."</p>
+  </div>
+
+  <!-- ── Flow diagram ── -->
+  <div class="flow-diagram">
+    <div class="flow-box producer">
+      <div class="flow-icon">📡</div>
+      <strong>Observable</strong>
+      <span>PRODUCER</span>
+      <p>Emits values over time</p>
+    </div>
+    <div class="flow-pipe">
+      <div class="pipe-labels">
+        <span class="pipe-tag next">next(value)</span>
+        <span class="pipe-tag err">error(err)</span>
+        <span class="pipe-tag done">complete()</span>
+      </div>
+      <div class="pipe-arrow">→</div>
+    </div>
+    <div class="flow-box consumer">
+      <div class="flow-icon">📻</div>
+      <strong>Observer</strong>
+      <span>CONSUMER</span>
+      <p>Reacts to each event</p>
+    </div>
+  </div>
+
+  <!-- ── 3 handlers ── -->
+  <div class="handlers-grid">
+    <div class="handler-card next-card">
+      <div class="handler-icon">📦</div>
+      <strong>next(value)</strong>
+      <p>Called every time the Observable emits a new value. This is where your main logic goes — updating UI, storing data, etc.</p>
+    </div>
+    <div class="handler-card error-card">
+      <div class="handler-icon">❌</div>
+      <strong>error(err)</strong>
+      <p>Called if something goes wrong. After an error, the stream STOPS — no more next() or complete() will fire.</p>
+    </div>
+    <div class="handler-card complete-card">
+      <div class="handler-icon">✅</div>
+      <strong>complete()</strong>
+      <p>Called once when the Observable finishes successfully. Use for cleanup — hide spinners, etc.</p>
+    </div>
+  </div>
+
+  <!-- ── Code example via [innerText] — safe with braces ── -->
+  <div class="code-block">
+    <div class="code-label">3 ways to write an Observer</div>
+    <pre [innerText]="codeExample"></pre>
+  </div>
+
+  <!-- ── Live demo ── -->
+  <div class="demo-section">
+    <div class="demo-label">▶ Live Demo — Watch all 3 Observer handlers fire</div>
+    <div class="btn-row">
+      <button (click)="runSuccess()" [disabled]="running">Normal stream (next + complete)</button>
+      <button class="btn-err" (click)="runError()" [disabled]="running">Error stream (next + error)</button>
+    </div>
+
+    <div class="handler-monitors">
+      <div class="monitor" [class.fired]="nextFired">
+        <div class="monitor-header">📦 next()</div>
+        <div class="monitor-log">
+          <div *ngFor="let v of nextLog" class="monitor-entry">{{ v }}</div>
+          <div *ngIf="!nextLog.length" class="monitor-empty">waiting...</div>
+        </div>
+      </div>
+      <div class="monitor err-monitor" [class.fired]="errorFired">
+        <div class="monitor-header">❌ error()</div>
+        <div class="monitor-log">
+          <div *ngFor="let v of errorLog" class="monitor-entry">{{ v }}</div>
+          <div *ngIf="!errorLog.length" class="monitor-empty">waiting...</div>
+        </div>
+      </div>
+      <div class="monitor done-monitor" [class.fired]="completeFired">
+        <div class="monitor-header">✅ complete()</div>
+        <div class="monitor-log">
+          <div *ngFor="let v of completeLog" class="monitor-entry">{{ v }}</div>
+          <div *ngIf="!completeLog.length" class="monitor-empty">waiting...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Key insight ── -->
+  <div class="insight-box">
+    <strong>🔑 Key insight — Observable vs Observer</strong>
+    <div class="insight-row">
+      <div class="insight-item">
+        <span class="ins-icon">📡</span>
+        <div><strong>Observable</strong> = the river<br><small>It carries the water (data)</small></div>
+      </div>
+      <div class="insight-connector">+</div>
+      <div class="insight-item">
+        <span class="ins-icon">📻</span>
+        <div><strong>Observer</strong> = the bucket<br><small>It catches the water (data)</small></div>
+      </div>
+      <div class="insight-connector">+</div>
+      <div class="insight-item">
+        <span class="ins-icon">🔌</span>
+        <div><strong>subscribe()</strong> = placing the bucket<br><small>It starts the flow</small></div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,128 @@
+<div class="concept-box">
+
+  <!-- Header -->
+  <div class="concept-header bs-header">
+    <span class="badge">🔢 Concept 8</span>
+    <h2>BehaviorSubject</h2>
+    <p class="tagline">"Like Subject but with memory — late subscribers instantly receive the current value."</p>
+  </div>
+
+  <!-- Subject vs BehaviorSubject visual -->
+  <div class="compare-visual">
+    <div class="compare-col">
+      <div class="compare-label subject-label">Subject (no memory)</div>
+      <div class="timeline">
+        <div class="ev value">next(1)</div>
+        <div class="ev value">next(2)</div>
+        <div class="ev join">← subscriber joins here</div>
+        <div class="ev value">next(3)</div>
+      </div>
+      <div class="result subject-result">Late sub receives: only 3 ❌ (missed 1 and 2)</div>
+    </div>
+    <div class="compare-col">
+      <div class="compare-label bs-label">BehaviorSubject (remembers last)</div>
+      <div class="timeline">
+        <div class="ev value">next(1)</div>
+        <div class="ev value">next(2)</div>
+        <div class="ev join">← subscriber joins here</div>
+        <div class="ev replay">replays: 2 ✅</div>
+        <div class="ev value">next(3)</div>
+      </div>
+      <div class="result bs-result">Late sub receives: 2 (immediate) then 3 ✅</div>
+    </div>
+  </div>
+
+  <!-- Definition card -->
+  <div class="def-card">
+    <div class="def-row">
+      <span class="def-icon">📖</span>
+      <div>
+        <strong>Definition</strong>
+        <p>A BehaviorSubject is a Subject that always stores the latest emitted value and gives it to any new subscriber immediately upon subscription. It requires an initial value.</p>
+      </div>
+    </div>
+    <div class="def-row">
+      <span class="def-icon">📋</span>
+      <div>
+        <strong>Analogy</strong>
+        <p>A scoreboard — it always shows the current score. Walk in late and you immediately see the current state, not a blank board.</p>
+      </div>
+    </div>
+    <div class="def-row">
+      <span class="def-icon">🏗️</span>
+      <div>
+        <strong>Angular use case</strong>
+        <p>Perfect for shared state — current logged-in user, selected theme, cart item count. Any component can subscribe and immediately get the current state.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Syntax -->
+  <div class="code-block">
+    <div class="code-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+
+  <!-- Subject vs BehaviorSubject code -->
+  <div class="code-block">
+    <div class="code-label">Subject vs BehaviorSubject — key difference</div>
+    <pre [innerText]="subjectVsBehavior"></pre>
+  </div>
+
+  <!-- Live demo -->
+  <div class="demo-section">
+    <div class="demo-label">▶ Live Demo</div>
+
+    <div class="current-value-display">
+      <div class="cv-label">Current value (getValue())</div>
+      <div class="cv-value">{{ count$.getValue() }}</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-dec" (click)="decrement()">− Decrement</button>
+      <button class="btn-inc" (click)="increment()">+ Increment</button>
+      <button class="btn-late" (click)="addLateSubscriber()" [disabled]="hasLate">➕ Add late subscriber</button>
+    </div>
+
+    <div class="monitors">
+      <div class="monitor">
+        <div class="monitor-header">📡 Early Subscriber</div>
+        <div class="monitor-body">
+          <div *ngFor="let entry of earlyLog" class="monitor-entry">{{ entry }}</div>
+        </div>
+      </div>
+      <div class="monitor" [class.inactive]="!hasLate">
+        <div class="monitor-header">⏰ Late Subscriber {{ hasLate ? '' : '(not yet)' }}</div>
+        <div class="monitor-body">
+          <div *ngFor="let entry of lateLog" class="monitor-entry">{{ entry }}</div>
+          <div *ngIf="!lateLog.length && !hasLate" class="monitor-empty">Click "Add late subscriber" to see it receive the current value immediately</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick summary -->
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-icon">✅</div>
+      <strong>Must have initial value</strong>
+      <p><code>new BehaviorSubject(0)</code></p>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon">💾</div>
+      <strong>Stores last value</strong>
+      <p>Use <code>getValue()</code> to read it synchronously</p>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon">⚡</div>
+      <strong>Late subscribers</strong>
+      <p>Get current value INSTANTLY on subscribe</p>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon">🏗️</div>
+      <strong>Best for state</strong>
+      <p>Current user, theme, cart, filters</p>
+    </div>
+  </div>
+
+</div>

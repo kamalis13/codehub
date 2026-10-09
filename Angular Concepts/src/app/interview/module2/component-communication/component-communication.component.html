@@ -1,0 +1,113 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod2">
+    <span class="module-tag">Module 2 — Components</span>
+    <h1>Component Communication</h1>
+    <p class="subtitle">Four essential patterns for sharing data between Angular components</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      Angular components are isolated by design, so they need explicit mechanisms to share data and trigger
+      actions across each other. There are four primary patterns:
+      <strong>(1) Parent → Child via <code>&#64;Input</code></strong> — property binding passes data down;
+      <strong>(2) Child → Parent via <code>&#64;Output</code> + EventEmitter</strong> — events travel up;
+      <strong>(3) Sibling / Cross-tree via a shared Service</strong> — services with RxJS observables
+      broadcast state to any component; and
+      <strong>(4) Direct access via <code>&#64;ViewChild</code> / <code>&#64;ContentChild</code></strong> — the parent
+      gets a reference to the child's class instance and calls its public methods.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Data flow control</strong> — Angular enforces unidirectional data flow (top-down) to keep the app predictable.</li>
+      <li><strong>Decoupling</strong> — Components should not know each other's internals; communication contracts keep them loosely coupled.</li>
+      <li><strong>State synchronisation</strong> — Multiple components can reflect the same state (e.g., cart count) without duplicating data.</li>
+      <li><strong>Reusability</strong> — Generic child components remain reusable because they accept data via <code>&#64;Input</code> rather than hardcoding it.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      In a <strong>shopping cart</strong> app: the <code>ProductListComponent</code> (parent) passes each
+      product via <code>&#64;Input</code> to <code>ProductCardComponent</code> (child). When the user clicks
+      "Add to Cart", <code>ProductCardComponent</code> emits the product via <code>&#64;Output</code>. The parent
+      listens and calls <code>CartService.add()</code> — a shared service that broadcasts the updated cart
+      to a <code>CartIconComponent</code> living in the header (a sibling).
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      <strong>&#64;Input</strong> is implemented via property binding — Angular's template compiler generates code that
+      assigns the parent expression's value to the child property on every change detection cycle.
+      <strong>&#64;Output</strong> uses EventEmitter (which extends RxJS Subject) — the parent template creates a
+      subscriber that runs the handler expression when the Subject emits.
+      <strong>Shared services</strong> use RxJS BehaviorSubject / Subject that any injected component can push
+      values to or subscribe to.
+      <strong>&#64;ViewChild</strong> uses Angular's query engine to locate a matching component instance in the
+      view tree after the view is initialized.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li><code>&#64;Input</code> / <code>&#64;Output</code> are explicit, type-safe, and easy to test</li>
+        <li>Shared services enable global state without a full state management library</li>
+        <li><code>&#64;ViewChild</code> gives imperative, direct control when declarative patterns fall short</li>
+        <li>Unidirectional data flow makes bugs easy to trace</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Prop drilling — passing data through many layers with <code>&#64;Input</code> becomes verbose</li>
+        <li>Services with Subjects can become hard to debug if many components mutate the same state</li>
+        <li><code>&#64;ViewChild</code> creates tight coupling between parent and child implementation</li>
+        <li>No built-in immutability — shared service state can be mutated accidentally</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Prefer <code>&#64;Input</code> / <code>&#64;Output</code> for direct parent-child communication — it is explicit and testable.</li>
+      <li>Use shared services only when components are not directly related in the tree.</li>
+      <li>Make service state streams read-only externally (<code>asObservable()</code>) to prevent external mutation.</li>
+      <li>Use <code>&#64;ViewChild</code> sparingly — prefer events and inputs to keep components decoupled.</li>
+      <li>For large apps consider NgRx, Akita, or Angular Signals for predictable global state.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Directly mutating <code>&#64;Input</code> objects inside the child — always emit changes up via <code>&#64;Output</code>.</li>
+      <li>Using <code>EventEmitter</code> in a service — use RxJS <code>Subject</code> / <code>BehaviorSubject</code> instead.</li>
+      <li>Forgetting to unsubscribe from service observables in <code>ngOnDestroy</code>.</li>
+      <li>Using <code>&#64;ViewChild</code> before <code>ngAfterViewInit</code> fires.</li>
+      <li>Over-engineering simple parent-child communication with a shared service when <code>&#64;Input</code> suffices.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

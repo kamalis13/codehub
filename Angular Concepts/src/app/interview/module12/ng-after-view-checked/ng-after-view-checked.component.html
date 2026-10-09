@@ -1,0 +1,93 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod12">
+    <span class="module-tag">Module 12 — Lifecycle Hooks</span>
+    <h1>ngAfterViewChecked</h1>
+    <p class="subtitle">Called after every view change detection pass — use guard flags to avoid costly DOM work on every cycle</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>ngAfterViewChecked</strong> is an Angular lifecycle hook that fires after every change detection cycle that checks the component's view and all its child component views. It is the recurring counterpart to <code>ngAfterViewInit</code> (one-time). Because it fires on every CD cycle — which can happen dozens of times per second in a busy app — it must contain only the lightest possible logic, ideally guarded by a condition flag to prevent unnecessary DOM operations.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Post-render DOM operations that must run after every view update (e.g., scroll to bottom)</li>
+      <li>Measuring DOM dimensions (getBoundingClientRect) after content changes</li>
+      <li>Syncing a third-party library's display after Angular updates the view</li>
+      <li>Detecting when dynamically rendered content has settled and performing final adjustments</li>
+      <li>Monitoring view state changes that need immediate DOM-level reactions</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A live log viewer displays streaming server logs and must auto-scroll to the latest entry. The component tracks whether new logs were added using a <code>prevLogCount</code> comparison. Only when the count changes and autoScroll is enabled does it perform the actual DOM scroll — making it efficient even though ngAfterViewChecked fires on every CD cycle.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>In Angular's CD pipeline, for each component the sequence (after first init) is: <code>ngDoCheck → ngAfterContentChecked → ngAfterViewChecked</code>. This runs for every component in the tree on every CD cycle. ngAfterViewChecked is called last in this sequence — after both the content and view have been checked. In development mode, Angular runs an additional verification pass after calling this hook, which is why modifying bound state here without <code>detectChanges()</code> throws <code>ExpressionChangedAfterItHasBeenCheckedError</code>.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Guaranteed to fire after every view render — never misses an update</li>
+        <li>&#64;ViewChild references are always available here</li>
+        <li>Works for post-render operations that cannot be expressed as bindings</li>
+        <li>Can be made efficient with guard flags (check condition before doing DOM work)</li>
+        <li>Consistent, predictable position in the lifecycle sequence</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Fires extremely frequently — every CD cycle for every event in the app</li>
+        <li>Unguarded logic causes significant performance degradation</li>
+        <li>Modifying bound state causes ExpressionChangedAfterItHasBeenCheckedError in dev mode</li>
+        <li>Overuse is a code smell — often indicates missing reactive patterns</li>
+        <li>Difficult to debug performance regressions caused by heavy ngAfterViewChecked logic</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always use a guard flag or state comparison to avoid running logic on every cycle</li>
+      <li>Reset the guard flag immediately after performing the DOM operation</li>
+      <li>Use <code>ChangeDetectorRef.detectChanges()</code> when you must modify bound state inside this hook</li>
+      <li>Prefer <code>ChangeDetectionStrategy.OnPush</code> to reduce how frequently this hook fires</li>
+      <li>Consider <code>MutationObserver</code> or Angular CDK as cleaner alternatives for DOM monitoring</li>
+      <li>Implement <code>implements AfterViewChecked</code> for TypeScript type enforcement</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Running DOM operations unconditionally — causes lag on every event (mouse move, keypress)</li>
+      <li>Modifying template-bound properties without detectChanges() — ExpressionChangedError in dev</li>
+      <li>Using ngAfterViewChecked when ngAfterViewInit would suffice (one-time setup)</li>
+      <li>Placing API calls or complex computations here</li>
+      <li>Forgetting to reset the guard flag, causing the operation to run only once</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

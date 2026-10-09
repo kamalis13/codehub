@@ -1,0 +1,111 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-ng-on-destroy',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './ng-on-destroy.component.html',
+  styleUrl: './ng-on-destroy.component.css',
+})
+export class NgOnDestroyComponent {
+  syntaxCode = [
+    'import { Component, OnInit, OnDestroy } from "@angular/core";',
+    'import { Subject, interval } from "rxjs";',
+    'import { takeUntil } from "rxjs/operators";',
+    '',
+    '@Component({',
+    '  selector: "app-timer",',
+    '  templateUrl: "./timer.component.html",',
+    '})',
+    'export class TimerComponent implements OnInit, OnDestroy {',
+    '  count = 0;',
+    '  // ✅ Subject used as a "destroy signal"',
+    '  private destroy$ = new Subject<void>();',
+    '',
+    '  ngOnInit() {',
+    '    interval(1000).pipe(',
+    '      takeUntil(this.destroy$) // Auto-unsubscribe when destroy$ emits',
+    '    ).subscribe(() => this.count++);',
+    '  }',
+    '',
+    '  ngOnDestroy() {',
+    '    // ✅ Emit to destroy$ — takeUntil completes all subscriptions',
+    '    this.destroy$.next();',
+    '    this.destroy$.complete();',
+    '    console.log("Component destroyed — all subscriptions cleaned up");',
+    '  }',
+    '}',
+  ].join('\n');
+
+  exampleCode = [
+    '// Real-world: SPA Navigation — prevent memory leaks across route changes',
+    '',
+    '@Component({',
+    '  selector: "app-dashboard",',
+    '  templateUrl: "./dashboard.component.html",',
+    '})',
+    'export class DashboardComponent implements OnInit, OnDestroy {',
+    '  notifications: Notification[] = [];',
+    '  private destroy$ = new Subject<void>();',
+    '  private intervalId: ReturnType<typeof setInterval> | null = null;',
+    '',
+    '  constructor(',
+    '    private notificationService: NotificationService,',
+    '    private webSocket: WebSocketService',
+    '  ) {}',
+    '',
+    '  ngOnInit() {',
+    '    // 1. Subscribe to WebSocket with auto-cleanup',
+    '    this.webSocket.notifications$.pipe(',
+    '      takeUntil(this.destroy$)',
+    '    ).subscribe(n => this.notifications.push(n));',
+    '',
+    '    // 2. setInterval — must be manually cleared',
+    '    this.intervalId = setInterval(() => this.refreshData(), 30000);',
+    '',
+    '    // 3. EventEmitter subscription',
+    '    this.notificationService.onNew.pipe(',
+    '      takeUntil(this.destroy$)',
+    '    ).subscribe(n => this.notifications.unshift(n));',
+    '  }',
+    '',
+    '  ngOnDestroy() {',
+    '    // Clean up all resources',
+    '    this.destroy$.next();',
+    '    this.destroy$.complete();',
+    '    if (this.intervalId) clearInterval(this.intervalId);',
+    '    console.log("Dashboard destroyed — no memory leaks");',
+    '  }',
+    '',
+    '  refreshData() { /* periodic refresh logic */ }',
+    '}',
+  ].join('\n');
+
+  interviewQA = [
+    {
+      q: 'What is ngOnDestroy and when does it fire?',
+      a: 'ngOnDestroy is an Angular lifecycle hook called just before Angular destroys a component instance. Destruction happens when: (1) the component is removed from the DOM due to *ngIf becoming false; (2) the user navigates to a different route; (3) the component is inside a *ngFor and the list item is removed. It is the last opportunity to perform cleanup — unsubscribe from Observables, clear timers, detach event listeners, and release other resources.',
+    },
+    {
+      q: 'What is the takeUntil(destroy$) pattern and why is it preferred?',
+      a: 'The takeUntil pattern uses a Subject as a "destroy signal". In ngOnInit, Observable subscriptions include .pipe(takeUntil(this.destroy$)). In ngOnDestroy, you call this.destroy$.next() which causes all takeUntil operators to complete their Observables, auto-unsubscribing every subscription at once. Then call this.destroy$.complete() to release the Subject. This is preferred over manual unsubscription because: one destroy$ handles ALL subscriptions, you cannot forget to unsubscribe one, and it scales cleanly with many subscriptions.',
+    },
+    {
+      q: 'What resources must be cleaned up in ngOnDestroy?',
+      a: 'Resources that must be cleaned up: (1) RxJS Observable subscriptions — unsubscribe or use takeUntil; (2) setInterval and setTimeout — call clearInterval/clearTimeout; (3) EventListener attached via addEventListener — call removeEventListener; (4) third-party library instances (Chart.js, Mapbox) — call their destroy/remove methods; (5) WebSocket connections — call close(); (6) ResizeObserver/MutationObserver — call disconnect(); (7) @ViewChild event handlers set up programmatically. Failing to clean up causes memory leaks in SPA navigation.',
+    },
+    {
+      q: 'What is the DestroyRef API in Angular 16+?',
+      a: 'Angular 16 introduced DestroyRef — an injectable reference that provides a registerOnDestroy() callback, enabling cleanup outside of ngOnDestroy. Combined with the takeUntilDestroyed() operator from @angular/core/rxjs-interop, you can write: observable$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(...). This is especially powerful in standalone components and functions — no need to implement OnDestroy at all. The inject() function makes it composable: inject(DestroyRef).onDestroy(() => cleanup()).',
+    },
+    {
+      q: 'Does Angular guarantee that ngOnDestroy always fires?',
+      a: 'Angular guarantees ngOnDestroy fires for components that are destroyed through Angular\'s component lifecycle (route changes, *ngIf going false, etc.). However, ngOnDestroy does NOT fire if: (1) the browser tab/window is closed unexpectedly; (2) the application crashes; (3) the component is instantiated outside Angular\'s DI pipeline. For critical cleanup (like sending analytics before tab close), use the window\'s "beforeunload" event as a safety net alongside ngOnDestroy.',
+    },
+    {
+      q: 'What is the difference between unsubscribe() and takeUntil() for subscription cleanup?',
+      a: 'Direct unsubscribe() requires storing each Subscription object and calling unsubscribe() individually in ngOnDestroy. With many subscriptions, it is error-prone — forgetting one causes a leak. takeUntil(destroy$) requires only one destroy$.next() call to clean up ALL subscriptions at once. A third modern option is the async pipe in templates, which automatically unsubscribes when the component is destroyed — no ngOnDestroy needed for that subscription. For Angular 16+, takeUntilDestroyed() from RxJS interop is the most concise.',
+    },
+  ];
+}

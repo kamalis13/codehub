@@ -1,0 +1,96 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod10">
+    <span class="module-tag">Module 10 — HTTP</span>
+    <h1>HTTP Error Handling</h1>
+    <p class="subtitle">Handle API failures gracefully — local, global, and retry strategies</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      HTTP error handling in Angular uses RxJS's <code>catchError</code> operator to intercept failed
+      Observable streams from HttpClient. Angular provides <code>HttpErrorResponse</code> with status code,
+      message, and error body to help diagnose and handle failures appropriately — whether network errors,
+      client errors (4xx), or server errors (5xx).
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Real APIs fail — network issues, auth expiry, server errors — and unhandled errors crash the UI</li>
+      <li>Graceful error handling prevents blank screens, data loss, and confused users</li>
+      <li>Interceptors centralise error logic so every request benefits without duplicating code in every service</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      Three patterns shown together: local service-level error handling with context-specific recovery
+      (empty list on 404, redirect on 401), a global interceptor that logs and shows a snackbar for all
+      errors, and a retry(3) pattern for transient network failures.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      When HttpClient receives a non-2xx response (or a network failure), it emits an error on the
+      Observable stream instead of a value. <code>catchError</code> intercepts this error channel,
+      receives the <code>HttpErrorResponse</code>, and must return a new Observable — either a fallback
+      value, <code>EMPTY</code> (complete silently), or <code>throwError()</code> (re-propagate).
+      Interceptors are middleware that wrap <code>next.handle(req)</code>, so they see errors from all
+      HTTP calls in the application without modifying individual services.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Centralised error logic via interceptors — one place to log, alert, or redirect</li>
+        <li>Flexible recovery — return fallback data, redirect, or re-throw depending on error type</li>
+        <li>retry() reduces user impact from transient network blips without any extra UI code</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Global interceptors can swallow errors that specific services need to handle differently</li>
+        <li>retry() without delay can flood the server with rapid repeated requests during an outage</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use status === 0 to detect network errors separately from HTTP errors, and message accordingly</li>
+      <li>Prefer retry with exponential backoff over plain retry(n) for production resilience</li>
+      <li>Combine global and local error handling: interceptor for logging/snackbar, service-level for domain recovery</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Swallowing errors with an empty catchError that returns EMPTY — errors disappear silently and are impossible to debug</li>
+      <li>Using retry() without delay — causes a burst of repeated requests that overwhelm a struggling server</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

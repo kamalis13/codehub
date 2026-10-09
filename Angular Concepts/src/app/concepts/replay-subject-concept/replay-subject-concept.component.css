@@ -1,0 +1,26 @@
+.concept-header { background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%); color: white; border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem; }
+.badge { background: rgba(255,255,255,0.2); border-radius: 20px; padding: 0.25rem 0.8rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+.concept-header h1 { margin: 0.75rem 0 0.5rem; font-size: 1.8rem; }
+.tagline { margin: 0; opacity: 0.85; font-size: 0.95rem; }
+.definition-card { background: #faf5ff; border: 1px solid #ddd6fe; border-radius: 10px; padding: 1.2rem 1.5rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; }
+.def-row { display: flex; gap: 0.8rem; align-items: flex-start; font-size: 0.9rem; line-height: 1.5; }
+.icon { font-size: 1.3rem; flex-shrink: 0; }
+.def-row code { background: #ede9fe; border-radius: 4px; padding: 0.1rem 0.3rem; font-size: 0.85rem; }
+.subject-family { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+.family-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 0.9rem; }
+.highlight-card { background: #faf5ff; border-color: #a78bfa; }
+.active-card { background: #f0fdf4; border-color: #86efac; }
+.f-title { font-weight: 700; font-size: 0.85rem; margin-bottom: 0.3rem; }
+.f-desc { font-size: 0.78rem; color: #6b7280; line-height: 1.4; }
+.syntax-block { background: #1e1e2f; border-radius: 10px; padding: 1rem 1.2rem; margin-bottom: 1rem; }
+.syntax-label { color: #585b70; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+.syntax-block pre { color: #cdd6f4; font-size: 0.8rem; line-height: 1.6; margin: 0; white-space: pre-wrap; }
+.demo-section { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1.2rem; }
+.demo-section h3 { margin: 0 0 0.5rem; font-size: 1rem; }
+.note { font-size: 0.82rem; color: #6b7280; font-style: italic; margin-bottom: 0.75rem; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+.log-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.75rem; }
+.log-col { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 0.75rem; }
+.log-title { font-weight: 600; font-size: 0.8rem; color: #374151; margin-bottom: 0.5rem; }
+.result-list { margin: 0; padding-left: 1.2rem; font-size: 0.82rem; font-family: monospace; line-height: 1.9; }
+.secondary-btn { background: #6d28d9; color: white; border: none; padding: 0.4rem 0.9rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }

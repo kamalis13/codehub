@@ -1,0 +1,93 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod12">
+    <span class="module-tag">Module 12 — Lifecycle Hooks</span>
+    <h1>ngOnChanges</h1>
+    <p class="subtitle">Called every time an &#64;Input() property changes — the reactive bridge between parent and child</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>ngOnChanges</strong> is an Angular lifecycle hook that fires whenever one or more <code>&#64;Input()</code>-decorated properties of a component receive a new value from the parent. It is called <em>before</em> <code>ngOnInit</code> on the first cycle, then again every subsequent time an input binding changes. It receives a <code>SimpleChanges</code> object providing details on what changed, with previous and current values available for comparison.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Allows a child component to react dynamically when parent data changes</li>
+      <li>Provides access to both the old and new input values for comparison logic</li>
+      <li>Enables conditional API calls only when a specific input changes</li>
+      <li>Guards against running expensive logic on the very first binding (<code>isFirstChange()</code>)</li>
+      <li>Works before the view renders, so you can compute derived state before the DOM updates</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>In a product catalogue, a parent passes <code>productId</code> to a <code>ProductDetailComponent</code>. When the user selects a different product, the parent updates <code>selectedId</code>, which flows down as an <code>&#64;Input()</code>. The child uses <code>ngOnChanges</code> to fetch new product data whenever <code>productId</code> changes without destroying and re-creating the component.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>During every change detection cycle, Angular compares the current and previous values of each <code>&#64;Input()</code> binding using strict reference equality (<code>===</code>). If any input has changed, Angular calls <code>ngOnChanges(changes)</code> on the component, passing a <code>SimpleChanges</code> object only containing the properties that changed. This happens synchronously before the view is updated. For objects and arrays, Angular checks the reference, not deep equality — so mutating an object in-place will NOT trigger <code>ngOnChanges</code>.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Provides previousValue and currentValue for smart diffing</li>
+        <li>Works with every <code>&#64;Input()</code> in the component — single hook handles all inputs</li>
+        <li><code>isFirstChange()</code> cleanly separates initial load from subsequent updates</li>
+        <li>Fires before the DOM updates — ideal for computing derived state</li>
+        <li>No need to destroy/re-create a component when parent data changes</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Does NOT detect mutations inside objects or arrays (shallow comparison only)</li>
+        <li>Can cause performance issues if expensive logic runs on every input change</li>
+        <li>Requires implementing <code>OnChanges</code> interface — adds boilerplate</li>
+        <li>Not triggered if the input binding is missing from the parent template</li>
+        <li>Can become complex when many inputs change independently</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always check which specific input changed using <code>if (changes['inputName'])</code></li>
+      <li>Guard initial load logic with <code>isFirstChange()</code> to avoid duplicate API calls with ngOnInit</li>
+      <li>Use immutable data patterns (spread/Object.assign) to ensure object changes trigger ngOnChanges</li>
+      <li>Implement <code>implements OnChanges</code> so TypeScript enforces the correct method signature</li>
+      <li>For complex diffing logic, consider <code>ngDoCheck</code> with KeyValueDiffer instead</li>
+      <li>Keep ngOnChanges lightweight — delegate heavy work to services or computed properties</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Expecting ngOnChanges to fire when object properties mutate (it checks reference only)</li>
+      <li>Forgetting to check <code>isFirstChange()</code> and duplicating the ngOnInit HTTP call</li>
+      <li>Using ngOnChanges on non-&#64;Input() properties — it only monitors &#64;Input() bindings</li>
+      <li>Not guarding against <code>null</code> or <code>undefined</code> currentValue in early cycles</li>
+      <li>Placing ngOnChanges logic without <code>implements OnChanges</code> — TypeScript won't warn of typos</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

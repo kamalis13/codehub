@@ -1,0 +1,109 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod2">
+    <span class="module-tag">Module 2 — Components</span>
+    <h1>EventEmitter</h1>
+    <p class="subtitle">Angular's mechanism for emitting custom events — powered by RxJS Subject</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      <code>EventEmitter&lt;T&gt;</code> is an Angular class that <strong>extends RxJS Subject</strong>.
+      It adds an <code>emit(value)</code> method (which internally calls <code>Subject.next(value)</code>)
+      to make it feel natural in Angular's component model. It is almost always used together with the
+      <code>&#64;Output</code> decorator to create custom component events that the parent template can
+      bind to with <code>(eventName)="handler($event)"</code>.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Custom DOM-like events</strong> — Allows components to emit semantic events (e.g., <code>productSelected</code>) just like the DOM emits click or input events.</li>
+      <li><strong>Child-to-parent communication</strong> — The only official mechanism for a child to send data up to its parent in a type-safe way.</li>
+      <li><strong>Decoupling</strong> — The child does not know who listens; it simply emits, making the component reusable.</li>
+      <li><strong>RxJS integration</strong> — Since it extends Subject, advanced patterns (pipe, take, filter) are possible, though rarely needed for &#64;Output bindings.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A <strong>CustomButtonComponent</strong> keeps an internal click counter. Each time the button
+      is clicked, it increments the counter and emits the new count via a typed
+      <code>EventEmitter&lt;number&gt;</code>. The parent receives each emission and displays the
+      running total in its own template — demonstrating typed event payloads and child-to-parent
+      data flow.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      Because <code>EventEmitter</code> extends <code>Subject</code>, calling <code>emit(value)</code> calls
+      <code>Subject.next(value)</code>. The parent's <code>(event)="handler($event)"</code> binding creates
+      a subscription. By default, emission is <strong>synchronous</strong> — the handler runs in the same
+      call stack as <code>emit()</code>. Passing <code>true</code> to the constructor —
+      <code>new EventEmitter(true)</code> — wraps emission in <code>setTimeout(fn, 0)</code>, making it
+      asynchronous. Angular's template binding system automatically unsubscribes when the child component
+      is destroyed, preventing memory leaks.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Familiar API: <code>emit()</code> mirrors native DOM <code>dispatchEvent()</code></li>
+        <li>Type-safe with generics: <code>EventEmitter&lt;User&gt;</code></li>
+        <li>Extends Subject — all RxJS operators are available when needed</li>
+        <li>Parent subscription is automatically managed by Angular</li>
+        <li>Async option defers events to avoid change detection issues</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Not suitable for cross-component communication in services — use <code>Subject</code> there</li>
+        <li>Only one-hop: child → direct parent (no event bubbling through the component tree)</li>
+        <li>Calling <code>.subscribe()</code> manually on a child's <code>&#64;Output</code> is an anti-pattern</li>
+        <li>Synchronous by default — can trigger change detection at unexpected times if misused</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always type the EventEmitter: <code>new EventEmitter&lt;Product&gt;()</code>.</li>
+      <li>Use <code>EventEmitter</code> only with <code>&#64;Output</code> in components — use <code>Subject</code> in services.</li>
+      <li>Name outputs semantically: <code>itemDeleted</code>, <code>filterChanged</code>, not <code>click2</code>.</li>
+      <li>Emit copies of objects (spread) rather than original references to avoid accidental shared mutation.</li>
+      <li>Don't subscribe manually to a sibling's <code>&#64;Output</code> — use a shared service instead.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using <code>EventEmitter</code> inside a service for inter-component messaging (use <code>Subject</code>).</li>
+      <li>Calling <code>subscribe()</code> on a child's <code>&#64;Output</code> from parent TypeScript — Angular won't manage lifecycle.</li>
+      <li>Forgetting to include <code>&#64;Output()</code> decorator — the EventEmitter becomes just a regular property, not a bindable event.</li>
+      <li>Using <code>EventEmitter&lt;any&gt;</code> — loses type safety in parent handler.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

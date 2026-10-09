@@ -1,0 +1,81 @@
+<div class="concept-box">
+
+  <!-- ── Header ── -->
+  <div class="concept-header sync-header">
+    <span class="badge">🔢 Concept 1</span>
+    <h2>Synchronous</h2>
+    <p class="tagline">"Do one thing at a time, in order — wait for each to finish."</p>
+  </div>
+
+  <!-- ── Definition card ── -->
+  <div class="def-card">
+    <div class="def-row">
+      <span class="def-icon">📖</span>
+      <div>
+        <strong>Definition</strong>
+        <p>Tasks execute one after another. The next task only starts after the current one fully completes. The program <em>blocks</em> and waits.</p>
+      </div>
+    </div>
+    <div class="def-row">
+      <span class="def-icon">🏧</span>
+      <div>
+        <strong>Real-life analogy</strong>
+        <p>An ATM queue — Person 1 finishes → Person 2 steps up. Nobody jumps ahead.</p>
+      </div>
+    </div>
+    <div class="def-row">
+      <span class="def-icon">⚡</span>
+      <div>
+        <strong>Key rule</strong>
+        <p><code>Task A → Task B → Task C</code> — always in this order, no surprises.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Code example ── -->
+  <div class="code-block">
+    <div class="code-label">How it looks in code</div>
+    <pre [innerText]="codeExample"></pre>
+  </div>
+
+  <!-- ── Live demo ── -->
+  <div class="demo-section">
+    <div class="demo-label">▶ Live Demo — Watch tasks run one by one</div>
+    <button (click)="runSync()" [disabled]="running">Run synchronous tasks</button>
+    <div class="timeline">
+      <div
+        *ngFor="let step of steps; let i = index"
+        class="timeline-item"
+        [class.done]="step.done"
+      >
+        <span class="timeline-dot">{{ step.done ? '✅' : '⬜' }}</span>
+        <span class="timeline-text">{{ step.label }}</span>
+        <span class="timeline-time" *ngIf="step.done">{{ step.time }}</span>
+      </div>
+    </div>
+    <p class="note" *ngIf="done">
+      ✅ All 4 tasks finished in order. Each waited for the previous one.
+    </p>
+  </div>
+
+  <!-- ── Pros / Cons ── -->
+  <div class="pro-con">
+    <div class="pro">
+      <strong>✅ Pros</strong>
+      <ul>
+        <li>Simple and predictable</li>
+        <li>Easy to read and debug</li>
+        <li>Order is guaranteed</li>
+      </ul>
+    </div>
+    <div class="con">
+      <strong>❌ Cons</strong>
+      <ul>
+        <li>Slow tasks block everything</li>
+        <li>Page can freeze (e.g., heavy loop)</li>
+        <li>Bad for waiting (API, timers)</li>
+      </ul>
+    </div>
+  </div>
+
+</div>

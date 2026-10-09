@@ -1,0 +1,91 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod5">
+    <span class="module-tag">Module 5 — Directives</span>
+    <h1>ngIf</h1>
+    <p class="subtitle">Conditionally include or completely remove elements from the DOM</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>*ngIf</strong> is a built-in structural directive that conditionally adds or removes an element (and its subtree) from the DOM based on a boolean expression. When the condition is <code>false</code>, the element is completely destroyed — not just hidden. When <code>true</code>, it is recreated. It supports an <code>else</code> template and works seamlessly with the <code>async</code> pipe for Observable data.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Show/hide content based on application state (auth, loading, errors)</li>
+      <li>Completely remove heavy components from the DOM to free memory</li>
+      <li>Provide else-template for alternate views (login vs. dashboard)</li>
+      <li>Works with the async pipe to safely render Observable data only when available</li>
+      <li>Stops change detection for the hidden subtree, improving performance</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A <strong>Dashboard</strong> that shows a login banner when the user is logged out, and the full dashboard with user data (from an Observable) when logged in — using <code>*ngIf</code> with else template and async pipe.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p><code>*ngIf="condition"</code> desugars to <code>&lt;ng-template [ngIf]="condition"&gt;</code>. The <code>NgIf</code> directive receives the <code>TemplateRef</code> and <code>ViewContainerRef</code> via DI. When the input changes, it evaluates the condition and either calls <code>vcr.createEmbeddedView(templateRef)</code> (to render) or <code>vcr.clear()</code> (to destroy). For the else template, it holds a second <code>TemplateRef</code> and renders it when the condition is falsy.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Removes element from DOM — saves memory and stops change detection</li>
+        <li>Triggers ngOnDestroy on hidden components — prevents memory leaks</li>
+        <li>Elegant else/then template syntax</li>
+        <li>Works naturally with the async pipe for Observable-driven UIs</li>
+        <li>Desugars to standard ng-template — transparent and debuggable</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Recreates component on each toggle — initialization overhead</li>
+        <li>Not ideal for frequently toggled heavy components (consider [hidden])</li>
+        <li>Loses component state on each destroy/recreate cycle</li>
+        <li>Cannot be combined with *ngFor on the same element</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use the <code>*ngIf; else</code> pattern instead of two opposing *ngIf directives</li>
+      <li>Combine with <code>ng-container</code> to avoid extra DOM elements</li>
+      <li>Use <code>*ngIf="obs$ | async as data"</code> to unwrap Observable data safely</li>
+      <li>For frequently toggled lightweight elements, consider <code>[hidden]</code> instead</li>
+      <li>Keep the condition expression simple — move complex logic to a component property</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Applying <code>*ngIf</code> and <code>*ngFor</code> on the same element — use <code>ng-container</code></li>
+      <li>Expecting the component to retain state after *ngIf toggles to false</li>
+      <li>Using <code>*ngIf="!loading &amp;&amp; !error"</code> instead of the cleaner else-template pattern</li>
+      <li>Forgetting to import <code>NgIf</code> or <code>CommonModule</code> in standalone components</li>
+      <li>Using <code>[hidden]</code> for heavy components — they stay in DOM consuming resources</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

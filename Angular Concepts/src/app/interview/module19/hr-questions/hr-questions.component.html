@@ -1,0 +1,20 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod19">
+    <span class="module-tag">Module 19 — HR Questions</span>
+    <h1>Common HR Questions</h1>
+    <p class="subtitle">Sample answers and tips for HR interviews</p>
+  </div>
+
+  <section class="t-card">
+    <h2>💡 HR Interview Tips</h2>
+    <ul>
+      <li *ngFor="let tip of hrTips">{{ tip }}</li>
+    </ul>
+  </section>
+
+  <div class="qa-item" *ngFor="let qa of hrQuestions">
+    <div class="qa-q">Q: {{ qa.q }}</div>
+    <div class="qa-a">A: {{ qa.a }}</div>
+    <div class="qa-tip" *ngIf="qa.tip">💡 Tip: {{ qa.tip }}</div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="operator-box">
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax — Angular ngOnDestroy pattern</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+  <h2>takeUntil()</h2>
+  <p class="definition">Emits values from the source Observable until a second "notifier" Observable emits. This is the standard Angular pattern for automatically unsubscribing in <code>ngOnDestroy</code> to prevent memory leaks.</p>
+  <p class="note">Analogy: Like a subscription that auto-cancels when you close your account — you just signal "done" once and everything cleans up.</p>
+
+  <div class="demo-section">
+    <h3>Live Demo</h3>
+    <p class="note">Start the interval — it ticks every 600ms. Click Stop to fire the destroy$ signal, which causes takeUntil to complete the stream.</p>
+    <div class="btn-row">
+      <button (click)="start()" [disabled]="isRunning">Start Interval</button>
+      <button (click)="stop()" [disabled]="!isRunning" class="stop-btn">Stop (trigger destroy$)</button>
+    </div>
+    <ul class="result-list">
+      <li *ngFor="let r of results">{{ r }}</li>
+    </ul>
+  </div>
+</div>

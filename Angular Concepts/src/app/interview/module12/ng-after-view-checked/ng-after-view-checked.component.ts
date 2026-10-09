@@ -1,0 +1,110 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-ng-after-view-checked',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './ng-after-view-checked.component.html',
+  styleUrl: './ng-after-view-checked.component.css',
+})
+export class NgAfterViewCheckedComponent {
+  syntaxCode = [
+    'import {',
+    '  Component, AfterViewChecked,',
+    '  ViewChild, ElementRef',
+    '} from "@angular/core";',
+    '',
+    '@Component({',
+    '  selector: "app-chat",',
+    '  template: `',
+    '    <div #messageList class="messages">',
+    '      <div *ngFor="let msg of messages">{{ msg }}</div>',
+    '    </div>',
+    '  `',
+    '})',
+    'export class ChatComponent implements AfterViewChecked {',
+    '  @ViewChild("messageList") messageList!: ElementRef<HTMLDivElement>;',
+    '  messages: string[] = [];',
+    '  private shouldScrollToBottom = false;',
+    '',
+    '  addMessage(text: string) {',
+    '    this.messages.push(text);',
+    '    this.shouldScrollToBottom = true; // Flag set on new message',
+    '  }',
+    '',
+    '  // Called after EVERY view check — use flag to avoid redundant DOM ops',
+    '  ngAfterViewChecked() {',
+    '    if (this.shouldScrollToBottom) {',
+    '      const el = this.messageList.nativeElement;',
+    '      el.scrollTop = el.scrollHeight;',
+    '      this.shouldScrollToBottom = false; // Reset flag',
+    '    }',
+    '  }',
+    '}',
+  ].join('\n');
+
+  exampleCode = [
+    '// Real-world: Live log viewer — auto-scroll to latest log entry',
+    '',
+    '@Component({',
+    '  selector: "app-log-viewer",',
+    '  template: `',
+    '    <div #logContainer class="log-container">',
+    '      <pre *ngFor="let log of logs">{{ log }}</pre>',
+    '    </div>',
+    '    <button (click)="toggleAutoScroll()">',
+    '      {{ autoScroll ? "Pause" : "Resume" }} Auto-scroll',
+    '    </button>',
+    '  `',
+    '})',
+    'export class LogViewerComponent implements AfterViewChecked {',
+    '  @ViewChild("logContainer") logContainer!: ElementRef<HTMLDivElement>;',
+    '  logs: string[] = [];',
+    '  autoScroll = true;',
+    '  private prevLogCount = 0;',
+    '',
+    '  ngAfterViewChecked() {',
+    '    // Only scroll if new logs were added AND autoScroll is enabled',
+    '    const currentCount = this.logs.length;',
+    '    if (this.autoScroll && currentCount !== this.prevLogCount) {',
+    '      const el = this.logContainer.nativeElement;',
+    '      el.scrollTop = el.scrollHeight;',
+    '      this.prevLogCount = currentCount;',
+    '    }',
+    '  }',
+    '',
+    '  toggleAutoScroll() { this.autoScroll = !this.autoScroll; }',
+    '}',
+    '',
+    '// ⚠️ The flag/prev-count pattern is CRITICAL — prevents',
+    '// scrolling on every single CD cycle (keyboard, mouse events).',
+  ].join('\n');
+
+  interviewQA = [
+    {
+      q: 'What is ngAfterViewChecked and when does it fire?',
+      a: 'ngAfterViewChecked is an Angular lifecycle hook that fires after every change detection cycle that checks the component\'s view and its child views. It fires after ngAfterViewInit on the first pass, and then after every ngDoCheck on subsequent cycles. It is the most frequently firing lifecycle hook because it runs after every single change detection cycle for the component, regardless of whether the view actually changed.',
+    },
+    {
+      q: 'What is the most common real-world use case for ngAfterViewChecked?',
+      a: 'The most common use case is auto-scrolling to the bottom of a scrollable container (like a chat window or log viewer) after new content is added. The key pattern is using a flag: set a boolean flag (shouldScrollToBottom = true) when new content is added, check the flag in ngAfterViewChecked, perform the scroll if the flag is true, then reset the flag. This prevents the expensive DOM scroll operation from running on every single CD cycle — only when new content was actually added.',
+    },
+    {
+      q: 'What is the difference between ngAfterViewInit and ngAfterViewChecked?',
+      a: 'ngAfterViewInit fires exactly once — after the component\'s view is first fully rendered and initialized. ngAfterViewChecked fires on every subsequent change detection cycle that checks the view. Think of ngAfterViewInit as a "view ready" event and ngAfterViewChecked as a "view re-checked" event. ngAfterViewInit is for one-time setup (initializing Chart.js); ngAfterViewChecked is for recurring post-render work (scrolling, measuring DOM dimensions after updates).',
+    },
+    {
+      q: 'How do you prevent performance issues in ngAfterViewChecked?',
+      a: 'Use guard flags or previous-state comparison to prevent running expensive operations on every cycle. Pattern: (1) define a flag property (shouldUpdate = false); (2) set it to true only when relevant data changes; (3) check the flag in ngAfterViewChecked; (4) perform the operation if flag is true; (5) reset the flag immediately. This ensures the expensive operation (DOM scroll, dimension measurement) only runs when actually needed, not on every mouse click or keypress.',
+    },
+    {
+      q: 'Does ngAfterViewChecked fire when using ChangeDetectionStrategy.OnPush?',
+      a: 'Yes, ngAfterViewChecked fires whenever a CD cycle runs on the component — with OnPush, that happens less often (only on @Input() reference changes, events within the component, async pipe emissions, or manual markForCheck()). So with OnPush + ngAfterViewChecked, you get the performance benefit of reduced CD frequency while still having the post-render hook. This combination is recommended when using ngAfterViewChecked to reduce how often it fires.',
+    },
+    {
+      q: 'Can you modify template-bound properties in ngAfterViewChecked?',
+      a: 'In development mode, modifying template-bound properties in ngAfterViewChecked causes ExpressionChangedAfterItHasBeenCheckedError because Angular checks bindings, then calls this hook, then verifies bindings again — finding the changed value. The fix is ChangeDetectorRef.detectChanges() to immediately re-check after your change, or to use setTimeout(fn, 0) to defer to the next event loop turn. In production mode the error does not throw but the view may be one cycle behind. ChangeDetectorRef.detectChanges() is the correct solution.',
+    },
+  ];
+}

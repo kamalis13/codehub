@@ -1,0 +1,90 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod7">
+    <span class="module-tag">Module 7 — Services</span>
+    <h1>Dependency Injection</h1>
+    <p class="subtitle">Angular's design pattern for managing dependencies</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Dependency Injection (DI) is Angular's built-in design pattern where components and services declare what they need, and Angular's injector provides the correct instances. Instead of creating dependencies with <code>new</code>, you request them — Angular handles creation, caching, and lifecycle.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Eliminates tight coupling between classes</li>
+      <li>Makes unit testing trivial (inject mocks instead of real services)</li>
+      <li>Angular manages object creation and lifecycle</li>
+      <li>Enables hierarchical scoping of service instances</li>
+      <li>Promotes the Open/Closed principle</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A shopping cart component injects <code>AuthService</code> (root singleton — shared) and <code>CartService</code> (component-level — scoped). Each cart component gets its own <code>CartService</code> while sharing the same <code>AuthService</code>.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>When Angular compiles a component, it reads its constructor parameter types. At runtime, the injector resolves each parameter by finding the nearest provider in the injector hierarchy. The resolved instance is injected before the constructor body executes. Angular 14+ <code>inject()</code> function works in injection contexts.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Loose coupling between classes</li>
+        <li>Effortless unit testing with mock providers</li>
+        <li>Angular manages service lifecycle</li>
+        <li>Hierarchical injection enables scoped instances</li>
+        <li><code>inject()</code> enables DI in standalone functions</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Steep learning curve for the injector hierarchy</li>
+        <li>Injection errors can be cryptic (NullInjectorError)</li>
+        <li>Circular dependencies cause runtime errors</li>
+        <li>Overusing component-level providers defeats singleton pattern</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Prefer constructor injection for clarity</li>
+      <li>Use <code>inject()</code> in standalone/functional contexts</li>
+      <li>Use <code>InjectionToken</code> for non-class values</li>
+      <li>Apply <code>&#64;Optional</code> for truly optional dependencies</li>
+      <li>Document when and why component-level providers are used</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Forgetting to add a service to providers (NullInjectorError)</li>
+      <li>Creating circular dependencies between services</li>
+      <li>Using <code>new</code> to create a service inside a component</li>
+      <li>Confusing constructor injection with property assignment</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

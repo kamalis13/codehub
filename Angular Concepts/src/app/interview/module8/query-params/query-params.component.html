@@ -1,0 +1,90 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod8">
+    <span class="module-tag">Module 8 — Routing</span>
+    <h1>Query Parameters</h1>
+    <p class="subtitle">Passing optional, filterable data via URL query strings</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Query parameters are optional key-value pairs appended to the URL after a ? character (e.g., /products?search=angular&amp;page=2&amp;sort=price). Unlike route params, they do not affect route matching. They are ideal for search terms, pagination, sorting, and filters that users may want to bookmark or share.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Represent optional view state that should survive page refresh</li>
+      <li>Enable shareable/bookmarkable search and filter states</li>
+      <li>Pass data between routes without router state (which doesn't survive refresh)</li>
+      <li>Support pagination and sorting without new routes</li>
+      <li>Allow multiple optional parameters without path complexity</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A product search page syncing search term and page number to the URL so filters are preserved on refresh and can be shared as a link.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's Router parses query strings from the URL and makes them available through ActivatedRoute as queryParams (plain object) and queryParamMap (ParamMap interface). When you navigate with queryParams, the Router appends them to the URL. The queryParamMap$ observable emits every time the query string changes, enabling reactive filter updates without component re-creation.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Shareable, bookmarkable filter and search states</li>
+        <li>Multiple optional values without path complexity</li>
+        <li>No route matching involvement — add/remove freely</li>
+        <li>queryParamsHandling: 'merge' preserves other params</li>
+        <li>Multi-value params supported via getAll()</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Sensitive data should never appear in query params (visible in browser history)</li>
+        <li>Long query strings reduce URL readability</li>
+        <li>All values are strings — parsing to numbers/booleans is manual</li>
+        <li>Syncing complex state to query params requires careful management</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use query params for search, filter, sort, and pagination state</li>
+      <li>Always parse numeric/boolean params explicitly (Number(), === 'true')</li>
+      <li>Use queryParamsHandling: 'merge' to preserve unrelated params</li>
+      <li>Read params from queryParamMap$ on init to restore state from URL</li>
+      <li>Never put sensitive data (tokens, passwords) in query params</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using route params when query params are more appropriate (optional filters)</li>
+      <li>Forgetting queryParamsHandling: 'merge' and wiping existing params</li>
+      <li>Not handling null from paramMap.get() (crashes on first load)</li>
+      <li>Storing sensitive information in query params (visible in browser history and logs)</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

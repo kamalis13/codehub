@@ -1,0 +1,99 @@
+<div class="concept-box">
+
+  <div class="concept-header obs-header">
+    <span class="badge">🔢 Concept 4</span>
+    <h2>Observable</h2>
+    <p class="tagline">"A stream that delivers values over time — subscribe to listen, unsubscribe to stop."</p>
+  </div>
+
+  <!-- ── Stream visual ── -->
+  <div class="stream-visual">
+    <div class="stream-label">Observable stream (timeline →)</div>
+    <div class="stream-track">
+      <div class="stream-item value">📦 value</div>
+      <div class="stream-arrow">→</div>
+      <div class="stream-item value">📦 value</div>
+      <div class="stream-arrow">→</div>
+      <div class="stream-item value">📦 value</div>
+      <div class="stream-arrow">→</div>
+      <div class="stream-item complete">✅ complete</div>
+    </div>
+    <div class="stream-track error-track">
+      <div class="stream-item value">📦 value</div>
+      <div class="stream-arrow">→</div>
+      <div class="stream-item err">❌ error (stream ends)</div>
+    </div>
+  </div>
+
+  <!-- ── Definition card ── -->
+  <div class="def-card">
+    <div class="def-row">
+      <span class="def-icon">📖</span>
+      <div>
+        <strong>Definition</strong>
+        <p>An Observable is a blueprint for a stream. It does nothing until subscribed to. Once subscribed, it can emit any number of values over time, then complete or error.</p>
+      </div>
+    </div>
+    <div class="def-row">
+      <span class="def-icon">📺</span>
+      <div>
+        <strong>Analogy</strong>
+        <p>A YouTube channel — it produces content over time. You subscribe to receive it, and can unsubscribe whenever you want to stop.</p>
+      </div>
+    </div>
+    <div class="def-row">
+      <span class="def-icon">😴</span>
+      <div>
+        <strong>Lazy by nature</strong>
+        <p>An Observable is like a recipe — writing the recipe doesn't cook the food. Only when you <strong>subscribe()</strong> does it start executing.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Code example — uses [innerText] to safely render code with braces ── -->
+  <div class="code-block">
+    <div class="code-label">Observable anatomy</div>
+    <pre [innerText]="codeExample"></pre>
+  </div>
+
+  <!-- ── Live demo ── -->
+  <div class="demo-section">
+    <div class="demo-label">▶ Live Demo</div>
+    <div class="btn-row">
+      <button (click)="runBasic()" [disabled]="running">Emit 3 values</button>
+      <button (click)="runAsync()" [disabled]="running">Emit over time (async)</button>
+      <button (click)="runLazy()">Show lazy demo</button>
+    </div>
+    <div class="event-log">
+      <div *ngFor="let e of events" class="event-line" [ngClass]="e.type">
+        <span class="ev-badge">{{ e.badge }}</span>
+        <span>{{ e.msg }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Key rules ── -->
+  <div class="rules-grid">
+    <div class="rule-card">
+      <div class="rule-icon">😴</div>
+      <strong>Lazy</strong>
+      <p>Nothing happens until subscribe() is called</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-icon">📦</div>
+      <strong>Multiple values</strong>
+      <p>Can emit 0, 1, or many values over time</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-icon">🛑</div>
+      <strong>Cancellable</strong>
+      <p>Call unsubscribe() to stop receiving values</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-icon">🔧</div>
+      <strong>Composable</strong>
+      <p>Chain operators with .pipe() to transform data</p>
+    </div>
+  </div>
+
+</div>

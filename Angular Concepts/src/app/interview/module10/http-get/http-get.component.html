@@ -1,0 +1,81 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod10">
+    <span class="module-tag">Module 10 — HTTP</span>
+    <h1>HTTP GET</h1>
+    <p class="subtitle">Fetch data from APIs — typed, cancellable, and reactive</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><code>http.get&lt;T&gt;(url, options)</code> sends an HTTP GET request and returns a cold Observable that emits the response body typed as T. Nothing is sent until subscribed. It is the most common HTTP method used in Angular applications for data retrieval.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Loading lists, detail views, search results, and paginated data from a REST API</li>
+      <li>Integrates with the async pipe for automatic subscription lifecycle management</li>
+      <li>Supports query parameters via HttpParams for filtering, sorting, and pagination</li>
+      <li>Full response access via <code>observe: 'response'</code> exposes status codes and custom headers</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A product catalogue page uses HttpClient GET to load products by category and page number, passes query parameters via HttpParams, and uses the async pipe so subscriptions are managed automatically. Errors are caught and the stream is completed silently with EMPTY.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>When you call <code>http.get()</code>, Angular creates a cold Observable. On subscription, the request enters Angular's HttpHandler pipeline, passing through all registered interceptors in registration order. The final handler dispatches an XMLHttpRequest to the network. On response, the raw bytes are parsed as JSON (by default), typed as T, and emitted to the subscriber. Cancellation via unsubscribe sends an XHR abort before the response completes.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Typed generics give compile-time safety over the response shape</li>
+        <li>Cancellable via unsubscribe — prevents stale responses in fast navigation</li>
+        <li>HttpParams builder ensures correct URL encoding without manual string concatenation</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>No built-in caching — repeated calls hit the network unless you add shareReplay or an interceptor</li>
+        <li>Generic type is a compile-time cast only — a mismatched server response will not throw at runtime</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always provide a generic type: <code>http.get&lt;Product[]&gt;(url)</code> for type safety</li>
+      <li>Use the async pipe in templates to avoid memory leaks from unmanaged subscriptions</li>
+      <li>Add <code>catchError</code> in the service layer to handle errors before they reach the component</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using mutable string concatenation for query params instead of <code>HttpParams</code>, causing incorrect URL encoding</li>
+      <li>Subscribing inside a service method and returning the value synchronously — always return the Observable</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

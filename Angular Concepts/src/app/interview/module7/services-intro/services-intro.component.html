@@ -1,0 +1,87 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod7">
+    <span class="module-tag">Module 7 — Services</span>
+    <h1>Angular Services</h1>
+    <p class="subtitle">Reusable business logic and data access layer</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>A service is a TypeScript class decorated with <code>&#64;Injectable</code> that provides reusable business logic, data access, and shared state across components. Services embody the principle of separation of concerns — components handle presentation, services handle everything else.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Share logic across multiple components without duplication</li>
+      <li>Keep components lean and focused on UI rendering</li>
+      <li>Enable independent unit testing of business logic</li>
+      <li>Centralize HTTP calls and data transformations</li>
+      <li>Manage shared application state</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A <code>UserService</code> fetches users from an API. Any component that needs user data injects this service, avoiding duplicate HTTP calls and keeping components free of HTTP logic.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular registers the service with an Injector at the specified level. When a component requests the service via its constructor, the Injector looks it up and injects the existing instance (or creates a new one if none exists). With <code>providedIn: 'root'</code>, Angular registers it in the root injector at startup, ensuring a single instance shared across all components.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Promotes DRY — write logic once, reuse everywhere</li>
+        <li>Highly testable with Angular TestBed or plain jest mocks</li>
+        <li>Singleton by default — consistent shared state</li>
+        <li>Angular handles instantiation and lifecycle</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Overloading a service with unrelated concerns (god service)</li>
+        <li>Shared mutable state can cause unexpected side effects</li>
+        <li>Debugging injection errors can be complex in large hierarchies</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>One service per concern (UserService, AuthService, ProductService)</li>
+      <li>Use <code>providedIn: 'root'</code> for app-wide services</li>
+      <li>Keep services stateless when possible</li>
+      <li>Use Observables (not Promises) for async operations</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Forgetting <code>&#64;Injectable</code> on services that inject other services</li>
+      <li>Providing a service in both root and a component (creates duplicate instances)</li>
+      <li>Subscribing inside a service and not unsubscribing</li>
+      <li>Storing mutable arrays/objects directly — prefer immutable patterns</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

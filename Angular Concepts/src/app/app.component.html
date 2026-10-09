@@ -1,0 +1,210 @@
+<div class="app-layout">
+  <!-- Sidebar navigation -->
+  <nav class="sidebar">
+    <h1 class="logo">Angular Masterclass</h1>
+
+    <div class="mode-toggle">
+      <button class="mode-btn" [class.active]="appMode === 'rxjs'" (click)="setMode('rxjs')">📡 RxJS</button>
+      <button class="mode-btn" [class.active]="appMode === 'interview'" (click)="setMode('interview')">🎯 Interview</button>
+    </div>
+
+    <!-- RxJS navigation -->
+    <ng-container *ngIf="appMode === 'rxjs'">
+      <p class="subtitle">Click an operator to explore it</p>
+      <div *ngFor="let group of groups" class="nav-group">
+        <div class="nav-category">{{ group.category }}</div>
+        <button *ngFor="let op of group.items" class="nav-btn"
+                [class.active]="selected === op.key" (click)="select(op.key)">
+          {{ op.label }}
+        </button>
+      </div>
+    </ng-container>
+
+    <!-- Interview navigation -->
+    <ng-container *ngIf="appMode === 'interview'">
+      <p class="subtitle">Select a topic to study</p>
+      <div *ngFor="let mod of interviewModules" class="nav-group">
+        <div class="nav-category">{{ mod.icon }} M{{ mod.module }}: {{ mod.title }}</div>
+        <button *ngFor="let item of mod.items" class="nav-btn"
+                [class.active]="selectedInterview === item.key" (click)="selectInterview(item.key)">
+          {{ item.label }}
+        </button>
+      </div>
+    </ng-container>
+  </nav>
+
+  <!-- Main content -->
+  <main class="content">
+
+    <!-- ── RxJS Learn content ── -->
+    <ng-container *ngIf="appMode === 'rxjs'">
+      <app-synchronous             *ngIf="selected === 'sync'"></app-synchronous>
+      <app-asynchronous            *ngIf="selected === 'async'"></app-asynchronous>
+      <app-promise-concept         *ngIf="selected === 'promise'"></app-promise-concept>
+      <app-observable-concept      *ngIf="selected === 'observable'"></app-observable-concept>
+      <app-observer-concept        *ngIf="selected === 'observer'"></app-observer-concept>
+      <app-subscription-concept    *ngIf="selected === 'subscription'"></app-subscription-concept>
+      <app-hot-cold-concept        *ngIf="selected === 'hotCold'"></app-hot-cold-concept>
+      <app-async-pipe-concept      *ngIf="selected === 'asyncPipeConcept'"></app-async-pipe-concept>
+      <app-subject-concept         *ngIf="selected === 'subjectConcept'"></app-subject-concept>
+      <app-behavior-subject-concept *ngIf="selected === 'behaviorSubjectConcept'"></app-behavior-subject-concept>
+      <app-replay-subject-concept  *ngIf="selected === 'replaySubjectConcept'"></app-replay-subject-concept>
+      <app-async-subject-concept   *ngIf="selected === 'asyncSubjectConcept'"></app-async-subject-concept>
+      <app-of-operator             *ngIf="selected === 'of'"></app-of-operator>
+      <app-from-operator           *ngIf="selected === 'from'"></app-from-operator>
+      <app-interval-operator       *ngIf="selected === 'interval'"></app-interval-operator>
+      <app-map-operator            *ngIf="selected === 'map'"></app-map-operator>
+      <app-merge-map-operator      *ngIf="selected === 'mergeMap'"></app-merge-map-operator>
+      <app-switch-map-operator     *ngIf="selected === 'switchMap'"></app-switch-map-operator>
+      <app-concat-map-operator     *ngIf="selected === 'concatMap'"></app-concat-map-operator>
+      <app-exhaust-map-operator    *ngIf="selected === 'exhaustMap'"></app-exhaust-map-operator>
+      <app-scan-operator           *ngIf="selected === 'scan'"></app-scan-operator>
+      <app-start-with-operator     *ngIf="selected === 'startWith'"></app-start-with-operator>
+      <app-filter-operator         *ngIf="selected === 'filter'"></app-filter-operator>
+      <app-tap-operator            *ngIf="selected === 'tap'"></app-tap-operator>
+      <app-take-operator           *ngIf="selected === 'take'"></app-take-operator>
+      <app-take-until-operator     *ngIf="selected === 'takeUntil'"></app-take-until-operator>
+      <app-debounce-time-operator  *ngIf="selected === 'debounceTime'"></app-debounce-time-operator>
+      <app-throttle-time-operator  *ngIf="selected === 'throttleTime'"></app-throttle-time-operator>
+      <app-distinct-until-changed-operator *ngIf="selected === 'distinctUntilChanged'"></app-distinct-until-changed-operator>
+      <app-combine-latest-operator *ngIf="selected === 'combineLatest'"></app-combine-latest-operator>
+      <app-forkjoin-operator       *ngIf="selected === 'forkJoin'"></app-forkjoin-operator>
+      <app-with-latest-from-operator *ngIf="selected === 'withLatestFrom'"></app-with-latest-from-operator>
+      <app-share-replay-operator   *ngIf="selected === 'shareReplay'"></app-share-replay-operator>
+      <app-catch-error-operator    *ngIf="selected === 'catchError'"></app-catch-error-operator>
+      <app-retry-operator          *ngIf="selected === 'retry'"></app-retry-operator>
+      <app-finalize-operator       *ngIf="selected === 'finalize'"></app-finalize-operator>
+      <app-subject-operator        *ngIf="selected === 'subject'"></app-subject-operator>
+      <app-behavior-subject-operator *ngIf="selected === 'behaviorSubject'"></app-behavior-subject-operator>
+    </ng-container>
+
+    <!-- ── Interview Masterclass content ── -->
+    <ng-container *ngIf="appMode === 'interview'">
+      <!-- Module 1: Angular Fundamentals -->
+      <app-latest-angular-updates  *ngIf="selectedInterview === 'latest-angular-updates'"></app-latest-angular-updates>
+      <app-what-is-angular         *ngIf="selectedInterview === 'what-is-angular'"></app-what-is-angular>
+      <app-why-angular             *ngIf="selectedInterview === 'why-angular'"></app-why-angular>
+      <app-angular-versions        *ngIf="selectedInterview === 'angular-versions'"></app-angular-versions>
+      <app-spa                     *ngIf="selectedInterview === 'spa'"></app-spa>
+      <app-angular-architecture    *ngIf="selectedInterview === 'angular-architecture'"></app-angular-architecture>
+      <app-angular-cli             *ngIf="selectedInterview === 'angular-cli'"></app-angular-cli>
+      <app-project-structure       *ngIf="selectedInterview === 'project-structure'"></app-project-structure>
+      <app-angular-compilation     *ngIf="selectedInterview === 'angular-compilation'"></app-angular-compilation>
+      <app-jit-vs-aot              *ngIf="selectedInterview === 'jit-vs-aot'"></app-jit-vs-aot>
+      <app-bootstrapping           *ngIf="selectedInterview === 'bootstrapping'"></app-bootstrapping>
+      <!-- Module 2: Components -->
+      <app-components-intro        *ngIf="selectedInterview === 'components-intro'"></app-components-intro>
+      <app-component-lifecycle     *ngIf="selectedInterview === 'component-lifecycle'"></app-component-lifecycle>
+      <app-component-communication *ngIf="selectedInterview === 'component-communication'"></app-component-communication>
+      <app-input-decorator         *ngIf="selectedInterview === 'input-decorator'"></app-input-decorator>
+      <app-output-decorator        *ngIf="selectedInterview === 'output-decorator'"></app-output-decorator>
+      <app-event-emitter-topic     *ngIf="selectedInterview === 'event-emitter-topic'"></app-event-emitter-topic>
+      <app-view-child              *ngIf="selectedInterview === 'view-child'"></app-view-child>
+      <app-content-child           *ngIf="selectedInterview === 'content-child'"></app-content-child>
+      <app-content-projection      *ngIf="selectedInterview === 'content-projection'"></app-content-projection>
+      <app-dynamic-components      *ngIf="selectedInterview === 'dynamic-components'"></app-dynamic-components>
+      <!-- Module 3: Modules -->
+      <app-app-module              *ngIf="selectedInterview === 'app-module'"></app-app-module>
+      <app-feature-module          *ngIf="selectedInterview === 'feature-module'"></app-feature-module>
+      <app-shared-module           *ngIf="selectedInterview === 'shared-module'"></app-shared-module>
+      <app-core-module             *ngIf="selectedInterview === 'core-module'"></app-core-module>
+      <app-standalone-comp         *ngIf="selectedInterview === 'standalone-comp'"></app-standalone-comp>
+      <!-- Module 4: Templates -->
+      <app-interpolation           *ngIf="selectedInterview === 'interpolation'"></app-interpolation>
+      <app-property-binding        *ngIf="selectedInterview === 'property-binding'"></app-property-binding>
+      <app-event-binding           *ngIf="selectedInterview === 'event-binding'"></app-event-binding>
+      <app-two-way-binding         *ngIf="selectedInterview === 'two-way-binding'"></app-two-way-binding>
+      <app-template-ref-var        *ngIf="selectedInterview === 'template-ref-var'"></app-template-ref-var>
+      <!-- Module 5: Directives -->
+      <app-component-directive     *ngIf="selectedInterview === 'component-directive'"></app-component-directive>
+      <app-structural-directive    *ngIf="selectedInterview === 'structural-directive'"></app-structural-directive>
+      <app-attribute-directive     *ngIf="selectedInterview === 'attribute-directive'"></app-attribute-directive>
+      <app-ngif-dir                *ngIf="selectedInterview === 'ngif-dir'"></app-ngif-dir>
+      <app-ngfor-dir               *ngIf="selectedInterview === 'ngfor-dir'"></app-ngfor-dir>
+      <app-ngswitch-dir            *ngIf="selectedInterview === 'ngswitch-dir'"></app-ngswitch-dir>
+      <app-ngclass-dir             *ngIf="selectedInterview === 'ngclass-dir'"></app-ngclass-dir>
+      <app-ngstyle-dir             *ngIf="selectedInterview === 'ngstyle-dir'"></app-ngstyle-dir>
+      <app-custom-directive        *ngIf="selectedInterview === 'custom-directive'"></app-custom-directive>
+      <!-- Module 6: Pipes -->
+      <app-built-in-pipes          *ngIf="selectedInterview === 'built-in-pipes'"></app-built-in-pipes>
+      <app-pure-impure-pipe        *ngIf="selectedInterview === 'pure-impure-pipe'"></app-pure-impure-pipe>
+      <app-async-pipe-int          *ngIf="selectedInterview === 'async-pipe-int'"></app-async-pipe-int>
+      <app-custom-pipe             *ngIf="selectedInterview === 'custom-pipe'"></app-custom-pipe>
+      <!-- Module 7: Services -->
+      <app-services-intro          *ngIf="selectedInterview === 'services-intro'"></app-services-intro>
+      <app-dependency-injection    *ngIf="selectedInterview === 'dependency-injection'"></app-dependency-injection>
+      <app-providers               *ngIf="selectedInterview === 'providers'"></app-providers>
+      <app-injector                *ngIf="selectedInterview === 'injector'"></app-injector>
+      <app-singleton-service       *ngIf="selectedInterview === 'singleton-service'"></app-singleton-service>
+      <!-- Module 8: Routing -->
+      <app-router-module           *ngIf="selectedInterview === 'router-module'"></app-router-module>
+      <app-route-config            *ngIf="selectedInterview === 'route-config'"></app-route-config>
+      <app-route-params            *ngIf="selectedInterview === 'route-params'"></app-route-params>
+      <app-query-params            *ngIf="selectedInterview === 'query-params'"></app-query-params>
+      <app-child-routes            *ngIf="selectedInterview === 'child-routes'"></app-child-routes>
+      <app-lazy-loading-route      *ngIf="selectedInterview === 'lazy-loading-route'"></app-lazy-loading-route>
+      <app-route-guards            *ngIf="selectedInterview === 'route-guards'"></app-route-guards>
+      <app-wildcard-routes         *ngIf="selectedInterview === 'wildcard-routes'"></app-wildcard-routes>
+      <!-- Module 9: Forms -->
+      <app-template-driven-forms   *ngIf="selectedInterview === 'template-driven-forms'"></app-template-driven-forms>
+      <app-reactive-forms          *ngIf="selectedInterview === 'reactive-forms'"></app-reactive-forms>
+      <app-form-group              *ngIf="selectedInterview === 'form-group'"></app-form-group>
+      <app-form-control            *ngIf="selectedInterview === 'form-control'"></app-form-control>
+      <app-form-array              *ngIf="selectedInterview === 'form-array'"></app-form-array>
+      <app-validators              *ngIf="selectedInterview === 'validators'"></app-validators>
+      <app-custom-validators       *ngIf="selectedInterview === 'custom-validators'"></app-custom-validators>
+      <!-- Module 10: HTTP -->
+      <app-http-client             *ngIf="selectedInterview === 'http-client'"></app-http-client>
+      <app-http-get                *ngIf="selectedInterview === 'http-get'"></app-http-get>
+      <app-http-post               *ngIf="selectedInterview === 'http-post'"></app-http-post>
+      <app-http-put                *ngIf="selectedInterview === 'http-put'"></app-http-put>
+      <app-http-delete             *ngIf="selectedInterview === 'http-delete'"></app-http-delete>
+      <app-http-patch              *ngIf="selectedInterview === 'http-patch'"></app-http-patch>
+      <app-http-error              *ngIf="selectedInterview === 'http-error'"></app-http-error>
+      <!-- Module 11: RxJS (reuse existing interactive components) -->
+      <app-observable-concept      *ngIf="selectedInterview === 'int-observable'"></app-observable-concept>
+      <app-observer-concept        *ngIf="selectedInterview === 'int-observer'"></app-observer-concept>
+      <app-subscription-concept    *ngIf="selectedInterview === 'int-subscription'"></app-subscription-concept>
+      <app-subject-concept         *ngIf="selectedInterview === 'int-subject'"></app-subject-concept>
+      <app-behavior-subject-concept *ngIf="selectedInterview === 'int-behavior-subject'"></app-behavior-subject-concept>
+      <app-replay-subject-concept  *ngIf="selectedInterview === 'int-replay-subject'"></app-replay-subject-concept>
+      <app-async-subject-concept   *ngIf="selectedInterview === 'int-async-subject'"></app-async-subject-concept>
+      <app-switch-map-operator     *ngIf="selectedInterview === 'int-switchmap'"></app-switch-map-operator>
+      <app-merge-map-operator      *ngIf="selectedInterview === 'int-mergemap'"></app-merge-map-operator>
+      <app-concat-map-operator     *ngIf="selectedInterview === 'int-concatmap'"></app-concat-map-operator>
+      <app-exhaust-map-operator    *ngIf="selectedInterview === 'int-exhaustmap'"></app-exhaust-map-operator>
+      <!-- Module 12: Lifecycle Hooks -->
+      <app-constructor-hook        *ngIf="selectedInterview === 'constructor-hook'"></app-constructor-hook>
+      <app-ng-on-changes           *ngIf="selectedInterview === 'ng-on-changes'"></app-ng-on-changes>
+      <app-ng-on-init              *ngIf="selectedInterview === 'ng-on-init'"></app-ng-on-init>
+      <app-ng-do-check             *ngIf="selectedInterview === 'ng-do-check'"></app-ng-do-check>
+      <app-ng-after-content-init   *ngIf="selectedInterview === 'ng-after-content-init'"></app-ng-after-content-init>
+      <app-ng-after-content-checked *ngIf="selectedInterview === 'ng-after-content-checked'"></app-ng-after-content-checked>
+      <app-ng-after-view-init      *ngIf="selectedInterview === 'ng-after-view-init'"></app-ng-after-view-init>
+      <app-ng-after-view-checked   *ngIf="selectedInterview === 'ng-after-view-checked'"></app-ng-after-view-checked>
+      <app-ng-on-destroy           *ngIf="selectedInterview === 'ng-on-destroy'"></app-ng-on-destroy>
+      <!-- Module 13: Authentication -->
+      <app-jwt                     *ngIf="selectedInterview === 'jwt'"></app-jwt>
+      <app-refresh-token           *ngIf="selectedInterview === 'refresh-token'"></app-refresh-token>
+      <app-local-storage           *ngIf="selectedInterview === 'local-storage'"></app-local-storage>
+      <app-session-storage         *ngIf="selectedInterview === 'session-storage'"></app-session-storage>
+      <!-- Module 14: Interceptors -->
+      <app-http-interceptor        *ngIf="selectedInterview === 'http-interceptor'"></app-http-interceptor>
+      <app-token-interceptor       *ngIf="selectedInterview === 'token-interceptor'"></app-token-interceptor>
+      <app-error-interceptor       *ngIf="selectedInterview === 'error-interceptor'"></app-error-interceptor>
+      <!-- Module 15: Performance -->
+      <app-lazy-loading-perf       *ngIf="selectedInterview === 'lazy-loading-perf'"></app-lazy-loading-perf>
+      <app-track-by                *ngIf="selectedInterview === 'track-by'"></app-track-by>
+      <app-on-push                 *ngIf="selectedInterview === 'on-push'"></app-on-push>
+      <app-virtual-scrolling       *ngIf="selectedInterview === 'virtual-scrolling'"></app-virtual-scrolling>
+      <app-signals                 *ngIf="selectedInterview === 'signals'"></app-signals>
+      <app-standalone-apis         *ngIf="selectedInterview === 'standalone-apis'"></app-standalone-apis>
+      <!-- Modules 16-19 -->
+      <app-coding-questions        *ngIf="selectedInterview === 'coding-questions'"></app-coding-questions>
+      <app-scenario-questions      *ngIf="selectedInterview === 'scenario-questions'"></app-scenario-questions>
+      <app-project-discussion      *ngIf="selectedInterview === 'project-discussion'"></app-project-discussion>
+      <app-hr-questions            *ngIf="selectedInterview === 'hr-questions'"></app-hr-questions>
+    </ng-container>
+
+  </main>
+</div>

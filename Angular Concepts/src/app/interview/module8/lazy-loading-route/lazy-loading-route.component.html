@@ -1,0 +1,90 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod8">
+    <span class="module-tag">Module 8 — Routing</span>
+    <h1>Lazy Loading Routes</h1>
+    <p class="subtitle">Splitting the app into smaller bundles for faster initial load</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Lazy loading routes defer loading a route's JavaScript bundle until the user actually navigates to that route. Angular splits the app into separate chunks at build time. The initial bundle contains only what is needed to display the first screen, dramatically reducing startup download size.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Reduce initial bundle size for faster first meaningful paint</li>
+      <li>Improve Time to Interactive (TTI) for better Lighthouse scores</li>
+      <li>Load admin/power-user features only when accessed</li>
+      <li>Split large apps into independently deployable chunks</li>
+      <li>Critical for mobile users on slow networks</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>An app that eagerly loads home and about pages but lazy-loads the entire admin area and a profile component, mixing both lazy loading strategies.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular CLI's webpack configuration recognizes dynamic import() calls in loadChildren/loadComponent and creates separate JavaScript chunk files at build time. At runtime, when the Router matches a lazy route for the first time, it makes an HTTP request for the chunk file, evaluates it, registers its routes, and then navigates normally. Subsequent visits to the same lazy route use the cached module — no re-download.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Smaller initial bundle — faster startup</li>
+        <li>Independent chunk caching by the browser</li>
+        <li>Guards (canMatch) can prevent bundle download entirely for unauthorized users</li>
+        <li>Preloading strategies give best of both worlds</li>
+        <li>Scales well for large enterprise apps</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>First navigation to a lazy route has a slight delay (download)</li>
+        <li>Requires discipline to keep feature boundaries clean</li>
+        <li>Shared services between eager and lazy modules need careful scoping</li>
+        <li>Debugging chunk loading errors can be tricky</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Lazy load every feature area that isn't on the landing page</li>
+      <li>Use loadComponent for single-component routes</li>
+      <li>Apply PreloadAllModules or a custom strategy for critical paths</li>
+      <li>Protect lazy routes with canMatch to avoid downloading unauthorized code</li>
+      <li>Analyze bundle sizes regularly with webpack-bundle-analyzer</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Importing lazy components eagerly in AppModule (defeats lazy loading)</li>
+      <li>Forgetting canMatch and using only canActivate (bundle still downloads)</li>
+      <li>Not configuring a preloading strategy (jarring delay on first lazy navigate)</li>
+      <li>Putting shared services inside a lazy module's providers (multiple instances)</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,14 @@
+<div class="operator-box">
+
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+
+  <h2>tap()</h2>
+  <p class="definition">Peeks at each value for side effects (like logging) without modifying the stream.</p>
+  <button (click)="run()">Run tap()</button>
+  <ul>
+    <li *ngFor="let item of results">{{ item }}</li>
+  </ul>
+</div>

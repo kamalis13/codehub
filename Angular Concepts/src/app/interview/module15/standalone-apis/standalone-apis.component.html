@@ -1,0 +1,68 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod15">
+    <span class="module-tag">Module 15 — Performance</span>
+    <h1>Standalone APIs</h1>
+    <p class="subtitle">Angular's module-free architecture for leaner, faster applications</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📖 Definition</h2>
+    <p>{{ definition }}</p>
+  </section>
+
+  <section class="t-card">
+    <h2>❓ Why Is It Needed?</h2>
+    <p>{{ whyNeeded }}</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🔤 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>💡 Example</h2>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>{{ internalWorking }}</p>
+  </section>
+
+  <section class="t-card">
+    <h2>✅ Advantages</h2>
+    <ul>
+      <li *ngFor="let a of advantages">{{ a }}</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>❌ Disadvantages</h2>
+    <ul>
+      <li *ngFor="let d of disadvantages">{{ d }}</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li *ngFor="let b of bestPractices">{{ b }}</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li *ngFor="let m of commonMistakes">{{ m }}</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,92 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod12">
+    <span class="module-tag">Module 12 — Lifecycle Hooks</span>
+    <h1>ngAfterContentChecked</h1>
+    <p class="subtitle">Called after every change detection pass on projected content — use with caution due to high frequency</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>ngAfterContentChecked</strong> is an Angular lifecycle hook that fires after every change detection cycle that checks the component's projected content. It is the recurring counterpart to <code>ngAfterContentInit</code> (which fires only once). After the first cycle it fires in the sequence: <code>ngDoCheck → ngAfterContentChecked</code>. Because it fires on every CD cycle, it must contain only very lightweight, fast operations to avoid performance degradation.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Allows reacting to repeated state changes in projected content after each CD pass</li>
+      <li>Enables recalculating summary/derived state from projected children</li>
+      <li>Provides a hook for monitoring projected content health (e.g., counting errors)</li>
+      <li>Complements ngAfterContentInit — init sets up, checked maintains</li>
+      <li>Used by Angular's form infrastructure to track validation state across projected fields</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A <code>FormGroupComponent</code> wraps projected <code>FormFieldComponent</code> children. After each change detection pass, <code>ngAfterContentChecked</code> counts how many projected fields have errors and updates a summary message. This gives a live "N fields have errors" counter that updates as the user fills in the form.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's change detection processes the component tree from root to leaves. For each component, the sequence on every CD cycle (after first initialization) is: <code>ngDoCheck → ngAfterContentChecked → ngAfterViewChecked</code>. Angular calls <code>ngAfterContentChecked()</code> after it has finished checking all <code>&#64;ContentChildren</code> for changes. In development mode, Angular runs a second verification pass — which is why modifying bound properties in this hook without calling <code>detectChanges()</code> throws <code>ExpressionChangedAfterItHasBeenCheckedError</code>.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Provides a hook into every projected-content check — maximum reactivity</li>
+        <li>Can recalculate derived values from &#64;ContentChildren state on each cycle</li>
+        <li>Consistent, predictable firing after every CD pass</li>
+        <li>Works with ChangeDetectorRef.detectChanges() to safely update state mid-cycle</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Fires extremely frequently — can cause severe performance issues if misused</li>
+        <li>Modifying bound properties here causes ExpressionChangedAfterItHasBeenCheckedError in dev mode</li>
+        <li>Heavy logic in this hook makes the entire application sluggish</li>
+        <li>Often a symptom of poor architecture — consider QueryList.changes or signals instead</li>
+        <li>Difficult to debug performance issues originating here</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Keep logic extremely lightweight — O(1) operations only</li>
+      <li>Use caching/flags to avoid redundant calculations on every cycle</li>
+      <li>Prefer <code>QueryList.changes</code> subscription (set up in ngAfterContentInit) for less frequent updates</li>
+      <li>Use <code>ChangeDetectorRef.detectChanges()</code> if you must modify bound state in this hook</li>
+      <li>Consider Angular signals (Angular 16+) as a modern, push-based alternative</li>
+      <li>Implement <code>implements AfterContentChecked</code> for TypeScript enforcement</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Placing expensive logic (loops, API calls) in ngAfterContentChecked</li>
+      <li>Modifying template-bound properties without calling detectChanges() — causes ExpressionChangedError</li>
+      <li>Using ngAfterContentChecked when ngAfterContentInit + QueryList.changes would suffice</li>
+      <li>Not realizing it fires on every event in the app, not just content-specific events</li>
+      <li>Confusing it with ngAfterViewChecked (view vs. content distinction)</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

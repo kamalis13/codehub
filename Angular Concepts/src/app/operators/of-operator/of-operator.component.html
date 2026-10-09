@@ -1,0 +1,14 @@
+<div class="operator-box">
+
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+
+  <h2>of()</h2>
+  <p class="definition">Creates an Observable that emits the given values one by one, then completes.</p>
+  <button (click)="run()">Run of()</button>
+  <ul>
+    <li *ngFor="let item of results">{{ item }}</li>
+  </ul>
+</div>

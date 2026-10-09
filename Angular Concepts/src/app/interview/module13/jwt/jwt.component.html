@@ -1,0 +1,93 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod13">
+    <span class="module-tag">Module 13 — Authentication</span>
+    <h1>JWT — JSON Web Token</h1>
+    <p class="subtitle">Stateless authentication token: a compact, self-contained credential carrying signed claims</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>A <strong>JSON Web Token (JWT)</strong> is an open standard (RFC 7519) for securely transmitting information between parties as a JSON object. It is self-contained — the token itself carries the user's identity and claims (roles, expiry, user ID) without requiring the server to look up a session in a database on every request. JWTs are <em>signed</em> (not encrypted) using a secret key (HS256) or public/private key pair (RS256), enabling the server to verify authenticity without storing session state.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Stateless authentication — no server-side session store needed (scales horizontally)</li>
+      <li>Works across microservices — each service can independently verify the token</li>
+      <li>Self-contained claims — roles, permissions, expiry all in the token itself</li>
+      <li>Standard format — supported by every major language and framework</li>
+      <li>Ideal for SPAs and mobile apps where cookies are harder to manage</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>An Angular app authenticates users via a login API that returns a JWT. An HTTP interceptor reads the token (from memory or httpOnly cookie) and attaches it as a <code>Bearer</code> token in the <code>Authorization</code> header of every outgoing API request. The backend validates the signature and extracts user claims without querying a session database.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>When a user logs in, the server creates a JWT by: (1) encoding the header and payload as Base64Url strings; (2) computing HMAC-SHA256(header + "." + payload, serverSecret) for the signature; (3) concatenating all three with ".". When an API request arrives with the token, the server re-computes the signature using its secret and compares it — if they match, the token is valid. The server also checks the <code>exp</code> claim against the current time. If either check fails, a 401 is returned. The server never needs to query a database for session data.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Stateless — server doesn't need a session store (ideal for distributed systems)</li>
+        <li>Self-contained — all user info in the token, eliminates per-request DB lookups</li>
+        <li>Cross-domain friendly — easily sent as an Authorization header</li>
+        <li>Scales horizontally — any server instance can validate any JWT</li>
+        <li>Rich claims support — roles, permissions, tenant ID, all encoded in the token</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Cannot be revoked server-side before expiry (unless using a token blacklist)</li>
+        <li>Payload is only encoded — never store secrets or PII in it</li>
+        <li>Larger than session IDs — increases request header size</li>
+        <li>localStorage storage is XSS-vulnerable</li>
+        <li>Logout requires client-side token deletion (no server-side session to destroy)</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Store JWTs in httpOnly, SameSite=Strict cookies for XSS protection</li>
+      <li>Keep access token expiry short (15 minutes) and use refresh tokens for longevity</li>
+      <li>Never store sensitive data (passwords, PII) in the JWT payload</li>
+      <li>Use RS256 (asymmetric) in microservices — other services verify without the signing secret</li>
+      <li>Always validate the token on the server — never trust client-side JWT decoding for auth decisions</li>
+      <li>Add an Angular HTTP interceptor to attach the token automatically to all API calls</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Storing JWT in localStorage — XSS attack can steal the token</li>
+      <li>Setting very long expiry (days/weeks) on access tokens — increases breach window</li>
+      <li>Trusting JWT payload claims on the client for security decisions</li>
+      <li>Not validating the token signature on the server (accepting any well-formed JWT)</li>
+      <li>Forgetting to handle 401 responses from expired tokens in the Angular interceptor</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

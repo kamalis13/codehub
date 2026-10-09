@@ -1,0 +1,89 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod8">
+    <span class="module-tag">Module 8 — Routing</span>
+    <h1>Route Parameters</h1>
+    <p class="subtitle">Embedding dynamic values directly in the URL path (/products/:id)</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Route parameters are named URL segments prefixed with : that carry dynamic values as part of the path. They are defined in the route table as :paramName and extracted in the component via ActivatedRoute. They are ideal for identifying specific resources — /products/42, /users/john, /orders/ORD-789.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Identify specific resources in the URL (/products/:id)</li>
+      <li>Enable bookmarkable, shareable deep links to exact records</li>
+      <li>Support server-side rendering and SEO with meaningful URLs</li>
+      <li>Allow navigation to related resources without extra state</li>
+      <li>Trigger component data loading based on the URL</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A product detail page that reactively loads the correct product whenever the :id param changes, supporting next/previous navigation without component re-creation.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's route matching algorithm extracts the :paramName segments from the actual URL and populates the ActivatedRoute's paramMap and params. The component can read them via snapshot (current value only) or subscribe to paramMap$ (stream of changes). When navigating between the same route with different params, Angular can reuse the component instance and the Observable emits the new value.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Clean, semantic URLs that reflect resource identity</li>
+        <li>Fully shareable and bookmarkable</li>
+        <li>Works with browser back/forward navigation</li>
+        <li>paramMap observable handles in-place navigation elegantly</li>
+        <li>withComponentInputBinding simplifies param consumption</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>snapshot approach misses param changes on reuse</li>
+        <li>Multiple params in deep paths can get verbose</li>
+        <li>Must URL-encode special characters in param values</li>
+        <li>No optional path params — use query params instead</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use paramMap observable for components that can be navigated to with different param values</li>
+      <li>Use snapshot only for components that are always freshly created</li>
+      <li>Validate and sanitize param values before using in API calls</li>
+      <li>Use router.navigate(['/route', id]) instead of string concatenation</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using snapshot when the component reuses on same-route navigation (stale data)</li>
+      <li>Forgetting to unsubscribe from paramMap$ (memory leak)</li>
+      <li>Relying on route params for optional filters instead of query params</li>
+      <li>Not handling the case where paramMap.get() returns null</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

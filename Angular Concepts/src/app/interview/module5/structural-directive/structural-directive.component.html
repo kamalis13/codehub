@@ -1,0 +1,91 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod5">
+    <span class="module-tag">Module 5 — Directives</span>
+    <h1>Structural Directive</h1>
+    <p class="subtitle">Reshape the DOM — add, remove, or manipulate elements dynamically</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>A <strong>Structural Directive</strong> changes the <em>structure</em> of the DOM by adding, removing, or rearranging elements. They use the <code>*</code> prefix (syntactic sugar for <code>&lt;ng-template&gt;</code> desugaring). Built-in structural directives include <code>*ngIf</code>, <code>*ngFor</code>, and <code>*ngSwitch</code>. Custom structural directives are built with <code>TemplateRef</code> and <code>ViewContainerRef</code>.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Conditionally include or exclude parts of the UI (<code>*ngIf</code>)</li>
+      <li>Render dynamic lists without manual DOM manipulation (<code>*ngFor</code>)</li>
+      <li>Switch between multiple views based on a value (<code>*ngSwitch</code>)</li>
+      <li>Create reusable DOM-manipulation abstractions (custom structural directives)</li>
+      <li>Avoid JavaScript DOM APIs — keep templates declarative and readable</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A custom <strong>appUnless</strong> directive — the opposite of <code>*ngIf</code>. It renders the element only when the condition is <code>false</code>. Demonstrates how TemplateRef and ViewContainerRef power all structural directives under the hood.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>When Angular sees <code>*ngIf="condition"</code>, it desugars it to <code>&lt;ng-template [ngIf]="condition"&gt;</code>. The <code>NgIf</code> directive class receives a <code>TemplateRef</code> (the wrapped template) and <code>ViewContainerRef</code> (where to insert it). When the condition is true, it calls <code>vcr.createEmbeddedView(templateRef)</code> to insert the view into the DOM. When false, it calls <code>vcr.clear()</code> to remove it. This is the same mechanism for all structural directives including custom ones.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Declarative — DOM manipulation described in templates, not imperative code</li>
+        <li>*ngIf prevents rendering of hidden content, saving memory and CPU</li>
+        <li>*ngFor with trackBy enables efficient list re-rendering</li>
+        <li>Custom directives enable reusable DOM-manipulation patterns</li>
+        <li>Angular handles lifecycle (creation/destruction) automatically</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>*ngIf destroys and recreates components — initialization cost on toggle</li>
+        <li>Cannot apply two structural directives on the same element</li>
+        <li>*ngFor without trackBy causes full list re-rendering on any change</li>
+        <li>Custom structural directive API (TemplateRef/ViewContainerRef) is complex</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always use <code>trackBy</code> with <code>*ngFor</code> for large or frequently updated lists</li>
+      <li>Use <code>&lt;ng-container&gt;</code> to apply structural directives without adding wrapper DOM elements</li>
+      <li>Prefer <code>*ngIf; else</code> pattern over two separate *ngIf and *ngIf="!" blocks</li>
+      <li>Combine <code>*ngIf</code> with <code>async</code> pipe using <code>ng-container</code> for Observable data</li>
+      <li>Do not apply two structural directives to the same element — nest them instead</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Applying both <code>*ngIf</code> and <code>*ngFor</code> on the same element (runtime error)</li>
+      <li>Omitting <code>trackBy</code> in <code>*ngFor</code>, causing full list re-renders on every change</li>
+      <li>Using <code>[hidden]</code> when <code>*ngIf</code> is more appropriate for heavy components</li>
+      <li>Forgetting to import <code>NgIf</code>, <code>NgFor</code>, or <code>CommonModule</code> in standalone components</li>
+      <li>Writing custom structural directive but forgetting the <code>&#64;Input</code> setter naming convention</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

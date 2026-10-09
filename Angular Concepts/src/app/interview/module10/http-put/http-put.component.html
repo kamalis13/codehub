@@ -1,0 +1,94 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod10">
+    <span class="module-tag">Module 10 — HTTP</span>
+    <h1>HTTP PUT</h1>
+    <p class="subtitle">Replace a resource completely — idempotent full update</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      <code>http.put&lt;T&gt;(url, body)</code> sends an HTTP PUT request that replaces the entire resource
+      at the given URL with the provided body. PUT is idempotent: sending the same request multiple times
+      produces the same result as sending it once.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Updating complete records where all fields are known and must be persisted together</li>
+      <li>Idempotent nature makes it safe to retry on network failures without side effects</li>
+      <li>Standard REST convention for full resource replacement (PUT /api/resource/:id)</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A user profile edit form loads the existing profile, binds all fields, and on save sends the
+      complete object via PUT — any field not included would be cleared on the server. The example
+      also contrasts PUT with PATCH to show when each is appropriate.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      Angular's HttpClient serialises the body to JSON and sets <code>Content-Type: application/json</code>
+      automatically. The PUT request travels over HTTP carrying the full payload. The server replaces its
+      stored representation entirely with the incoming body and returns the updated resource (or 204 No Content).
+      Because PUT is idempotent, intermediaries and clients can safely resend it on timeout without risk of
+      duplicate side effects.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Idempotent — safe to retry without double-update side effects</li>
+        <li>Clear REST semantics — signals a full replacement to server and teammates</li>
+        <li>Consistent server state — no stale fields left from a partial update</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Requires sending all fields even when only one changed — larger payloads over the wire</li>
+        <li>Risk of data loss if client state is stale and overwrites a concurrent update from another user</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always fetch the latest version of the resource before sending a PUT to avoid overwriting concurrent changes</li>
+      <li>Use ETags or version fields for optimistic concurrency control to detect conflicts</li>
+      <li>Validate the full object on the client before sending to catch missing required fields early</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Sending only the changed fields in a PUT request — omitted fields are cleared on the server, causing silent data loss</li>
+      <li>Using PUT when PATCH is more appropriate, causing unnecessarily large payloads for simple single-field updates</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

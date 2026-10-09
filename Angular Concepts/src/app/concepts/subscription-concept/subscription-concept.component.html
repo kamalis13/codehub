@@ -1,0 +1,89 @@
+<div class="concept-box">
+
+  <!-- Header -->
+  <div class="concept-header sub-header">
+    <span class="badge">🔢 Concept 6</span>
+    <h2>Subscription</h2>
+    <p class="tagline">"The live connection between an Observable and an Observer — cancel it to stop the stream."</p>
+  </div>
+
+  <!-- Lifecycle visual -->
+  <div class="lifecycle-row">
+    <div class="lc-step active-step">
+      <div class="lc-icon">🔌</div>
+      <strong>subscribe()</strong>
+      <p>Connection created<br>Stream starts</p>
+    </div>
+    <div class="lc-arrow">→</div>
+    <div class="lc-step running-step">
+      <div class="lc-icon">📦</div>
+      <strong>ACTIVE</strong>
+      <p>Values flowing<br>closed = false</p>
+    </div>
+    <div class="lc-arrow">→</div>
+    <div class="lc-step stop-step">
+      <div class="lc-icon">⛔</div>
+      <strong>unsubscribe()</strong>
+      <p>Connection cut<br>closed = true</p>
+    </div>
+  </div>
+
+  <!-- Definition card -->
+  <div class="def-card">
+    <div class="def-row">
+      <span class="def-icon">📖</span>
+      <div>
+        <strong>Definition</strong>
+        <p>A Subscription is the object returned by <code>subscribe()</code>. It represents the active connection to an Observable stream. Calling <code>unsubscribe()</code> cancels it and frees memory.</p>
+      </div>
+    </div>
+    <div class="def-row">
+      <span class="def-icon">📺</span>
+      <div>
+        <strong>Analogy</strong>
+        <p>A Netflix subscription — you subscribe to start watching. If you don't cancel, you keep getting charged (memory leak in code!). Cancel it to stop.</p>
+      </div>
+    </div>
+    <div class="def-row">
+      <span class="def-icon">⚠️</span>
+      <div>
+        <strong>Why it matters</strong>
+        <p>Long-lived Observables (timers, WebSockets, route params) never stop on their own. If you don't unsubscribe when a component is destroyed, the callback keeps running in the background — this is a <strong>memory leak</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Syntax / Code example -->
+  <div class="code-block">
+    <div class="code-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+
+  <!-- Live demo -->
+  <div class="demo-section">
+    <div class="demo-label">▶ Live Demo — Subscribe to a timer, then cancel it</div>
+    <div class="btn-row">
+      <button class="btn-subscribe" (click)="subscribe()" [disabled]="isSubscribed">Subscribe</button>
+      <button class="btn-unsub" (click)="unsubscribe()" [disabled]="!isSubscribed">Unsubscribe</button>
+    </div>
+    <div class="status-bar" *ngIf="sub">
+      <span class="status-dot" [class.active]="isSubscribed" [class.closed]="!isSubscribed"></span>
+      <span>Status: <strong>{{ isSubscribed ? 'ACTIVE (closed = false)' : 'STOPPED (closed = true)' }}</strong></span>
+      <span class="tick-count" *ngIf="tickCount">— {{ tickCount }} ticks received</span>
+    </div>
+    <div class="log-list">
+      <div *ngFor="let entry of log" class="log-entry" [class.stop]="entry.includes('⛔')" [class.info]="entry.includes('🔍')">
+        {{ entry }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Memory leak warning -->
+  <div class="warning-box">
+    <strong>🚨 Memory Leak Pattern — What NOT to do</strong>
+    <pre [innerText]="leakExample"></pre>
+    <strong>✅ Correct Pattern</strong>
+    <pre [innerText]="fixExample"></pre>
+  </div>
+
+</div>

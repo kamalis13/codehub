@@ -1,0 +1,41 @@
+<div class="operator-box">
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+  <h2>throttleTime()</h2>
+  <p class="definition">Emits the FIRST value from the source, then ignores all subsequent emissions for N milliseconds, then emits the first value after the silence window ends.</p>
+  <p class="note">Analogy: Like a smoke alarm that sounds the first time, then silences for 1 minute before it can ring again — prevents alarm fatigue.</p>
+
+  <div class="vs-card">
+    <div class="vs-item"><strong>throttleTime(1000)</strong> — emits FIRST value, ignores rest for 1s</div>
+    <div class="vs-divider">vs</div>
+    <div class="vs-item"><strong>debounceTime(1000)</strong> — ignores all, emits LAST after 1s pause</div>
+  </div>
+
+  <div class="demo-section">
+    <h3>Side-by-side Comparison</h3>
+    <p class="note">Click rapidly to see the difference. throttle passes the first click; debounce waits for you to stop clicking.</p>
+    <div class="stats-bar">Raw clicks: <strong>{{ rawCount }}</strong></div>
+    <div class="btn-row">
+      <button (click)="click()">Click! (spam me)</button>
+      <button class="secondary-btn" (click)="reset()">Reset</button>
+    </div>
+    <div class="log-grid">
+      <div class="log-col throttle-col">
+        <div class="log-title">throttleTime(1000) — First wins</div>
+        <ul class="result-list">
+          <li *ngFor="let r of throttleLog">✅ {{ r }}</li>
+          <li *ngIf="throttleLog.length === 0" class="empty">Waiting for clicks...</li>
+        </ul>
+      </div>
+      <div class="log-col debounce-col">
+        <div class="log-title">debounceTime(1000) — Last wins</div>
+        <ul class="result-list">
+          <li *ngFor="let r of debounceLog">⏱️ {{ r }}</li>
+          <li *ngIf="debounceLog.length === 0" class="empty">Waiting for pause...</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

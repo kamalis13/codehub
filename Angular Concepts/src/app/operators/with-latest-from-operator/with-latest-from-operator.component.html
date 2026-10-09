@@ -1,0 +1,23 @@
+<div class="operator-box">
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+  <h2>withLatestFrom()</h2>
+  <p class="definition">When the source Observable emits, it combines the emission with the MOST RECENT value from another Observable. The other Observable is sampled — it doesn't trigger anything, it's just "read" at the moment the source emits.</p>
+  <p class="note">Analogy: Like checking the scoreboard when the buzzer sounds — the buzzer (source) triggers the read, and you grab whatever the scoreboard shows at that moment.</p>
+
+  <div class="demo-section">
+    <h3>Search Box Demo</h3>
+    <p class="note">Type in the box, then click Search. withLatestFrom reads the current input value at the moment you click.</p>
+    <div class="input-row">
+      <input type="text" [value]="currentInput" (input)="onInput($event)" placeholder="Type something..." />
+      <button (click)="search()">Search</button>
+    </div>
+    <p class="note">Current input$ value: <strong>"{{ currentInput }}"</strong></p>
+    <ul class="result-list">
+      <li *ngFor="let r of results">{{ r }}</li>
+    </ul>
+    <button class="secondary-btn" (click)="reset()" style="margin-top:0.5rem">Reset</button>
+  </div>
+</div>

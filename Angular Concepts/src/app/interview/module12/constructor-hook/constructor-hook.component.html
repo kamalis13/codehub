@@ -1,0 +1,94 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod12">
+    <span class="module-tag">Module 12 — Lifecycle Hooks</span>
+    <h1>Constructor</h1>
+    <p class="subtitle">The first method called when Angular creates a component — used exclusively for Dependency Injection</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>The <strong>constructor</strong> is a standard TypeScript/JavaScript class method invoked by Angular's component factory when instantiating a component. It is the very first entry point in a component's lifecycle — before any lifecycle hooks, before <code>&#64;Input()</code> values are resolved, and before the view is rendered. Angular's DI framework reads the constructor's parameter types (via TypeScript metadata) and injects the matching service instances automatically.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Enables Angular's Dependency Injection — services are injected as typed constructor parameters</li>
+      <li>Establishes service references before any lifecycle hook runs</li>
+      <li>Allows use of <code>&#64;Inject</code> for InjectionToken-based dependencies (non-class tokens)</li>
+      <li>Makes all component dependencies explicitly visible in one place</li>
+      <li>Supports <code>&#64;Optional</code>, <code>&#64;Self</code>, <code>&#64;SkipSelf</code>, <code>&#64;Host</code> modifiers for fine-grained injection control</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>In an e-commerce dashboard, the constructor injects <code>OrderService</code>, <code>AuthService</code>, and a custom <code>CONFIG_TOKEN</code> via <code>&#64;Inject</code>. A synchronous role check is acceptable in the constructor; the async HTTP call for orders is deferred to <code>ngOnInit()</code> where <code>&#64;Input()</code> values are guaranteed to be set.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>When Angular's component factory creates a component, it calls <code>new ComponentClass(...deps)</code> where each dependency is resolved by Angular's hierarchical injector. The injector walks up from the component-level injector → module injector → root injector, finding a provider for each constructor parameter token. After instantiation, Angular begins the change detection cycle and calls <code>ngOnChanges</code> (if inputs exist) then <code>ngOnInit</code>. TypeScript's <code>emitDecoratorMetadata</code> option causes the compiler to emit type metadata that Angular reads to identify injection tokens.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Clean, explicit declaration of component dependencies</li>
+        <li>TypeScript type inference works seamlessly — no runtime type errors</li>
+        <li>Services are available immediately in ngOnInit and other hooks</li>
+        <li>Supports <code>&#64;Inject</code>, <code>&#64;Optional</code>, <code>&#64;Self</code>, <code>&#64;SkipSelf</code>, <code>&#64;Host</code> decorators</li>
+        <li>Familiar OOP pattern — every TypeScript developer understands constructors</li>
+        <li>Modern alternative: <code>inject()</code> function (Angular 14+) works in field initializers too</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li><code>&#64;Input()</code> values are NOT available in the constructor</li>
+        <li>DOM and <code>&#64;ViewChild</code> / <code>&#64;ContentChild</code> references are not yet initialized</li>
+        <li>Heavy logic in constructor complicates unit tests (runs during instantiation)</li>
+        <li>Cannot conditionally skip service injection without complex workarounds</li>
+        <li>SSR (Angular Universal) can be affected by side-effects in constructors</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use the constructor <strong>only</strong> for dependency injection — no logic</li>
+      <li>Declare injected services with <code>private readonly</code> or <code>protected readonly</code></li>
+      <li>Move all initialization logic (HTTP, subscriptions, DOM) to <code>ngOnInit()</code></li>
+      <li>Use <code>&#64;Inject(TOKEN)</code> for InjectionToken dependencies; omit it for class-based services</li>
+      <li>Prefer <code>inject()</code> function in Angular 14+ for standalone functions and composable patterns</li>
+      <li>Keep the constructor body empty — services auto-assign via TypeScript shorthand (<code>private svc: SvcClass</code>)</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Making HTTP calls in the constructor — <code>&#64;Input()</code> values not yet available</li>
+      <li>Accessing <code>this.elementRef.nativeElement</code> in constructor — DOM not created yet</li>
+      <li>Subscribing to Observables in the constructor instead of ngOnInit</li>
+      <li>Forgetting <code>&#64;Inject</code> when injecting <code>InjectionToken</code> values</li>
+      <li>Reading route parameters in constructor — ActivatedRoute not fully resolved yet</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,81 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod9">
+    <span class="module-tag">Module 9 — Forms</span>
+    <h1>Custom Validators</h1>
+    <p class="subtitle">Write your own validation logic — synchronous, async, and cross-field</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Custom validators are functions (or directives for template-driven forms) that encapsulate application-specific validation logic. They accept an AbstractControl and return ValidationErrors | null synchronously, or Observable&lt;ValidationErrors | null&gt; asynchronously. They integrate with Angular's form status system exactly like built-in validators.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Built-in validators only cover basic cases — real apps need password confirmation, business rule checks, and dependent field validation</li>
+      <li>Async validators enable server-side checks such as username uniqueness or email domain verification</li>
+      <li>Cross-field validators compare two controls (e.g., date range start before end) — only possible at the FormGroup level</li>
+      <li>Reusable — custom validators are plain functions that can be shared and unit-tested independently</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A registration form uses two custom validators: a synchronous cross-field passwordMatch validator applied at the FormGroup level, and an async usernameAvailable validator that calls the backend API with debouncing via a factory function pattern to avoid DI issues.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular calls custom validators through the same pipeline as built-in ones. For sync validators, the return value is merged into control.errors immediately. For async validators, Angular sets status to PENDING, subscribes to the returned Observable (or awaits the Promise), and once it completes, merges the result into control.errors and emits a statusChanges event. For FormGroup-level validators the same logic applies, but errors land on the FormGroup's errors property instead of a child control's.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Unlimited flexibility — encapsulate any business rule as a reusable, independently unit-testable function</li>
+        <li>Cross-field validation is clean — apply one validator at the FormGroup level rather than duplicating logic in both controls</li>
+        <li>Async validators let you defer to the server for uniqueness or domain-specific checks with a native PENDING state</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Async validators require careful debouncing and Observable completion (first/take(1)) to avoid hanging PENDING state</li>
+        <li>Template-driven usage requires creating a directive with NG_VALIDATORS — more boilerplate than the reactive equivalent</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use a factory function pattern for async validators that depend on services to keep them pure and injectable-friendly</li>
+      <li>Always call first() or take(1) in async validators to ensure the Observable completes and Angular resolves the status</li>
+      <li>Apply cross-field validators at the FormGroup level and guard with null checks on control.parent during initialisation</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Applying a cross-field validator on a child FormControl — use control.parent, but the error lands on the wrong level; apply at the FormGroup instead</li>
+      <li>Forgetting first() in an async validator — the Observable never completes, the control stays PENDING indefinitely</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

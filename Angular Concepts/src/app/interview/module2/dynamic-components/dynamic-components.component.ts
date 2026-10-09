@@ -1,0 +1,116 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-dynamic-components',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './dynamic-components.component.html',
+  styleUrl: './dynamic-components.component.css',
+})
+export class DynamicComponentsComponent {
+  syntaxCode = [
+    "import { Component, ViewChild, ViewContainerRef,",
+    "         ComponentRef, AfterViewInit } from '@angular/core';",
+    "import { ToastComponent } from './toast.component';",
+    '',
+    "@Component({ selector: 'app-host', standalone: true, template: `",
+    "  <ng-container #toastHost></ng-container>",
+    "` })",
+    'export class HostComponent {',
+    '  @ViewChild(\'toastHost\', { read: ViewContainerRef })',
+    '  container!: ViewContainerRef;',
+    '',
+    '  showToast(message: string) {',
+    '    // 1. Clear any existing toast',
+    '    this.container.clear();',
+    '',
+    '    // 2. Dynamically create the component',
+    '    const ref: ComponentRef<ToastComponent> =',
+    '      this.container.createComponent(ToastComponent);',
+    '',
+    '    // 3. Pass data to the component\'s @Input properties',
+    "    ref.instance.message = message;",
+    "    ref.instance.type = 'success';",
+    '',
+    '    // 4. Auto-destroy after 3 seconds',
+    '    setTimeout(() => ref.destroy(), 3000);',
+    '  }',
+    '}',
+  ].join('\n');
+
+  exampleCode = [
+    '// toast.component.ts — dynamically created notification',
+    "import { Component, Input, OnInit } from '@angular/core';",
+    '',
+    "@Component({",
+    "  selector: 'app-toast',",
+    '  standalone: true,',
+    '  template: `',
+    '    <div class="toast" [class]="type">',
+    '      {{ message }}',
+    '    </div>',
+    '  `,',
+    "  styles: ['.toast { position: fixed; bottom: 1rem; right: 1rem; padding: 1rem; border-radius: 4px; }']",
+    '})',
+    'export class ToastComponent {',
+    "  @Input() message = '';",
+    "  @Input() type: 'success' | 'error' | 'info' = 'info';",
+    '}',
+    '',
+    '// toast.service.ts — service that creates toasts imperatively',
+    "@Injectable({ providedIn: 'root' })",
+    'export class ToastService {',
+    '  private container!: ViewContainerRef;',
+    '',
+    '  setContainer(vcr: ViewContainerRef) {',
+    '    this.container = vcr;',
+    '  }',
+    '',
+    '  show(message: string, type = \'info\') {',
+    '    const ref = this.container.createComponent(ToastComponent);',
+    '    ref.instance.message = message;',
+    '    ref.instance.type = type as any;',
+    '    setTimeout(() => ref.destroy(), 3000);',
+    '  }',
+    '}',
+    '',
+    '// app.component.ts — register the container',
+    'export class AppComponent implements AfterViewInit {',
+    '  @ViewChild(\'toastHost\', { read: ViewContainerRef }) vcr!: ViewContainerRef;',
+    '  constructor(private toast: ToastService) {}',
+    '  ngAfterViewInit() { this.toast.setContainer(this.vcr); }',
+    '}',
+  ].join('\n');
+
+  interviewQA = [
+    {
+      q: 'What are dynamic components in Angular and when would you use them?',
+      a: 'Dynamic components are components created programmatically at runtime using ViewContainerRef.createComponent() rather than declared statically in a template. Use them for: (1) Toast/notification systems where messages appear on demand; (2) Modal dialogs created in response to user actions; (3) Plugin or widget systems where component types are unknown at compile time; (4) Lazy-loaded panels that appear conditionally. They give full programmatic control over component lifecycle.',
+    },
+    {
+      q: 'How does ViewContainerRef.createComponent() work?',
+      a: 'ViewContainerRef represents a container in the DOM where components can be inserted. createComponent(ComponentClass) instantiates the component, creates its host element, runs change detection, and inserts it into the container. It returns a ComponentRef<T> which gives you access to the instance (ref.instance), the host element (ref.location), and a destroy() method. The component must be a standalone component or declared in a loaded module.',
+    },
+    {
+      q: 'How do you pass data to a dynamically created component?',
+      a: 'After calling createComponent(), set the @Input properties directly on ref.instance: ref.instance.message = "Hello". For Angular 14+, you can also pass inputs via the options object: createComponent(ToastComponent, { environmentInjector, inputs: { message: "Hello" } }). Remember to call ref.changeDetectorRef.detectChanges() if the component uses OnPush, since programmatic property assignment does not trigger automatic change detection.',
+    },
+    {
+      q: 'What is the role of the ComponentFactory in older Angular versions?',
+      a: 'Before Angular 13, dynamic components required using ComponentFactoryResolver to get a ComponentFactory, then calling factory.create(injector). Angular 13 deprecated ComponentFactoryResolver and simplified the API to ViewContainerRef.createComponent(ComponentClass) directly, without needing a factory. Modern Angular (13+) code should use the direct API. Standalone components work especially well with the modern approach.',
+    },
+    {
+      q: 'How do you clean up dynamically created components?',
+      a: 'Call ref.destroy() to destroy the component, detach it from change detection, and remove its host element from the DOM. You can also call container.clear() to destroy all components inside the container at once. Always destroy dynamic components when they are no longer needed — failing to do so causes memory leaks because the component\'s change detector and any active subscriptions remain alive.',
+    },
+    {
+      q: 'How would you build a reusable toast notification service using dynamic components?',
+      a: 'Pattern: (1) Create a ToastComponent with @Input() message and @Input() type; (2) Create a ToastService with a private ViewContainerRef reference; (3) In AppComponent.ngAfterViewInit(), inject ToastService and call toastService.setContainer(this.viewContainerRef); (4) Any component can inject ToastService and call show("message"). The service creates the component dynamically, sets inputs, and schedules destroy() via setTimeout. This pattern centralizes notification logic without any template coupling.',
+    },
+    {
+      q: 'What is the difference between dynamic components and *ngIf for conditional rendering?',
+      a: '*ngIf is declarative and suitable for toggling components that are known at compile time — the component is always imported in the template. Dynamic components are imperative, created at runtime, and can use component classes that are lazily loaded or determined at runtime (e.g., from a registry). *ngIf has zero ceremony; dynamic components have more setup but unlock true runtime flexibility, lazy loading, and plugin architectures.',
+    },
+  ];
+}

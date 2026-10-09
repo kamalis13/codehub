@@ -1,0 +1,28 @@
+<div class="operator-box">
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+  <h2>exhaustMap()</h2>
+  <p class="definition">Projects each source emission to an inner Observable, but IGNORES new source emissions while the inner Observable is still active. The 4th flattening operator — the "bouncer" of the family.</p>
+  <p class="note">Analogy: Like a bouncer at a door — while one person is inside being processed, new arrivals are turned away until the current person is done.</p>
+
+  <div class="comparison-row">
+    <div class="compare-card"><div class="c-title">mergeMap</div><div class="c-body">Runs ALL concurrently</div></div>
+    <div class="compare-card"><div class="c-title">switchMap</div><div class="c-body">Cancels previous, uses latest</div></div>
+    <div class="compare-card"><div class="c-title">concatMap</div><div class="c-body">Queues all, runs in order</div></div>
+    <div class="compare-card highlight-card"><div class="c-title">exhaustMap</div><div class="c-body">Ignores new while busy</div></div>
+  </div>
+
+  <div class="demo-section">
+    <h3>Live Demo — Button spam protection</h3>
+    <p class="note">Click rapidly — only the first click fires a request. All clicks while the 2s request is running are silently ignored.</p>
+    <div class="btn-row">
+      <button (click)="click()">Submit Form (click rapidly!)</button>
+      <button class="secondary-btn" (click)="reset()">Reset</button>
+    </div>
+    <ul class="result-list">
+      <li *ngFor="let r of results">{{ r }}</li>
+    </ul>
+  </div>
+</div>

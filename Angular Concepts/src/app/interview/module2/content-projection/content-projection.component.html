@@ -1,0 +1,112 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod2">
+    <span class="module-tag">Module 2 — Components</span>
+    <h1>Content Projection (ng-content)</h1>
+    <p class="subtitle">Inserting consumer-provided HTML into a reusable component shell</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      <strong>Content projection</strong> is an Angular pattern that lets a parent component
+      insert arbitrary HTML content into predefined slots (<code>&lt;ng-content&gt;</code>) inside a
+      child component's template. The child defines <em>where</em> the projected content appears;
+      the parent decides <em>what</em> content goes there. This enables the creation of highly
+      reusable container components — cards, modals, tabs, accordions — without requiring the
+      consumer to pass every bit of content through <code>&#64;Input</code> properties.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Reusable shells</strong> — Define chrome (borders, padding, backdrop) once; let consumers fill in the content.</li>
+      <li><strong>Flexible composition</strong> — Consumers can project any HTML, components, or directives without the host needing to know about them in advance.</li>
+      <li><strong>Avoids &#64;Input explosion</strong> — Instead of <code>&#64;Input() headerHtml</code>, <code>&#64;Input() bodyHtml</code>, etc., consumers project real Angular templates with data bindings.</li>
+      <li><strong>Declarative layout</strong> — Named slots (<code>select</code> attribute) create a clear, semantic layout contract between the component and its consumers.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A reusable <strong>ModalComponent</strong> defines three named slots using attribute selectors:
+      <code>[modal-header]</code>, <code>[modal-body]</code>, and <code>[modal-footer]</code>.
+      Consumers project any content — headings, paragraphs, forms, or action buttons — into these
+      slots. The modal itself handles opening, closing, overlay, and animation, remaining completely
+      content-agnostic.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      Angular implements content projection using the <strong>light DOM</strong> concept. Projected
+      content is <em>not</em> part of the host component's view — it remains in the parent's DOM tree
+      and is governed by the <strong>parent's change detector</strong>. When Angular renders
+      <code>&lt;ng-content&gt;</code>, it physically moves the projected DOM nodes into that location.
+      The <code>select</code> attribute accepts any valid CSS selector (element, attribute, class).
+      Content that doesn't match any selector is discarded. This differs from Shadow DOM, which uses
+      browser-native encapsulation — Angular's default <code>Emulated</code> encapsulation mimics
+      Shadow DOM scoping without using it.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Enables genuinely reusable, slot-based container components</li>
+        <li>Projected templates can contain full Angular bindings and directives</li>
+        <li>Named slots provide a clear, discoverable component API</li>
+        <li>Reduces the need for many <code>&#64;Input</code> properties for content</li>
+        <li>Works with <code>&#64;ContentChild</code> for host-projected coordination</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Unmatched projected content is silently discarded — no error</li>
+        <li>Cannot apply <code>*ngIf</code> directly on <code>&lt;ng-content&gt;</code></li>
+        <li>Projected content's change detection is owned by the parent, not the host</li>
+        <li>Complex slot contracts can be hard to discover without documentation</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Document each <code>&lt;ng-content&gt;</code> slot with a comment explaining its expected content.</li>
+      <li>Use attribute selectors (<code>select="[slot-name]"</code>) over component selectors for greater consumer flexibility.</li>
+      <li>Add a default <code>&lt;ng-content&gt;</code> (no selector) to capture unslotted content.</li>
+      <li>For conditional slots, use a wrapper: <code>&lt;div *ngIf="hasHeader"&gt;&lt;ng-content select="[header]"&gt;&lt;/ng-content&gt;&lt;/div&gt;</code>.</li>
+      <li>Prefer content projection over <code>&#64;Input() html: string</code> — projecting real templates is safer (avoids XSS) and richer.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Applying structural directives (<code>*ngIf</code>) directly to <code>&lt;ng-content&gt;</code> — this is not allowed.</li>
+      <li>Expecting the host to control projected content's change detection — it belongs to the parent.</li>
+      <li>Using multiple unselected <code>&lt;ng-content&gt;</code> tags — only one default slot is allowed.</li>
+      <li>Not checking what happens to unmatched content — it disappears silently.</li>
+      <li>Projecting sensitive user data as raw HTML from a service — always sanitize or prefer Angular template expressions.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

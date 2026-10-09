@@ -1,0 +1,80 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod9">
+    <span class="module-tag">Module 9 — Forms</span>
+    <h1>FormGroup</h1>
+    <p class="subtitle">Container that groups form controls — tracks aggregate value and validity</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>FormGroup</strong> is a collection of <code>FormControl</code> instances (or nested <code>FormGroup</code> / <code>FormArray</code> instances) keyed by name. It tracks the <strong>combined value</strong> and <strong>aggregate validity</strong> of all child controls. A <code>FormGroup</code> is considered invalid if any one of its children fails validation. It is the foundational building block of every Reactive Form in Angular.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Organises related controls into a logical unit so form value, validity, and state can be tracked as a single object</li>
+      <li>Enables nested and hierarchical form structures (e.g. a top-level profile form containing a nested <code>address</code> FormGroup)</li>
+      <li>Provides aggregate validity and value in one place, and supports group-level validators for cross-field rules like password confirmation</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A user profile form with top-level fields (name, email) and a nested <code>address</code> FormGroup (street, city, zip). It demonstrates <code>patchValue</code> for partial updates, <code>form.get("address.city")</code> for nested access, and a group-level custom validator that enforces a ZIP code when a city is entered.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>When you create a <code>FormGroup</code>, Angular registers each child under its key. Any change to a child control propagates upward: the group recalculates its aggregate <code>value</code> (a plain object mirroring the key structure) and re-evaluates <code>status</code>. Validators registered at the group level receive the entire <code>FormGroup</code> as their argument, giving them access to all sibling control values — this is what makes cross-field validation possible. The template mirrors this hierarchy via <code>[formGroup]</code> and <code>formGroupName</code> directives.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Provides a single typed object for the entire form value, making it easy to pass directly to a service or HTTP request</li>
+        <li>Supports hierarchical nesting so complex data shapes (address, payment info, preferences) map directly to the form structure</li>
+        <li>Group-level validators enable cross-field validation rules (e.g. password === confirmPassword) in one clean place</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>More verbose to set up than Template-Driven Forms for simple scenarios — every control must be declared explicitly in the class</li>
+        <li>Deeply nested FormGroups can become hard to manage and require careful use of <code>form.get("a.b.c")</code> chains or getter helpers</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Create typed getter methods for frequently accessed controls (<code>get city() &#123; return this.form.get("address.city"); &#125;</code>) so the template stays readable</li>
+      <li>Place cross-field validators at the nearest common <code>FormGroup</code> level — not on individual controls — so they have access to all relevant sibling values</li>
+      <li>Prefer <code>patchValue</code> over <code>setValue</code> when pre-filling from an API response that may not contain every field, to avoid runtime errors</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Calling <code>setValue</code> with a partial object — it throws an error; use <code>patchValue</code> for partial updates</li>
+      <li>Forgetting <code>formGroupName="address"</code> on the wrapper element in the template — Angular will not find the nested control names and will throw a missing-control error</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

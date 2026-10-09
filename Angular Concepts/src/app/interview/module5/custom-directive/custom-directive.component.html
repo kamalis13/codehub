@@ -1,0 +1,91 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod5">
+    <span class="module-tag">Module 5 — Directives</span>
+    <h1>Custom Directive</h1>
+    <p class="subtitle">Build reusable behavior that can be applied to any element — the power of &#64;Directive</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>A <strong>Custom Directive</strong> is a user-defined Angular directive created with the <code>&#64;Directive</code> decorator. It encapsulates reusable behavior (tooltip, copy-to-clipboard, drag-and-drop, auto-focus, etc.) that can be applied to any DOM element as an attribute. Custom directives use <code>&#64;HostListener</code> for event handling, <code>&#64;HostBinding</code> for host property binding, and <code>&#64;Input()</code> for configuration.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Encapsulate DOM-manipulation behavior that applies to many elements across the app</li>
+      <li>DRY principle — define tooltip, validation highlight, or copy-to-clipboard once, use everywhere</li>
+      <li>Keeps behavior logic in TypeScript where it is unit-testable</li>
+      <li>Works with Angular's DI, lifecycle hooks, and change detection</li>
+      <li>Clean separation — host component doesn't need to know how the behavior works</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A <strong>CopyToClipboard</strong> directive that makes any element clickable to copy its bound text to the clipboard — complete with a visual "Copied!" feedback. Apply to any element with <code>appCopyToClipboard</code>.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular processes all <code>&#64;Directive</code> classes imported (standalone) or declared (NgModule) in scope. When the directive's selector matches a host element, Angular creates a directive instance, injecting all DI tokens. <code>&#64;HostBinding</code> properties are evaluated during change detection and applied to the host element via <code>Renderer2</code>. <code>&#64;HostListener</code> registers native DOM event listeners on the host element. Lifecycle hooks (ngOnInit, ngOnDestroy) fire at the usual times.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Highly reusable — apply to any element type anywhere in the app</li>
+        <li>Lightweight — no template overhead like a component</li>
+        <li>Full access to DI — inject services, Router, HttpClient, etc.</li>
+        <li>Supports full Angular lifecycle (ngOnInit, ngOnDestroy, ngOnChanges)</li>
+        <li>Configurable via &#64;Input() for maximum flexibility</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Cannot render its own template or HTML</li>
+        <li>Complex directives are harder to test than components (need a host element)</li>
+        <li>Overuse can make templates harder to read ("what does this attribute do?")</li>
+        <li>Direct ElementRef usage breaks SSR — must use Renderer2 for compatibility</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always prefix selector with <code>app</code> (or your team prefix) to avoid conflicts</li>
+      <li>Prefer <code>&#64;HostBinding</code> over <code>ElementRef.nativeElement</code> for property binding</li>
+      <li>Use <code>Renderer2</code> for programmatic DOM manipulation (SSR-safe)</li>
+      <li>Clean up subscriptions and DOM listeners in <code>ngOnDestroy</code></li>
+      <li>Make directives single-purpose — one behavior per directive</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using <code>ElementRef.nativeElement</code> directly — breaks SSR and bypasses security</li>
+      <li>Forgetting to export the directive from its module or add to standalone imports</li>
+      <li>Not calling <code>ngOnDestroy</code> to unsubscribe or remove DOM listeners</li>
+      <li>Naming selector without a prefix — can conflict with native HTML attributes</li>
+      <li>Putting too much logic in &#64;HostListener — extract to private methods for readability</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

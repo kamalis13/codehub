@@ -1,0 +1,97 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod1">
+    <span class="module-tag">Module 1 — Angular Fundamentals</span>
+    <h1>What is Angular?</h1>
+    <p class="subtitle">A TypeScript-based platform and framework by Google for building scalable single-page applications.</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Angular is a <strong>TypeScript-based open-source web application framework</strong> developed and maintained by Google. It is a complete <em>platform</em> — not just a rendering library — that provides everything needed to build modern, scalable single-page applications (SPAs): a powerful CLI, built-in routing, reactive forms, HTTP client, dependency injection, and a comprehensive testing setup, all out of the box.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>HTML is static:</strong> Plain HTML has no built-in data binding, component model, or routing.</li>
+      <li><strong>DOM manipulation is error-prone:</strong> jQuery/vanilla JS leads to spaghetti code in complex UIs.</li>
+      <li><strong>MVC separation of concerns:</strong> Angular enforces clean separation of view (template), logic (component), and data (service).</li>
+      <li><strong>Two-way data binding:</strong> Automatically synchronizes model and view, eliminating tedious DOM queries.</li>
+      <li><strong>Scalability:</strong> Provides a structured, opinionated architecture that scales for large enterprise teams.</li>
+      <li><strong>TypeScript-first:</strong> Static typing catches bugs at compile time and improves IDE tooling and refactoring.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>An e-commerce SPA (like Amazon or Flipkart) built in Angular serves a single <code>index.html</code>. When the user navigates from the product list to their cart, Angular Router swaps components without a page reload. The <code>ProductListComponent</code> fetches product data from a REST API via <code>HttpClient</code>, displays it with <code>*ngFor</code>, and pushes user actions to a shared <code>CartService</code> via dependency injection — all while the URL updates to reflect the current view.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular bootstraps via <code>main.ts</code>, calling <code>bootstrapApplication(AppComponent, appConfig)</code> for standalone apps. <strong>Zone.js</strong> monkey-patches browser async APIs (setTimeout, Promises, DOM events) so Angular knows when to run <strong>change detection</strong> — comparing the current component state against the previous rendered state and updating only the changed DOM nodes. The <strong>Ivy compiler</strong> pre-compiles templates into optimized JavaScript rendering instructions at build time. The <strong>hierarchical Dependency Injection</strong> tree resolves service dependencies via constructor injection, creating singleton or scoped instances as configured.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Complete, opinionated framework — routing, HTTP, forms, testing all included</li>
+        <li>TypeScript-first — type safety, better tooling, refactoring support</li>
+        <li>Powerful Angular CLI — scaffolding, builds, deployments in one tool</li>
+        <li>Two-way data binding with reactive forms (FormGroup, FormControl)</li>
+        <li>Hierarchical dependency injection — testable, modular, extensible</li>
+        <li>Strong Google + enterprise community backing, LTS releases</li>
+        <li>Ivy compiler produces small, optimized bundles with excellent tree-shaking</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Steep learning curve — decorators, DI, RxJS, Signals, modules all at once</li>
+        <li>Verbose boilerplate compared to React or Vue for simple components</li>
+        <li>Heavier initial bundle than a minimal React app</li>
+        <li>Frequent major version releases require regular migration effort</li>
+        <li>Complex state management for large apps still requires NgRx or similar</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use the Angular CLI for all project generation — never create files manually</li>
+      <li>Follow Angular Style Guide naming conventions (kebab-case files, PascalCase classes)</li>
+      <li>Use standalone components (Angular 15+) to avoid NgModule overhead</li>
+      <li>Keep components small and single-responsibility; push logic to services</li>
+      <li>Use lazy loading for feature routes to optimize initial load time</li>
+      <li>Always unsubscribe from Observables (takeUntilDestroyed, AsyncPipe) to prevent memory leaks</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Putting business logic directly inside components instead of services</li>
+      <li>Forgetting to import <code>CommonModule</code> or <code>FormsModule</code> in standalone components</li>
+      <li>Not using <code>OnPush</code> change detection for performance-sensitive components</li>
+      <li>Subscribing to Observables manually without unsubscribing (memory leaks)</li>
+      <li>Ignoring TypeScript strict mode, reducing the benefit of compile-time safety</li>
+      <li>Confusing Angular (2+) with AngularJS (1.x) in interviews</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

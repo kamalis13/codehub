@@ -1,0 +1,23 @@
+<div class="operator-box">
+
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+
+  <h2>Subject</h2>
+  <p class="definition">Acts as both Observable and Observer. Manually push values into it; all subscribers receive them.</p>
+  <p class="note">Subscriber 1 and Subscriber 2 both receive each pushed value.</p>
+  <button (click)="push()">Push value to Subject</button>
+  <button (click)="complete()">Complete Subject</button>
+  <div style="display:flex; gap:2rem">
+    <div>
+      <strong>Subscriber 1</strong>
+      <ul><li *ngFor="let item of log1">{{ item }}</li></ul>
+    </div>
+    <div>
+      <strong>Subscriber 2</strong>
+      <ul><li *ngFor="let item of log2">{{ item }}</li></ul>
+    </div>
+  </div>
+</div>

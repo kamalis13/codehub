@@ -1,0 +1,108 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod2">
+    <span class="module-tag">Module 2 — Components</span>
+    <h1>Component Lifecycle</h1>
+    <p class="subtitle">Eight hooks that let you tap into a component's birth, life, and death</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      Angular manages the <strong>lifecycle</strong> of every component — from creation through change detection
+      cycles to final destruction. Angular exposes <strong>8 lifecycle hooks</strong> as interfaces
+      (<code>OnInit</code>, <code>OnDestroy</code>, etc.) that your component class can implement. Angular calls
+      these hook methods at specific moments, giving you precise control over initialization, DOM access, and cleanup.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Initialization</strong> — Load data, set up subscriptions, and configure state in <code>ngOnInit</code> after inputs are ready.</li>
+      <li><strong>Responding to changes</strong> — React to <code>&#64;Input</code> changes with <code>ngOnChanges</code> instead of polling.</li>
+      <li><strong>DOM access</strong> — Access <code>&#64;ViewChild</code> references safely in <code>ngAfterViewInit</code>.</li>
+      <li><strong>Cleanup</strong> — Unsubscribe from observables and clear timers in <code>ngOnDestroy</code> to prevent memory leaks.</li>
+      <li><strong>Custom change detection</strong> — Detect mutations inside arrays or objects via <code>ngDoCheck</code>.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A <strong>DataDashboardComponent</strong> receives a <code>userId</code> as <code>&#64;Input</code>.
+      In <code>ngOnInit</code> it loads the user's data and subscribes to a live update stream.
+      In <code>ngOnChanges</code> it reloads data when the <code>userId</code> changes.
+      In <code>ngOnDestroy</code> it unsubscribes to prevent memory leaks.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      Angular's change detection engine drives hook execution. When a component is first created,
+      Angular calls hooks in strict order: <em>ngOnChanges → ngOnInit → ngDoCheck → ngAfterContentInit →
+      ngAfterContentChecked → ngAfterViewInit → ngAfterViewChecked</em>. On every subsequent change detection
+      cycle (triggered by zone.js patching of async APIs), Angular calls <em>ngOnChanges</em> (if inputs changed),
+      <em>ngDoCheck</em>, <em>ngAfterContentChecked</em>, and <em>ngAfterViewChecked</em>. When the component is
+      removed from the DOM, <em>ngOnDestroy</em> is called once.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Precise control over initialization and cleanup at the right moment</li>
+        <li>Prevents memory leaks via <code>ngOnDestroy</code></li>
+        <li>Enables safe DOM manipulation after the view is ready</li>
+        <li>Reacts to input changes without polling or setTimeout hacks</li>
+        <li>Custom change detection logic via <code>ngDoCheck</code></li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li><code>ngDoCheck</code> and <code>ngAfterViewChecked</code> run very frequently — expensive logic here degrades performance</li>
+        <li>Lifecycle order is non-obvious to beginners, leading to timing bugs</li>
+        <li>Forgetting to implement <code>ngOnDestroy</code> causes memory leaks</li>
+        <li>Angular 16+ <code>takeUntilDestroyed()</code> still requires correct injection context</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use <code>ngOnInit</code> for initialization logic — never the constructor (except DI).</li>
+      <li>Always implement <code>ngOnDestroy</code> to unsubscribe or use <code>takeUntilDestroyed()</code> (Angular 16+).</li>
+      <li>Keep <code>ngDoCheck</code> and <code>ngAfterViewChecked</code> lightweight — they run every CD cycle.</li>
+      <li>Check <code>changes['prop'].firstChange</code> in <code>ngOnChanges</code> to skip initial setup if already done in <code>ngOnInit</code>.</li>
+      <li>Declare interface implementations (<code>implements OnInit</code>) for compile-time safety.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Accessing <code>&#64;ViewChild</code> in <code>ngOnInit</code> — it is undefined until <code>ngAfterViewInit</code>.</li>
+      <li>Making HTTP calls in the constructor instead of <code>ngOnInit</code>.</li>
+      <li>Forgetting to unsubscribe in <code>ngOnDestroy</code> — leads to memory leaks and ghost subscriptions.</li>
+      <li>Putting heavy logic in <code>ngDoCheck</code> — it fires on every change detection run.</li>
+      <li>Mutating data in <code>ngAfterViewChecked</code> — causes "ExpressionChangedAfterItHasBeenCheckedError".</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

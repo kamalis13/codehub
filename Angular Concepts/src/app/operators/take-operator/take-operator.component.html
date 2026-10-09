@@ -1,0 +1,14 @@
+<div class="operator-box">
+
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+
+  <h2>take()</h2>
+  <p class="definition">Takes only the first N values emitted, then auto-completes the stream.</p>
+  <button (click)="run()">Take first 5 ticks</button>
+  <ul>
+    <li *ngFor="let item of results">{{ item }}</li>
+  </ul>
+</div>

@@ -1,0 +1,94 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod10">
+    <span class="module-tag">Module 10 — HTTP</span>
+    <h1>HTTP DELETE</h1>
+    <p class="subtitle">Remove resources from the server — with optimistic or pessimistic strategies</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      <code>http.delete&lt;T&gt;(url, options)</code> sends an HTTP DELETE request to remove the resource
+      at the given URL. DELETE is idempotent — deleting a resource that no longer exists returns 404, but
+      the server state remains the same. The response body is often empty (204 No Content).
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Removing records, cleaning up data, and handling user-initiated deletions in REST APIs</li>
+      <li>Idempotent nature makes retries safe — no risk of double-delete side effects</li>
+      <li>Angular service encapsulates the delete logic cleanly, keeping components thin</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A product management screen lets users delete products. The example shows both pessimistic delete
+      (wait for API confirmation then update UI) and optimistic delete (update UI immediately, restore on
+      error) along with a confirmation dialog pattern.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      <code>http.delete()</code> sends an HTTP DELETE verb to the server with no request body by default.
+      The server locates the resource by the URL path, removes it from the data store, and responds with
+      204 No Content or 200 OK. Angular's HttpClient returns an Observable that emits once on success and
+      errors on non-2xx status codes. Because the operation is idempotent, the client can safely retry
+      without risk of double-deletion side effects.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Idempotent — safe to retry without double-deletion concerns</li>
+        <li>Clean REST semantics for removing resources</li>
+        <li>Optimistic strategy provides instant UI feedback for a snappy user experience</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Optimistic delete can confuse users if the rollback animation occurs unexpectedly</li>
+        <li>Deleted data is typically unrecoverable — requires careful UX confirmation patterns</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always show a confirmation dialog before destructive DELETE operations</li>
+      <li>Implement soft deletes on the server (isDeleted flag) so data can be recovered if needed</li>
+      <li>Use pessimistic delete when data accuracy is critical; use optimistic for low-risk, fast-feedback UX</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Updating the UI before the API confirms the delete (pessimistic flow) — leading to ghost items if the call fails</li>
+      <li>Not handling the 404 case when retrying a DELETE — treating it as an error instead of a successful removal</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

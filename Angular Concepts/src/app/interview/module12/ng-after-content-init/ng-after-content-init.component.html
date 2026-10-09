@@ -1,0 +1,91 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod12">
+    <span class="module-tag">Module 12 — Lifecycle Hooks</span>
+    <h1>ngAfterContentInit</h1>
+    <p class="subtitle">Called once after ng-content projection is complete — the safe entry point for &#64;ContentChild queries</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>ngAfterContentInit</strong> is an Angular lifecycle hook that fires once after Angular has projected external content (via <code>&lt;ng-content&gt;</code>) into the component's view and fully initialized the projected child components. At this point, <code>&#64;ContentChild</code> and <code>&#64;ContentChildren</code> queries are resolved and available. It is the counterpart to <code>ngAfterViewInit</code> — but for projected content rather than the component's own template elements.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><code>&#64;ContentChild</code> and <code>&#64;ContentChildren</code> are only available after this hook</li>
+      <li>Enables initialization logic on projected child components (e.g., activate the first tab)</li>
+      <li>Allows subscribing to <code>QueryList.changes</code> for dynamic content updates</li>
+      <li>Provides a clear, safe boundary — no guessing about when projected content is ready</li>
+      <li>Used in reusable container components: tabs, accordions, carousels, modals</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>An <code>AccordionComponent</code> uses <code>&lt;ng-content&gt;</code> to accept <code>AccordionPanelComponent</code> children. In <code>ngAfterContentInit()</code>, it queries all projected panels via <code>&#64;ContentChildren</code>, subscribes to each panel's toggle event, and subscribes to <code>panels.changes</code> to handle dynamically added panels. This is a pattern used in Angular Material's MatTabGroup.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's lifecycle order for a component with content projection: Constructor → ngOnChanges → ngOnInit → ngDoCheck → <strong>ngAfterContentInit</strong> → ngAfterContentChecked → ngAfterViewInit → ngAfterViewChecked. The projected content goes through its own initialization cycle before the parent's <code>ngAfterContentInit</code> fires. Angular resolves <code>&#64;ContentChild</code>/<code>&#64;ContentChildren</code> queries after this phase by scanning the projected DOM subtree for matching selectors, component types, or template reference variables.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Guaranteed safe access to &#64;ContentChild and &#64;ContentChildren</li>
+        <li>Fires only once — ideal for one-time setup on projected content</li>
+        <li>Works with QueryList.changes for dynamic/lazy projected content</li>
+        <li>Enables powerful composition patterns — wrapper components with projected slots</li>
+        <li>Clean separation from view initialization (ngAfterViewInit handles own view)</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Only fires once — dynamic changes to projected content need QueryList.changes subscription</li>
+        <li>Accessing &#64;ContentChild in earlier hooks (ngOnInit) is a common mistake (returns undefined)</li>
+        <li>Tight coupling between container and projected child component types</li>
+        <li>Modifying component state in ngAfterContentChecked (not ngAfterContentInit) can cause ExpressionChangedAfterItHasBeenCheckedError</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always access <code>&#64;ContentChild</code>/<code>&#64;ContentChildren</code> in ngAfterContentInit, never earlier</li>
+      <li>Subscribe to <code>QueryList.changes</code> for dynamic content and unsubscribe in ngOnDestroy</li>
+      <li>Implement <code>implements AfterContentInit</code> for TypeScript type safety</li>
+      <li>Keep content initialization logic in ngAfterContentInit, not ngAfterContentChecked (performance)</li>
+      <li>Use <code>&#64;ContentChildren(ComponentClass)</code> rather than string selectors for type safety</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Accessing <code>&#64;ContentChild</code> in <code>ngOnInit</code> — always returns undefined</li>
+      <li>Confusing <code>&#64;ContentChild</code> (projected content) with <code>&#64;ViewChild</code> (own template)</li>
+      <li>Not subscribing to <code>QueryList.changes</code> when projected items can be added dynamically</li>
+      <li>Modifying bound properties in ngAfterContentChecked, triggering ExpressionChangedAfterItHasBeenCheckedError</li>
+      <li>Forgetting to unsubscribe from QueryList.changes in ngOnDestroy</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

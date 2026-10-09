@@ -1,0 +1,108 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod3">
+    <span class="module-tag">Module 3 — Modules</span>
+    <h1>Core Module</h1>
+    <p class="subtitle">Singleton services and app-wide infrastructure — import once in AppModule, never again</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      <strong>CoreModule</strong> is an <code>NgModule</code> designed to hold singleton services, HTTP interceptors,
+      route guards, and other app-wide providers that must exist as a single instance for the lifetime of the
+      application. It is imported <em>exactly once</em> in <code>AppModule</code>. It includes a constructor guard
+      (using <code>&#64;Optional() &#64;SkipSelf()</code>) that throws a descriptive error if any other module tries to
+      import it, preventing accidental creation of duplicate service instances.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Single DI instance</strong> — <code>AuthService</code>, <code>LoggingService</code>, and interceptors must be singletons; CoreModule enforces this.</li>
+      <li><strong>Keeps AppModule lean</strong> — centralising providers in CoreModule prevents AppModule from becoming a monolithic mess.</li>
+      <li><strong>Interceptor registration</strong> — HTTP interceptors must be registered using <code>HTTP_INTERCEPTORS</code> multi-provider tokens; CoreModule is the right home.</li>
+      <li><strong>Guards and resolvers</strong> — route guards protecting the whole app belong in CoreModule.</li>
+      <li><strong>Error handling</strong> — global error handlers and loggers are registered once here.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      In a banking application, <strong>CoreModule</strong> provides <code>AuthService</code> (login/logout/session),
+      <code>LoggingService</code> (audit trail), and a <code>TokenInterceptor</code> that attaches the JWT to every
+      HTTP request. Because CoreModule is imported only in AppModule, these services are guaranteed singletons —
+      the same <code>AuthService</code> instance is used in every page, from the login screen to the dashboard.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      Angular's dependency injection tree has a root injector created by <code>AppModule</code>. When
+      <code>CoreModule</code> is imported in AppModule, its <code>providers</code> array is merged into the root
+      injector. Any component or service in the app that injects <code>AuthService</code> receives the same
+      instance because the root injector is a singleton store. The <code>&#64;Optional() &#64;SkipSelf()</code>
+      constructor parameter works by asking the injector to look <em>above</em> the current module for an existing
+      <code>CoreModule</code> token. If found, it means CoreModule was already imported, triggering the guard error.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Guarantees singleton services — one instance per token for the app lifetime.</li>
+        <li>Constructor guard provides a clear, developer-friendly error on misuse.</li>
+        <li>Centralises cross-cutting concerns (auth, logging, error handling) in one module.</li>
+        <li>Keeps AppModule and feature modules focused on their own responsibilities.</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Extra boilerplate — modern Angular prefers <code>providedIn: 'root'</code> on services instead.</li>
+        <li>HTTP interceptors and multi-provider tokens still require explicit registration in CoreModule.</li>
+        <li>Developers unfamiliar with the pattern may still try to import it in feature modules.</li>
+        <li>Less relevant in standalone Angular 17+ apps that use <code>provideHttpClient(withInterceptors([...]))</code>.</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always import CoreModule only in <code>AppModule</code> — never in feature modules.</li>
+      <li>Include the <code>&#64;Optional() &#64;SkipSelf()</code> guard in every CoreModule constructor.</li>
+      <li>Use <code>providedIn: 'root'</code> for simple services; use CoreModule for HTTP interceptors and tokens.</li>
+      <li>Do not add UI components to CoreModule — those belong in SharedModule.</li>
+      <li>In standalone apps, replace CoreModule with <code>app.config.ts</code> using <code>provideHttpClient</code>, <code>provideRouter</code>, etc.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Importing CoreModule in a feature module — creates duplicate service instances and breaks singletons.</li>
+      <li>Forgetting the constructor guard — allows silent duplicate imports without any error.</li>
+      <li>Putting UI components in CoreModule — they can't be easily shared and don't belong here.</li>
+      <li>Using CoreModule for services that are feature-scoped — those should live in their own feature module.</li>
+      <li>Not registering HTTP interceptors with <code>multi: true</code> — replaces rather than chains interceptors.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

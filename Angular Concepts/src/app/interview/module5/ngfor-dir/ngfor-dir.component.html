@@ -1,0 +1,91 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod5">
+    <span class="module-tag">Module 5 — Directives</span>
+    <h1>ngFor</h1>
+    <p class="subtitle">Render lists — iterate over any collection and stamp out DOM for each item</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>*ngFor</strong> is a built-in structural directive that renders a template for each item in an iterable (array, Set, etc.). It uses the <code>NgFor</code> micro-syntax and exposes powerful local variables: <code>index</code>, <code>first</code>, <code>last</code>, <code>even</code>, <code>odd</code>, and <code>count</code>. For performance, always use <code>trackBy</code> to give Angular a way to identify items and avoid unnecessary DOM re-creation.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Declaratively render dynamic lists without manual DOM manipulation</li>
+      <li>Access contextual variables (index, first, last) for conditional styling</li>
+      <li>Minimize DOM re-renders with <code>trackBy</code> for large, updating lists</li>
+      <li>Supports nested iteration for hierarchical data (categories and items)</li>
+      <li>Works with any JavaScript iterable — arrays, Sets, sliced arrays</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A <strong>Product List</strong> component using <code>*ngFor</code> with <code>trackBy</code>, alternating row styles using the <code>even</code> variable, and a nested <code>*ngFor</code> for category grouping.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular desugars <code>*ngFor</code> into <code>&lt;ng-template ngFor [ngForOf]="items" [ngForTrackBy]="trackFn"&gt;</code>. The <code>NgFor</code> directive class maintains a list of <code>EmbeddedViewRef</code> objects — one per item. On each change detection cycle, it compares current items against the tracked keys, computes a diff, then inserts new views, removes stale views, and updates changed views in-place. The <code>trackBy</code> function is the key used in this diff algorithm.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Declarative list rendering — no manual DOM or array manipulation</li>
+        <li>Built-in local variables (index, first, last, even, odd) for rich UI logic</li>
+        <li>trackBy drastically reduces DOM operations on list updates</li>
+        <li>Supports nested iteration for hierarchical data structures</li>
+        <li>Participates in Angular's change detection automatically</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Without trackBy, every change triggers full list re-render</li>
+        <li>Deeply nested *ngFor loops can degrade performance (O(n*m) complexity)</li>
+        <li>Does not natively support pagination — requires manual slicing</li>
+        <li>Cannot iterate directly over plain Objects (use keyvalue pipe)</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always use <code>trackBy</code> for lists that update dynamically (API data, user actions)</li>
+      <li>Define the <code>trackBy</code> function in the component class (not as an arrow in template)</li>
+      <li>Use <code>&lt;ng-container *ngFor&gt;</code> to avoid extra DOM wrapper elements</li>
+      <li>Combine <code>*ngFor</code> with the <code>slice</code> pipe for client-side pagination</li>
+      <li>For large lists (1000+ items), consider virtual scrolling (CDK VirtualScrollViewport)</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Omitting <code>trackBy</code> — causes full DOM re-renders on every list update</li>
+      <li>Applying <code>*ngFor</code> and <code>*ngIf</code> on the same element — wrap with ng-container</li>
+      <li>Mutating array items in-place when using OnPush — Angular won't detect the change</li>
+      <li>Using object reference as trackBy key — objects change identity on every API call</li>
+      <li>Forgetting to import <code>NgFor</code> or <code>CommonModule</code> in standalone components</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

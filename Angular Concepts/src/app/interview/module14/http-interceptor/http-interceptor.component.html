@@ -1,0 +1,94 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod14">
+    <span class="module-tag">Module 14 — Interceptors</span>
+    <h1>HTTP Interceptor</h1>
+    <p class="subtitle">Middleware for the Angular HTTP pipeline — intercept, transform, and handle every request and response in one place</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>An <strong>Angular HTTP Interceptor</strong> is a middleware mechanism that sits between the Angular <code>HttpClient</code> and the actual HTTP backend. It intercepts every outgoing request and incoming response, allowing you to inspect and transform them without modifying individual service methods. Interceptors solve cross-cutting concerns — logic that applies to many/all HTTP calls (authentication, logging, error handling, caching, spinners) is written once and applied automatically.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Centralized auth token injection — add Bearer header once, applies to all API calls</li>
+      <li>Global error handling — catch 401/403/500 errors in one place</li>
+      <li>Request/response logging — trace every API call without touching services</li>
+      <li>Loading spinners — show on request start, hide on response/error</li>
+      <li>Response caching — return cached data for identical GET requests</li>
+      <li>Request retrying — automatically retry failed requests with exponential backoff</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A request timing interceptor clones the request to add a <code>X-Request-Id</code> header and <code>X-Client-Version</code>, measures the round-trip time, and logs it with the request ID. Multiple interceptors chain together — timing first, then auth token, then error handling — each running in registration order for outgoing requests and in reverse for responses.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's <code>HttpClient</code> builds a chain of interceptors using a linked-list structure. When you call <code>httpClient.get(url)</code>, Angular creates an <code>HttpRequest</code> and passes it to the first interceptor. Each interceptor calls <code>next(req)</code> (functional) or <code>next.handle(req)</code> (class-based) to pass the request to the next interceptor in the chain. The last "interceptor" is the <code>HttpBackend</code>, which actually performs the XMLHttpRequest/fetch. The response Observable flows back through the chain in reverse, passing through each interceptor's <code>pipe()</code> operators.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>DRY principle — auth, logging, error handling written once, applied everywhere</li>
+        <li>Composable chain — multiple interceptors are stacked in a predictable order</li>
+        <li>Request immutability via req.clone() prevents accidental corruption</li>
+        <li>Observable-based — full RxJS power (retry, catchError, switchMap) available</li>
+        <li>Functional interceptors (Angular 15+) are simpler and tree-shakable</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>All interceptors run for ALL HttpClient calls — need URL guards for selective application</li>
+        <li>Complex interceptor chains are hard to debug (no visual middleware diagram)</li>
+        <li>Order-sensitive — wrong registration order can cause subtle bugs</li>
+        <li>Class-based interceptors require HTTP_INTERCEPTORS multi-token boilerplate</li>
+        <li>Interceptors cannot easily skip themselves without explicit URL or context checks</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use functional interceptors (Angular 15+) for new projects — simpler, tree-shakable</li>
+      <li>Use <code>HttpContext</code> tokens (not URL checks) to conditionally skip interceptors</li>
+      <li>Keep each interceptor focused on a single concern (SRP)</li>
+      <li>Always clone the request before modifying it — never mutate <code>req</code> directly</li>
+      <li>Handle errors in interceptors with <code>catchError</code> and re-throw with <code>throwError()</code></li>
+      <li>Register interceptors in a dedicated file or <code>app.config.ts</code> for clarity</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Forgetting to call <code>next(req)</code> — the request never reaches the server</li>
+      <li>Mutating <code>req</code> directly instead of using <code>req.clone()</code></li>
+      <li>Not handling errors in the interceptor — unhandled errors break the entire app</li>
+      <li>Calling HTTP endpoints inside an interceptor without guards — infinite loops</li>
+      <li>Registering duplicate interceptors — same logic runs twice per request</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

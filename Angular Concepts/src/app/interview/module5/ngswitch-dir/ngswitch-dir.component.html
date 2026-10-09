@@ -1,0 +1,91 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod5">
+    <span class="module-tag">Module 5 — Directives</span>
+    <h1>ngSwitch</h1>
+    <p class="subtitle">Render one view from many alternatives — cleaner multi-case conditional rendering</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>ngSwitch</strong> is a set of cooperating directives for rendering one template from multiple candidates based on a matching value. It consists of: <code>[ngSwitch]="expression"</code> (property binding on the container), <code>*ngSwitchCase="value"</code> (structural directive on each case), and <code>*ngSwitchDefault</code> (fallback when no case matches). Only the matching case is added to the DOM; all others are removed.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Cleanly handle 3+ mutually exclusive views without chaining multiple *ngIf directives</li>
+      <li>Only the matching view exists in the DOM — others are not rendered at all</li>
+      <li>Strongly communicates intent: "this block switches between these views"</li>
+      <li>Ideal for role-based UI (admin/user/guest views), status displays, tab panels</li>
+      <li>Works with components as cases — swap entire component trees cleanly</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>An <strong>Order Status</strong> display that renders a different styled badge for each order status (pending, processing, shipped, delivered, cancelled) — a perfect real-world use case for ngSwitch over chained *ngIf.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>The <code>[ngSwitch]</code> directive sets an internal switch value on the container. Each <code>*ngSwitchCase</code> directive registers itself with the parent <code>NgSwitch</code> directive and provides its match value. When the switch value changes, <code>NgSwitch</code> iterates all registered cases, calls <code>vcr.createEmbeddedView()</code> for matching cases, and <code>vcr.clear()</code> for non-matching ones. <code>*ngSwitchDefault</code> renders when no case matches.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>More readable than chaining multiple *ngIf conditions</li>
+        <li>Only renders the matching case — others are removed from DOM</li>
+        <li>Scales cleanly as the number of cases grows</li>
+        <li>Works with components as cases, not just simple elements</li>
+        <li>ng-container support avoids extra wrapper elements</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Requires three separate directives — slightly more verbose than *ngIf</li>
+        <li>Does not support range comparisons (use *ngIf for value &gt; 10)</li>
+        <li>All *ngSwitchCase directives must be direct children of the [ngSwitch] element</li>
+        <li>Cannot share one case template for multiple values (without ng-template tricks)</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use <code>ng-container [ngSwitch]</code> to avoid adding an unnecessary wrapper element</li>
+      <li>Always include <code>*ngSwitchDefault</code> as a fallback for unexpected values</li>
+      <li>Prefer ngSwitch over chained *ngIf when comparing the same variable to different values</li>
+      <li>Use TypeScript union types for the switch value to get compile-time safety</li>
+      <li>For 2 cases, prefer <code>*ngIf; else</code> — ngSwitch is overkill for binary conditions</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Putting <code>[ngSwitch]</code> on a child element instead of the parent container</li>
+      <li>Using <code>*ngSwitch</code> (structural) instead of <code>[ngSwitch]</code> (property binding) on the container</li>
+      <li>Forgetting <code>*ngSwitchDefault</code> — leaves the UI blank on unexpected values</li>
+      <li>Comparing objects with <code>*ngSwitchCase</code> — only reference equality works</li>
+      <li>Forgetting to import <code>NgSwitch</code>, <code>NgSwitchCase</code>, or <code>CommonModule</code></li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

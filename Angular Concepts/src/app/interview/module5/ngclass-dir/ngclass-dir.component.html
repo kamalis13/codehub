@@ -1,0 +1,91 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod5">
+    <span class="module-tag">Module 5 — Directives</span>
+    <h1>ngClass</h1>
+    <p class="subtitle">Dynamically add and remove CSS classes based on component state</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>[ngClass]</strong> is a built-in attribute directive that dynamically adds or removes CSS classes on a DOM element. It merges with any static <code>class</code> attribute already on the element. It accepts three forms: a <strong>string</strong> (space-separated class names), an <strong>array</strong> of class names, or an <strong>object</strong> where keys are class names and values are booleans that control whether the class is applied.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Dynamically apply validation state classes (valid, invalid, warning, pristine)</li>
+      <li>Toggle active/inactive state on navigation items and tab buttons</li>
+      <li>Conditionally apply multiple classes from one clean binding</li>
+      <li>React to user interaction (focus, hover, selection) with CSS class changes</li>
+      <li>Keeps class logic in TypeScript where it can be unit-tested</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A <strong>Form Field</strong> component that uses <code>[ngClass]</code> to apply validation state classes (valid, invalid, warning, focused, required) based on real-time field state — a common pattern in Angular forms.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's <code>NgClass</code> directive subscribes to the bound expression. During change detection, it evaluates the expression (string/array/object) and computes the set of classes to add and remove. It uses a differ internally to track which classes changed since the last cycle, then calls <code>renderer.addClass()</code> and <code>renderer.removeClass()</code> only for changed classes — this minimizes actual DOM mutations.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Multiple class conditions in a single clean binding</li>
+        <li>Merges safely with static class attributes</li>
+        <li>Separates class logic from HTML — testable in the component</li>
+        <li>Object syntax reads like documentation — what class, when it applies</li>
+        <li>Supports computed getters for complex class logic</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Object literal in template creates new reference each cycle (use getter instead)</li>
+        <li>Verbose for toggling a single class (use [class.name] instead)</li>
+        <li>Complex class logic in template reduces readability</li>
+        <li>Debugging active classes requires Angular DevTools or manual inspection</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use a <strong>getter</strong> in the component class to return the class object — avoids new object creation in template</li>
+      <li>Use <code>[class.name]="expr"</code> for toggling a <strong>single</strong> class</li>
+      <li>Keep class object keys consistent with your CSS naming convention (BEM, utility-first, etc.)</li>
+      <li>Prefer <code>[ngClass]</code> over string concatenation in class attributes</li>
+      <li>Use TypeScript's computed properties for dynamic key names in class objects</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using an inline object literal <code>[ngClass]="&#123; ... &#125;"</code> — creates a new object every CD cycle</li>
+      <li>Thinking <code>[ngClass]</code> replaces static classes — it does not, it merges</li>
+      <li>Using <code>[class]="str"</code> instead of <code>[ngClass]</code> — [class] replaces all classes</li>
+      <li>Forgetting to import <code>NgClass</code> or <code>CommonModule</code> in standalone components</li>
+      <li>Putting too much conditional logic inside the template instead of using a computed getter</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

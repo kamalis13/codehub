@@ -1,0 +1,109 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod2">
+    <span class="module-tag">Module 2 — Components</span>
+    <h1>Angular Components</h1>
+    <p class="subtitle">The fundamental building blocks that compose every Angular UI</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      An Angular <strong>component</strong> is a TypeScript class decorated with <code>&#64;Component</code> that controls
+      a reusable section of the user interface. Every Angular application is a tree of components starting from a
+      single root. Each component combines a <em>template</em> (HTML), <em>styles</em> (CSS), and a <em>class</em>
+      (TypeScript) that defines the data and behaviour behind that view.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>UI Composition</strong> — Break a complex page into small, focused pieces that are easier to build and test.</li>
+      <li><strong>Reusability</strong> — A single component (e.g., <code>UserCardComponent</code>) can be used anywhere in the app with different data.</li>
+      <li><strong>Encapsulation</strong> — Each component owns its template and styles, preventing accidental side-effects on other parts of the UI.</li>
+      <li><strong>Separation of concerns</strong> — Business logic lives in the class, presentation in the template, and appearance in the styles.</li>
+      <li><strong>Testability</strong> — Isolated components are simple to unit-test with Angular's TestBed or standalone testing utilities.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A <strong>UserCardComponent</strong> receives a user object via <code>&#64;Input</code> and renders an avatar, name,
+      email, and role badge. It is reused inside a user list, a search result page, and a profile sidebar — the
+      same component with different data each time.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      When Angular bootstraps, it reads the root component's <code>selector</code> and replaces the matching host
+      element in <code>index.html</code>. Angular constructs a <strong>component tree</strong>: each component's
+      template may contain child component selectors, which Angular instantiates recursively. A
+      <strong>change detector</strong> is created for every component. During each change detection cycle (triggered
+      by events, HTTP responses, or timers via zone.js), Angular checks each component's bindings and updates the
+      DOM only where values have changed.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Clear separation of concerns via template, class, and styles</li>
+        <li>Strong reusability — one definition, used many times</li>
+        <li>Scoped styles prevent global CSS conflicts</li>
+        <li>Standalone components reduce NgModule boilerplate</li>
+        <li>Easy to test in isolation with Angular's testing utilities</li>
+        <li>Excellent tooling (Angular CLI, DevTools, Storybook)</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Overhead for very simple use-cases that a directive would suffice</li>
+        <li>Learning curve for change detection and lifecycle hooks</li>
+        <li>Deeply nested trees can cause performance issues without OnPush</li>
+        <li>Over-componentizing leads to unnecessary complexity</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Follow the Single Responsibility Principle — one component, one purpose.</li>
+      <li>Use <code>ChangeDetectionStrategy.OnPush</code> for pure/presentational components.</li>
+      <li>Prefer standalone components to avoid NgModule overhead in new code.</li>
+      <li>Keep templates thin — move complex logic into the class or a service.</li>
+      <li>Name components clearly: <code>UserCardComponent</code>, not <code>Card1Component</code>.</li>
+      <li>Use Angular CLI (<code>ng generate component</code>) to ensure consistent file structure.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Putting HTTP calls or business logic directly in the component class (use services instead).</li>
+      <li>Not importing CommonModule / required modules in standalone components, causing <code>*ngIf</code> or <code>*ngFor</code> to silently fail.</li>
+      <li>Using <code>ViewEncapsulation.None</code> unintentionally, causing CSS to bleed globally.</li>
+      <li>Forgetting to declare the selector prefix (e.g., <code>app-</code>) leading to HTML spec warnings.</li>
+      <li>Creating massive "god components" that handle dozens of responsibilities.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

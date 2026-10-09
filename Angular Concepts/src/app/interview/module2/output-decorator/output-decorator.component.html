@@ -1,0 +1,105 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod2">
+    <span class="module-tag">Module 2 — Components</span>
+    <h1>&#64;Output Decorator</h1>
+    <p class="subtitle">Emitting custom events from child to parent — the child-to-parent data channel</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      <code>&#64;Output()</code> is a decorator that exposes an <strong>EventEmitter</strong> on a child component,
+      enabling the child to send data or notifications to its parent via <strong>event binding</strong>
+      (<code>(eventName)="handler($event)"</code>). A child should never modify parent state directly — it
+      should emit an event with the relevant payload, and the parent decides what to do with it.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Unidirectional flow</strong> — Children communicate upward through events, keeping data flow predictable.</li>
+      <li><strong>Decoupling</strong> — The child does not need a reference to the parent; it simply emits an event.</li>
+      <li><strong>Reusability</strong> — A generic <code>SignupFormComponent</code> is reusable because it emits events rather than knowing which service to call.</li>
+      <li><strong>Two-way binding</strong> — Pairing <code>&#64;Input() value</code> with <code>&#64;Output() valueChange</code> enables the <code>[(value)]</code> banana-in-a-box syntax.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A <strong>SignupFormComponent</strong> renders a registration form. When the user submits, it emits
+      a <code>registered</code> event containing the user's name and email. When the user cancels, it emits
+      a void <code>cancelled</code> event. The parent decides whether to navigate away, call an API, or
+      show a success message — the form component remains generic and reusable.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      <code>EventEmitter</code> extends RxJS <code>Subject</code>. When Angular's template compiler processes
+      <code>(registered)="onRegistered($event)"</code>, it creates a subscription to the child's
+      <code>registered</code> EventEmitter. Calling <code>emit(payload)</code> calls <code>Subject.next(payload)</code>,
+      which synchronously invokes the subscriber (the parent's handler). Angular automatically unsubscribes
+      when the child component is destroyed, preventing memory leaks for parent-bound outputs.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Keeps data flow unidirectional and easy to debug</li>
+        <li>Type-safe with <code>EventEmitter&lt;T&gt;</code></li>
+        <li>Components remain decoupled and reusable</li>
+        <li>Enables the two-way binding shorthand <code>[(value)]</code></li>
+        <li>Parent automatically unsubscribes when child is destroyed</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Only the direct parent can listen — not suitable for cross-tree communication</li>
+        <li>Events must bubble through every intermediate parent in deeply nested trees</li>
+        <li><code>EventEmitter</code> should not be used in services — use RxJS Subject instead</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always type your EventEmitter: <code>new EventEmitter&lt;User&gt;()</code> — avoid <code>any</code>.</li>
+      <li>Use past-tense or noun-based names for outputs: <code>userSelected</code>, <code>formSubmitted</code>.</li>
+      <li>Use the <code>valueChange</code> naming convention to enable <code>[(value)]</code> two-way binding.</li>
+      <li>Keep the emitted payload minimal — only what the parent needs to act.</li>
+      <li>Do not use <code>EventEmitter</code> in services; use RxJS <code>Subject</code> there instead.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using <code>EventEmitter</code> in a service for cross-component communication (use <code>Subject</code>).</li>
+      <li>Emitting complex, mutable objects — the parent may inadvertently share the same reference.</li>
+      <li>Not typing the <code>EventEmitter</code> — the parent's handler receives an untyped <code>$event</code>.</li>
+      <li>Calling <code>.subscribe()</code> directly on a child's <code>&#64;Output</code> EventEmitter from parent TypeScript code.</li>
+      <li>Forgetting the <code>Change</code> suffix in the output name when implementing custom two-way binding.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

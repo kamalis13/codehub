@@ -1,0 +1,53 @@
+<div class="operator-box">
+  <div class="concept-header">
+    <span class="badge">Core Concept</span>
+    <h1>ReplaySubject</h1>
+    <p class="tagline">Buffers the last N values and replays them to any new subscriber</p>
+  </div>
+
+  <div class="definition-card">
+    <div class="def-row"><span class="icon">📼</span><div><strong>ReplaySubject</strong> — like a DVR. It records the last N emissions and plays them back to any new subscriber instantly, even if those values were pushed before the subscription.</div></div>
+    <div class="def-row"><span class="icon">💡</span><div><strong>Key difference from Subject</strong> — a regular <code>Subject</code> only forwards future values. A <code>ReplaySubject(2)</code> stores the last 2 and replays them to latecomers.</div></div>
+  </div>
+
+  <div class="subject-family">
+    <div class="family-card active-card"><div class="f-title">Subject</div><div class="f-desc">No memory. Late = miss all past.</div></div>
+    <div class="family-card highlight-card"><div class="f-title">ReplaySubject(N)</div><div class="f-desc">Replays last N values to new subscribers.</div></div>
+    <div class="family-card"><div class="f-title">BehaviorSubject</div><div class="f-desc">ReplaySubject(1) with mandatory initial value.</div></div>
+    <div class="family-card"><div class="f-title">AsyncSubject</div><div class="f-desc">Only emits the LAST value on complete().</div></div>
+  </div>
+
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+
+  <div class="demo-section">
+    <h3>Live Demo — ReplaySubject(3)</h3>
+    <p class="note">Push some values, then add a late subscriber to see it receive buffered values automatically.</p>
+    <div class="btn-row">
+      <button (click)="pushValue('Apple')">Push "Apple"</button>
+      <button (click)="pushValue('Banana')">Push "Banana"</button>
+      <button (click)="pushValue('Cherry')">Push "Cherry"</button>
+      <button (click)="pushValue('Date')">Push "Date"</button>
+    </div>
+    <div class="log-grid">
+      <div class="log-col">
+        <div class="log-title">Events pushed</div>
+        <ul class="result-list">
+          <li *ngFor="let r of earlyLog">{{ r }}</li>
+        </ul>
+      </div>
+      <div class="log-col">
+        <div class="log-title">Late subscriber (replayed)</div>
+        <ul class="result-list">
+          <li *ngFor="let r of lateLog">{{ r }}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:0.75rem">
+      <button class="secondary-btn" (click)="addLateSubscriber()">Add Late Subscriber</button>
+      <button class="secondary-btn" (click)="reset()">Reset</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,95 @@
+<div class="concept-box">
+
+  <!-- ── Header ── -->
+  <div class="concept-header promise-header">
+    <span class="badge">🔢 Concept 3</span>
+    <h2>Promise</h2>
+    <p class="tagline">"I promise to give you ONE result later — either success or failure."</p>
+  </div>
+
+  <!-- ── States visual ── -->
+  <div class="states-row">
+    <div class="state-card pending">
+      <div class="state-icon">🟡</div>
+      <strong>PENDING</strong>
+      <p>Working… not done yet</p>
+    </div>
+    <div class="state-arrow">→</div>
+    <div class="state-card fulfilled">
+      <div class="state-icon">✅</div>
+      <strong>FULFILLED</strong>
+      <p>Success! Value arrived</p>
+    </div>
+    <div class="state-slash">or</div>
+    <div class="state-card rejected">
+      <div class="state-icon">❌</div>
+      <strong>REJECTED</strong>
+      <p>Failed with an error</p>
+    </div>
+  </div>
+
+  <!-- ── Definition card ── -->
+  <div class="def-card">
+    <div class="def-row">
+      <span class="def-icon">📖</span>
+      <div>
+        <strong>Definition</strong>
+        <p>A Promise handles ONE future async value. It's either pending, fulfilled (value arrived), or rejected (error). Once settled it never changes state.</p>
+      </div>
+    </div>
+    <div class="def-row">
+      <span class="def-icon">📦</span>
+      <div>
+        <strong>Real-life analogy</strong>
+        <p>An online order tracking number. You don't have the package yet, but you're promised it. It'll either arrive (fulfilled) or be lost (rejected).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Code example ── -->
+  <div class="code-block">
+    <div class="code-label">Promise anatomy</div>
+    <pre [innerText]="codeExample"></pre>
+  </div>
+
+  <!-- ── Live demo ── -->
+  <div class="demo-section">
+    <div class="demo-label">▶ Live Demo</div>
+    <div class="btn-row">
+      <button class="btn-success" (click)="runSuccess()" [disabled]="running">✅ Simulate Success</button>
+      <button class="btn-fail" (click)="runFail()" [disabled]="running">❌ Simulate Failure</button>
+    </div>
+    <div class="promise-track" *ngIf="state !== 'idle'">
+      <div class="track-step" [class.active]="state === 'pending'">
+        🟡 PENDING — Promise is working...
+      </div>
+      <div class="track-step success" [class.active]="state === 'fulfilled'">
+        ✅ FULFILLED — {{ result }}
+      </div>
+      <div class="track-step error" [class.active]="state === 'rejected'">
+        ❌ REJECTED — {{ result }}
+      </div>
+      <div class="track-step finally" [class.active]="finallyRan">
+        🏁 FINALLY — cleanup ran (always runs)
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Promise vs Observable ── -->
+  <div class="vs-table">
+    <div class="vs-header">Promise vs Observable</div>
+    <table>
+      <thead>
+        <tr><th></th><th>Promise</th><th>Observable</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Values emitted</td><td>Exactly 1</td><td>0, 1, or many</td></tr>
+        <tr><td>Cancellable?</td><td>❌ No</td><td>✅ Yes (unsubscribe)</td></tr>
+        <tr><td>Lazy?</td><td>❌ Runs immediately</td><td>✅ Runs on subscribe</td></tr>
+        <tr><td>Operators?</td><td>Limited (.then)</td><td>Rich (map, filter, …)</td></tr>
+        <tr><td>Built into JS?</td><td>✅ Yes</td><td>❌ Needs RxJS</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

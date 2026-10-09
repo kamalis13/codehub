@@ -1,0 +1,66 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod18">
+    <span class="module-tag">Module 18 — Project Discussion</span>
+    <h1>How to Explain Your Project</h1>
+    <p class="subtitle">Confidently present your Angular project in interviews</p>
+  </div>
+
+  <section class="t-card">
+    <h2>🎯 Project Introduction Template</h2>
+    <p style="white-space: pre-line;">{{ introductionTemplate }}</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🏗️ Architecture Overview</h2>
+    <p>When describing your architecture, cover these areas in order — from high-level system design down to code organization:</p>
+    <ul>
+      <li *ngFor="let point of architecturePoints">{{ point }}</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🔧 Technical Stack</h2>
+    <p>Be ready to explain each technology choice and <em>why</em> you used it:</p>
+    <ul>
+      <li *ngFor="let item of technicalStack">{{ item }}</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🌟 Key Features to Highlight</h2>
+    <p>Choose 3–4 features that demonstrate technical depth, not just standard CRUD:</p>
+    <ul>
+      <li *ngFor="let feature of keyFeatures">{{ feature }}</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>⚠️ Challenges &amp; Solutions (STAR Method)</h2>
+    <p>Use the <strong>S</strong>ituation → <strong>T</strong>ask → <strong>A</strong>ction → <strong>R</strong>esult format for challenges:</p>
+    <div class="qa-item" *ngFor="let ex of starExamples; let i = index">
+      <div class="qa-q">Challenge {{ i + 1 }}</div>
+      <div class="qa-a">
+        <strong>Situation:</strong> {{ ex.situation }}<br/>
+        <strong>Task:</strong> {{ ex.task }}<br/>
+        <strong>Action:</strong> {{ ex.action }}<br/>
+        <strong>Result:</strong> {{ ex.result }}
+      </div>
+    </div>
+  </section>
+
+  <section class="t-card">
+    <h2>📈 Key Learnings</h2>
+    <p>Interviewers love hearing what you learned — shows self-awareness and growth mindset:</p>
+    <ul>
+      <li *ngFor="let learning of learnings">{{ learning }}</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Common Project Questions &amp; Answers</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

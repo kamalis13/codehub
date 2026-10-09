@@ -1,0 +1,96 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod1">
+    <span class="module-tag">Module 1 — Angular Fundamentals</span>
+    <h1>JIT vs AOT Compilation</h1>
+    <p class="subtitle">Just-In-Time vs Ahead-Of-Time — when templates compile, why it matters, and which to use when.</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>JIT (Just-In-Time)</strong> compilation means Angular templates are compiled <em>in the browser at runtime</em> — the Angular compiler is bundled and shipped to the user's browser, which compiles the application when the user first opens it. <strong>AOT (Ahead-Of-Time)</strong> compilation means templates are compiled <em>on the build machine during <code>ng build</code></em> — the browser receives pre-compiled JavaScript instructions and requires no compiler at runtime. Since Angular 9 with Ivy, <strong>AOT is the default for all builds</strong>, including development.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Faster startup with AOT:</strong> No compilation step in the browser — the app renders immediately from pre-compiled code.</li>
+      <li><strong>Smaller bundles with AOT:</strong> The Angular template compiler (~40KB) is not shipped to the browser.</li>
+      <li><strong>Fail-fast with AOT:</strong> Template errors are caught at build time, not when a user encounters a broken view.</li>
+      <li><strong>Security with AOT:</strong> Pre-compiled templates eliminate the risk of runtime template injection attacks.</li>
+      <li><strong>Better tree-shaking with AOT:</strong> The build process can statically analyze what is used and remove the rest.</li>
+      <li><strong>Developer experience:</strong> Consistent behavior between development and production since both use AOT (Ivy).</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A finance dashboard app has a template that binds to <code>user.accountBalance.toFixed(2)</code>. With AOT and <code>strictTemplates</code> enabled, if a developer mistypes this as <code>user.accountBalnce.toFixed(2)</code> (typo), the build fails immediately with a clear error: <em>"Property 'accountBalnce' does not exist on type 'User'"</em>. With JIT, this error would only surface when a user navigates to that view in the browser — potentially in production. AOT's build-time error detection directly prevents production incidents.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>In <strong>JIT mode</strong>, the browser downloads the Angular compiler as part of the bundle. When the app bootstraps, <code>platformBrowserDynamic()</code> invokes the compiler to parse component decorator metadata, compile HTML templates into rendering functions, and create the component factories. All of this happens synchronously before the first pixel renders. In <strong>AOT mode</strong>, <code>ngtsc</code> (the Ivy TypeScript compiler plugin) performs this same compilation during <code>ng build</code>. Component classes receive static <code>ɵcmp</code> definitions directly — <code>platformBrowser()</code> reads these pre-compiled definitions and renders the app without any compilation step, making startup significantly faster.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages of AOT</h2>
+      <ul>
+        <li>Faster initial render — no in-browser compilation overhead</li>
+        <li>Smaller bundles — Angular compiler not included in the bundle</li>
+        <li>Template errors caught at build time — fail fast before deployment</li>
+        <li>Enhanced security — no runtime template parsing reduces injection risk</li>
+        <li>Better tree-shaking — static analysis removes unused code more effectively</li>
+        <li>Consistent dev/prod behavior with Ivy (both use AOT since Angular 9)</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages / JIT trade-offs</h2>
+      <ul>
+        <li>AOT requires stricter code — dynamic template expressions may not compile</li>
+        <li>Build time is longer than JIT for clean builds (mitigated by incremental compilation)</li>
+        <li>Strict template checking can be a significant migration effort in legacy apps</li>
+        <li>Some dynamic patterns (runtime component factories) are more complex with AOT</li>
+        <li>JIT was simpler for rapid prototyping (though largely superseded by Ivy's fast AOT)</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always deploy with AOT — never ship a JIT build to production</li>
+      <li>Enable <code>strictTemplates</code> to get full AOT template type checking benefits</li>
+      <li>Run <code>ng build</code> (AOT) in CI/CD pipelines, not just locally before deployment</li>
+      <li>Avoid dynamic template construction (string concatenation for templates) — it breaks AOT</li>
+      <li>Use <code>ng serve --aot</code> in older Angular projects to test AOT behavior during development</li>
+      <li>Fix AOT errors immediately — do not suppress them with <code>any</code> type casts</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Deploying development builds (JIT) to production — dramatically larger bundles, slower startup</li>
+      <li>Disabling <code>strictTemplates</code> to avoid compilation errors — masks real bugs</li>
+      <li>Using <code>eval()</code> or <code>Function()</code> constructors in Angular code — incompatible with AOT</li>
+      <li>Dynamically constructing Angular metadata (decorators) at runtime — AOT requires static analysis</li>
+      <li>Not testing builds locally before deploying — AOT errors that don't appear in <code>ng serve</code> can surface during build</li>
+      <li>Confusing JIT/AOT with server-side rendering — they are different concepts</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

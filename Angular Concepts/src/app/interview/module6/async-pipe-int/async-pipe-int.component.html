@@ -1,0 +1,91 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod6">
+    <span class="module-tag">Module 6 — Pipes</span>
+    <h1>Async Pipe</h1>
+    <p class="subtitle">Auto-subscribe to Observables and Promises — no manual cleanup required</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>The <strong>async pipe</strong> automatically subscribes to an <code>Observable</code> or <code>Promise</code> and returns its latest emitted value. When the component is destroyed (or the template section is removed), the async pipe <strong>automatically unsubscribes</strong>, preventing memory leaks. It is an <em>impure</em> pipe that checks for new emissions on every change detection cycle. It is the recommended way to consume Observables in Angular templates.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Eliminates manual <code>subscribe()</code> in <code>ngOnInit</code> and <code>unsubscribe()</code> in <code>ngOnDestroy</code></li>
+      <li>Prevents memory leaks — auto-unsubscription on component destroy</li>
+      <li>Enables reactive templates — data flows from Observable directly to view</li>
+      <li>Works seamlessly with <code>*ngIf as</code> to unwrap Observable into local template variable</li>
+      <li>Pairs naturally with <code>OnPush</code> change detection for optimal performance</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>Comparing <strong>manual subscription</strong> (verbose, leak-prone) vs <strong>async pipe</strong> (clean, safe) — plus the ViewModel pattern using <code>combineLatest</code> with async pipe to handle multiple streams.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>The <code>AsyncPipe</code> class implements <code>PipeTransform</code> and <code>OnDestroy</code>. On first <code>transform()</code> call, it stores the Observable/Promise reference and calls <code>subscribe()</code> (or <code>.then()</code>). Each emission updates an internal <code>latestValue</code> field and calls <code>changeDetectorRef.markForCheck()</code> to trigger a re-render. On <code>ngOnDestroy</code>, it calls <code>subscription.unsubscribe()</code>. It is impure — <code>transform()</code> is called every CD cycle to return the latest cached value.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Automatic unsubscription — zero memory leaks from forgotten cleanups</li>
+        <li>Cleaner component code — no subscription management boilerplate</li>
+        <li>Works with <code>*ngIf as</code> for elegant null-safe template access</li>
+        <li>Pairs with <code>OnPush</code> — only triggers CD when Observable emits</li>
+        <li>Works with both Observables and Promises</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Multiple <code>| async</code> on the same Observable = multiple subscriptions</li>
+        <li>Cannot react to emissions in component class — only in template</li>
+        <li>Null/undefined initial state requires <code>*ngIf</code> guard or nullish coalescing</li>
+        <li>Error handling needs <code>catchError</code> in the pipe chain (template errors are cryptic)</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use <code>*ngIf="obs$ | async as data"</code> to subscribe once and expose local variable</li>
+      <li>Prevent multiple subscriptions with <code>shareReplay(1)</code> on shared Observables</li>
+      <li>Use the ViewModel pattern (<code>combineLatest</code>) to merge multiple streams into one <code>vm$</code></li>
+      <li>Add <code>catchError</code> to your Observable chain to handle errors gracefully in the template</li>
+      <li>Prefer async pipe over manual subscribe in templates — always</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using <code>| async</code> multiple times for the same Observable — creates multiple subscriptions</li>
+      <li>Forgetting <code>*ngIf</code> guard — the template renders before the Observable emits (null errors)</li>
+      <li>Not handling errors in the Observable chain — template shows blank on error</li>
+      <li>Mixing async pipe with manual subscriptions on the same Observable — double execution</li>
+      <li>Forgetting to import <code>AsyncPipe</code> or <code>CommonModule</code> in standalone components</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

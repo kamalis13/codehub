@@ -1,0 +1,107 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod4">
+    <span class="module-tag">Module 4 — Templates</span>
+    <h1>Event Binding</h1>
+    <p class="subtitle">React to user interactions — wire DOM events to component methods using (event) syntax</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      <strong>Event Binding</strong> is Angular's mechanism for listening to DOM events and executing component
+      logic in response. Written as <code>(eventName)="handlerMethod($event)"</code>, it places the event name
+      inside parentheses to indicate you are targeting an outgoing event (user interaction). Angular attaches
+      a native event listener under the hood and automatically removes it when the component is destroyed,
+      preventing memory leaks. The special <code>$event</code> variable gives access to the native event object.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>User interaction</strong> — respond to clicks, keystrokes, form submissions, mouse movements, and focus events.</li>
+      <li><strong>Automatic cleanup</strong> — Angular removes event listeners on component destroy, preventing memory leaks.</li>
+      <li><strong>Zone.js integration</strong> — every event binding triggers Angular's change detection, keeping the UI in sync.</li>
+      <li><strong>Cross-browser consistency</strong> — Angular normalises events through its renderer, handling browser quirks.</li>
+      <li><strong>Key event filters</strong> — syntactic sugar like <code>(keyup.enter)</code> removes boilerplate keyboard checks.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A <strong>CheckoutComponent</strong> uses event binding to handle a live search input (on every keyup),
+      Escape key to clear the search (using Angular's key filter), and a form submit event that calls
+      <code>preventDefault()</code> to avoid a page reload before placing the order asynchronously.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      When Angular's compiler encounters <code>(click)="handleClick()"</code>, it generates a view factory
+      that calls <code>renderer.listen(element, 'click', handler)</code>. The handler runs inside Angular's
+      <code>NgZone</code>, which intercepts the call and triggers change detection after the handler completes.
+      This ensures the DOM is updated to reflect any state changes made inside the event handler. Zone.js
+      patches the browser's event system globally, so Angular is notified of async completions too — not just
+      synchronous event handlers.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Declarative event handling directly in the template — easy to see which events a component responds to.</li>
+        <li>Angular automatically removes listeners on component destroy — no manual cleanup needed.</li>
+        <li>Key event filters (<code>keyup.enter</code>, <code>keyup.escape</code>) reduce boilerplate switch/if statements.</li>
+        <li><code>$event</code> provides full access to the native event for reading target values or preventing defaults.</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Complex logic inside the template event expression reduces readability — move it to the component.</li>
+        <li>Event binding alone does not update the component property — you still need to assign values manually.</li>
+        <li>High-frequency events (mousemove, scroll) can trigger excessive change detection — use rxjs debounceTime or zone-bypassing with NgZone.runOutsideAngular.</li>
+        <li>Forgetting to call <code>preventDefault()</code> on links and forms can cause unexpected page navigation.</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Keep event handler methods short and focused — delegate business logic to services.</li>
+      <li>Use key event filters (<code>keyup.enter</code>, <code>keyup.escape</code>) instead of manual key-code checks in handlers.</li>
+      <li>For high-frequency events, use <code>fromEvent</code> with RxJS <code>debounceTime</code> and run outside Angular zone if performance-critical.</li>
+      <li>Always call <code>event.preventDefault()</code> on anchor links and form submits when handling them in Angular.</li>
+      <li>Use <code>&#64;HostListener</code> in directives and components to bind events on the host element declaratively.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using <code>(click)="value = $event"</code> — template expressions with side-effect assignments are allowed but reduce testability.</li>
+      <li>Expecting <code>(click)</code> on a child component to bind a custom event — it actually binds the native DOM click bubble.</li>
+      <li>Forgetting to pass <code>$event</code> when the handler needs the event data: <code>(keyup)="onKey()"</code> instead of <code>(keyup)="onKey($event)"</code>.</li>
+      <li>Subscribing to DOM events manually with <code>addEventListener</code> inside the component — skips Angular's cleanup and zone tracking.</li>
+      <li>Placing complex or expensive logic directly in the template expression — should be in a component method.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

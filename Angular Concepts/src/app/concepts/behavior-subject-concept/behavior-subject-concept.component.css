@@ -1,0 +1,61 @@
+.concept-box { display: flex; flex-direction: column; gap: 1.4rem; max-width: 760px; }
+
+.concept-header { padding: 1.4rem 1.6rem; border-radius: 12px; color: #fff; }
+.bs-header { background: linear-gradient(135deg, #14532d, #16a34a); }
+.badge { font-size: 0.72rem; background: rgba(255,255,255,0.2); padding: 0.2rem 0.6rem; border-radius: 20px; }
+.concept-header h2 { font-size: 2rem; margin: 0.4rem 0 0.2rem; }
+.tagline { opacity: 0.88; font-style: italic; font-size: 0.95rem; }
+
+/* Compare visual */
+.compare-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.compare-col { background: #fff; border-radius: 10px; padding: 1rem; box-shadow: 0 1px 6px rgba(0,0,0,0.07); display: flex; flex-direction: column; gap: 0.5rem; }
+.compare-label { font-size: 0.8rem; font-weight: 700; padding: 0.3rem 0.6rem; border-radius: 6px; }
+.subject-label { background: #fff1f2; color: #dc2626; }
+.bs-label { background: #f0fdf4; color: #15803d; }
+.timeline { display: flex; flex-direction: column; gap: 0.3rem; }
+.ev { font-size: 0.8rem; padding: 0.3rem 0.6rem; border-radius: 6px; font-family: monospace; }
+.ev.value { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.ev.join { background: #fefce8; color: #a16207; border: 1px solid #fde68a; font-style: italic; }
+.ev.replay { background: #f0fdf4; color: #15803d; border: 1px solid #86efac; font-weight: 600; }
+.result { font-size: 0.78rem; padding: 0.4rem 0.6rem; border-radius: 6px; margin-top: 0.2rem; }
+.subject-result { background: #fff1f2; color: #dc2626; }
+.bs-result { background: #f0fdf4; color: #15803d; }
+
+/* Def card */
+.def-card { background: #fff; border-radius: 10px; padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+.def-row { display: flex; gap: 1rem; align-items: flex-start; }
+.def-icon { font-size: 1.4rem; min-width: 2rem; }
+.def-row p { margin: 0.2rem 0 0; color: #374151; font-size: 0.92rem; line-height: 1.55; }
+code { background: #eff6ff; color: #1d4ed8; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.82rem; }
+
+/* Code block */
+.code-block { background: #1e1e2f; border-radius: 10px; padding: 1.2rem; }
+.code-label { color: #585b70; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.6rem; }
+pre { color: #cdd6f4; font-size: 0.82rem; line-height: 1.6; margin: 0; white-space: pre-wrap; }
+
+/* Demo */
+.demo-section { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.2rem; display: flex; flex-direction: column; gap: 0.8rem; }
+.demo-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; }
+.current-value-display { display: flex; align-items: center; gap: 1rem; background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.8rem 1.2rem; }
+.cv-label { font-size: 0.82rem; color: #6b7280; }
+.cv-value { font-size: 2.5rem; font-weight: 700; color: #16a34a; font-family: monospace; min-width: 3rem; text-align: center; }
+.btn-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+button { padding: 0.45rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-size: 0.88rem; color: #fff; }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-inc { background: #16a34a; }
+.btn-dec { background: #dc2626; }
+.btn-late { background: #6366f1; }
+.monitors { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+.monitor { border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; }
+.monitor.inactive { opacity: 0.5; }
+.monitor-header { background: #f1f5f9; padding: 0.5rem 0.8rem; font-size: 0.82rem; font-weight: 700; border-bottom: 1px solid #e2e8f0; }
+.monitor-body { padding: 0.6rem 0.8rem; min-height: 80px; max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.35rem; }
+.monitor-entry { font-size: 0.8rem; font-family: monospace; color: #374151; }
+.monitor-empty { font-size: 0.78rem; color: #9ca3af; font-style: italic; }
+
+/* Summary grid */
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.summary-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem; text-align: center; }
+.summary-icon { font-size: 1.4rem; margin-bottom: 0.4rem; }
+.summary-card strong { display: block; font-size: 0.88rem; color: #1e293b; margin-bottom: 0.3rem; }
+.summary-card p { font-size: 0.8rem; color: #6b7280; margin: 0; }

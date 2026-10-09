@@ -1,0 +1,92 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod10">
+    <span class="module-tag">Module 10 — HTTP</span>
+    <h1>HTTP PATCH</h1>
+    <p class="subtitle">Partial update — send only the fields that changed</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      <code>http.patch&lt;T&gt;(url, partialBody)</code> sends an HTTP PATCH request with only the fields
+      that need updating. Unlike PUT (which replaces the entire resource), PATCH merges the provided fields
+      into the existing resource, leaving unspecified fields completely unchanged.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Efficient updates — send less data over the wire by sending only changed fields</li>
+      <li>Toggling boolean flags (isActive, isPublished) without sending the full object</li>
+      <li>Updating a single field or handling status transitions without fetching and resending the whole resource</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      Three common PATCH patterns: updating only the email field, toggling a product's active status,
+      and collecting dirty form controls to send only the fields the user actually changed.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      The client sends a PATCH request with a partial JSON body. The server loads the existing resource
+      from its data store, merges only the received fields into the stored object (leaving all other fields
+      untouched), validates the merged result, and persists it. The server typically returns the full
+      updated resource. Unlike PUT, PATCH does not require the client to know or send the entire resource.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Minimal payload — only send what changed, reducing bandwidth and processing</li>
+        <li>Safe for partial knowledge — client does not need to know all resource fields</li>
+        <li>Ideal for single-field updates, toggles, and status transitions</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Not guaranteed to be idempotent — repeated identical PATCH calls may have different results</li>
+        <li>Server implementation complexity — must carefully merge only provided fields without clobbering others</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use TypeScript's <code>Partial&lt;T&gt;</code> type for the PATCH body to enforce type safety on partial objects</li>
+      <li>Check form control dirty state before sending to avoid no-op PATCH requests</li>
+      <li>Document your API's PATCH semantics clearly — specify which fields are patchable and which are immutable</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Sending an empty object in a PATCH — always guard with a dirty-fields check before calling http.patch()</li>
+      <li>Assuming PATCH is idempotent — design and test for non-idempotent cases such as append or increment operations</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

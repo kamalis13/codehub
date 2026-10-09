@@ -1,0 +1,107 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod4">
+    <span class="module-tag">Module 4 — Templates</span>
+    <h1>Interpolation</h1>
+    <p class="subtitle">Bind TypeScript expressions to HTML using the double-curly-brace syntax</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      <strong>Interpolation</strong> is Angular's simplest data-binding mechanism. Using double curly braces
+      <code ngNonBindable>{{ expression }}</code>, it evaluates a TypeScript expression from the component class and
+      inserts the resulting string into the HTML. Angular's template compiler converts the expression into a
+      DOM text node and registers a binding so the view automatically updates whenever the underlying data
+      changes during change detection.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Dynamic content</strong> — display component data (names, prices, counts) in the HTML without manual DOM manipulation.</li>
+      <li><strong>Reactive updates</strong> — Angular's change detection re-evaluates expressions and updates the DOM automatically.</li>
+      <li><strong>Readable templates</strong> — keeps HTML declarative and close to natural language.</li>
+      <li><strong>Pipe integration</strong> — combine with pipes for formatted output without extra logic in the component.</li>
+      <li><strong>XSS safety</strong> — Angular HTML-encodes interpolated values, preventing script injection by default.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A <strong>ProductCardComponent</strong> uses interpolation to display the product name, computed final price
+      (after discount), star rating label, and stock status — all driven by component properties and methods.
+      The template remains clean and readable while Angular keeps the DOM in sync.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      During AOT compilation, Angular transforms each <code ngNonBindable>{{ expr }}</code> into an
+      efficient JavaScript expression inside a generated view factory. At runtime, Angular's change detection
+      evaluates the expression and compares its result with the previously stored value (dirty checking).
+      If the value has changed, Angular updates the corresponding DOM text node. Expressions are evaluated
+      in the component's execution context, with access to all public properties and methods of the
+      component class.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Simplest and most readable data-binding syntax — no special attribute knowledge required.</li>
+        <li>Automatically sanitises output, protecting against XSS by default.</li>
+        <li>Works seamlessly with Angular pipes for formatting.</li>
+        <li>Reactive — the DOM updates automatically when data changes.</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Always produces a string — cannot bind boolean or object values to DOM properties.</li>
+        <li>Cannot use statements, assignments, or certain JS operators (new, ++, --).</li>
+        <li>Complex inline expressions reduce readability and are hard to test.</li>
+        <li>Method calls in templates execute on every change detection cycle — avoid expensive computations.</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Keep interpolated expressions simple — use component getters or methods for complex logic.</li>
+      <li>Use Angular pipes for formatting (date, currency, uppercase) instead of inline methods.</li>
+      <li>Avoid calling expensive methods in templates — cache results in component properties instead.</li>
+      <li>Use property binding <code>[attr]</code> when the target needs a non-string value (boolean, number, object).</li>
+      <li>Prefer <code ngNonBindable>{{ value | async }}</code> with the async pipe for Observable values instead of subscribing manually.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Using <code ngNonBindable>{{ }}</code> inside a <code>&lt;pre&gt;</code> tag — causes template parse issues; use <code>[innerText]</code> instead.</li>
+      <li>Placing assignment expressions (<code ngNonBindable>{{ count = 0 }}</code>) inside interpolation — this is not allowed in Angular templates.</li>
+      <li>Using interpolation for boolean DOM attributes (<code ngNonBindable>disabled="{{ isDisabled }}"</code>) — the string "false" still disables the element; use <code>[disabled]="isDisabled"</code>.</li>
+      <li>Putting heavy computations directly in interpolation — they run on every change detection tick, harming performance.</li>
+      <li>Rendering raw HTML via interpolation expecting tags to render — Angular encodes them; use <code>[innerHTML]</code> with DomSanitizer for intentional HTML.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

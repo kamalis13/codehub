@@ -1,0 +1,93 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod13">
+    <span class="module-tag">Module 13 — Authentication</span>
+    <h1>Local Storage</h1>
+    <p class="subtitle">Browser persistent key-value storage — data survives browser restarts, scoped to origin, ~5MB limit</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>localStorage</strong> is a Web Storage API built into browsers that provides a synchronous key-value store persisting data indefinitely — until the user or application explicitly clears it. Unlike cookies, localStorage is not sent with HTTP requests. It is scoped to the origin (scheme + hostname + port) and accessible to any JavaScript on that origin. Each key-value pair must be a string — objects are stored using <code>JSON.stringify</code> and retrieved with <code>JSON.parse</code>.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Persists user preferences (theme, language, layout) across sessions</li>
+      <li>Caches API responses to reduce load time on returning visits</li>
+      <li>Stores non-sensitive tokens or feature flags that must survive page refresh</li>
+      <li>Cross-tab data sharing via the <code>storage</code> event for same-origin tabs</li>
+      <li>Simpler API than cookies — no expiry, path, or domain headers to manage</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A <code>StorageService</code> wraps localStorage with TypeScript generics, error handling (QuotaExceededError, malformed JSON), and SSR guards. A <code>ThemeService</code> uses it to persist the user's dark/light mode preference, initialized from localStorage on startup and updated via a <code>BehaviorSubject</code> that the app reacts to reactively.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>localStorage is implemented by the browser as a persistent database (SQLite in Chrome, for example) on disk. Reads and writes are synchronous — the browser blocks the JavaScript thread until the operation completes. Data is scoped by origin: the browser enforces strict origin isolation. The <code>storage</code> event is dispatched to all other browsing contexts (tabs/windows) from the same origin when the storage changes, but NOT to the originating tab. The storage API is defined in the HTML Living Standard (WHATWG) and is available in all modern browsers.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Simple, synchronous API — easy to read and write without callbacks</li>
+        <li>Persistent across browser restarts — ideal for user preferences</li>
+        <li>~5MB storage per origin — sufficient for most configuration and small cache needs</li>
+        <li>Cross-tab synchronization via the window storage event</li>
+        <li>No expiry to manage — data stays until explicitly removed</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>XSS-vulnerable — any JS on the origin can read it (never store JWT/sensitive tokens here)</li>
+        <li>Synchronous — blocks main thread (performance issue for large/frequent operations)</li>
+        <li>Strings only — all values must be serialized/deserialized</li>
+        <li>Not accessible in Service Workers or Web Workers</li>
+        <li>Not available in SSR (Node.js) — requires platform guards in Angular Universal</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Wrap in an injectable Angular service with error handling (QuotaExceededError, JSON parse errors)</li>
+      <li>Use TypeScript generics in the service wrapper for type safety</li>
+      <li>Guard with <code>isPlatformBrowser(platformId)</code> for SSR compatibility</li>
+      <li>Cache frequently-read values in memory (BehaviorSubject) to avoid repeated synchronous reads</li>
+      <li>Never store JWTs or sensitive tokens in localStorage — use httpOnly cookies</li>
+      <li>Namespace keys (e.g., <code>app_theme</code>, <code>app_user_prefs</code>) to avoid collisions with third-party scripts</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Storing JWTs or sensitive data — XSS can steal them</li>
+      <li>Not wrapping setItem in try-catch — throws QuotaExceededError when storage is full</li>
+      <li>Forgetting JSON.parse/stringify — returns "[object Object]" when storing objects directly</li>
+      <li>Accessing localStorage in Angular Universal without an SSR guard</li>
+      <li>Not cleaning up the storage event listener in ngOnDestroy</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

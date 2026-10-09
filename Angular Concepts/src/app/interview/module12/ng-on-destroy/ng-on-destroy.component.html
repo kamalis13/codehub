@@ -1,0 +1,92 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod12">
+    <span class="module-tag">Module 12 — Lifecycle Hooks</span>
+    <h1>ngOnDestroy</h1>
+    <p class="subtitle">Called just before the component is destroyed — the essential cleanup hook to prevent memory leaks in SPAs</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>ngOnDestroy</strong> is an Angular lifecycle hook called immediately before Angular destroys a component instance and removes it from the DOM. It is the final lifecycle hook — Angular calls it when a component is removed via <code>*ngIf</code> going false, during route navigation away from the component, or when a list item is removed from <code>*ngFor</code>. It is the canonical place for all cleanup: unsubscribing Observables, clearing timers, releasing DOM event listeners, and destroying third-party library instances.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Unsubscribed Observables continue executing even after the component is gone — causing memory leaks</li>
+      <li>Active setInterval timers keep running and may try to update a destroyed component</li>
+      <li>Third-party library instances (Chart.js, Mapbox) hold references to DOM nodes</li>
+      <li>In SPAs, components are created/destroyed on every route change — leaks accumulate over time</li>
+      <li>Angular's garbage collector cannot clean up active subscriptions — you must do it explicitly</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A dashboard component subscribes to a WebSocket for live notifications, sets up a 30-second auto-refresh interval, and subscribes to a notification service EventEmitter. All three require cleanup when the user navigates away. The <code>takeUntil(destroy$)</code> pattern handles all Observable subscriptions with a single <code>destroy$.next()</code>, while <code>clearInterval</code> handles the timer.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>When Angular destroys a component, it: (1) calls <code>ngOnDestroy()</code> synchronously; (2) detaches the component's view from the view tree; (3) destroys all child components recursively (each gets its own ngOnDestroy call); (4) removes the component's DOM nodes; (5) releases the component's injector. Angular's Router triggers this chain on every navigation. If a component has child components, ngOnDestroy is called depth-first — children are destroyed before parents.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Guaranteed single cleanup point — all resource management in one method</li>
+        <li>takeUntil pattern cleans up ALL subscriptions with one line</li>
+        <li>Called before DOM removal — can still access DOM if needed for teardown</li>
+        <li>Angular 16+ DestroyRef enables cleanup without implementing OnDestroy interface</li>
+        <li>async pipe auto-calls ngOnDestroy unsubscription — no manual work for template subscriptions</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Not called when the browser tab/window is forcefully closed</li>
+        <li>Easy to forget — a single missing unsubscribe causes a subtle memory leak</li>
+        <li>takeUntil Subject must be both nexted AND completed — forgetting complete() leaks the Subject itself</li>
+        <li>Cannot perform async operations in ngOnDestroy (HTTP calls, Promises) — they won't complete</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Use <code>takeUntil(this.destroy$)</code> for all Observable subscriptions in ngOnInit</li>
+      <li>Always call both <code>destroy$.next()</code> AND <code>destroy$.complete()</code> in ngOnDestroy</li>
+      <li>Use Angular 16+ <code>takeUntilDestroyed()</code> from <code>&#64;angular/core/rxjs-interop</code> as the modern alternative</li>
+      <li>Always clean up: timers (clearInterval/clearTimeout), listeners (removeEventListener), library instances</li>
+      <li>Use the <code>async</code> pipe in templates instead of manual subscriptions where possible</li>
+      <li>Implement <code>implements OnDestroy</code> — TypeScript will warn if ngOnDestroy is misspelled</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Not unsubscribing from long-lived Observables (WebSocket, polling intervals)</li>
+      <li>Calling only <code>destroy$.next()</code> without <code>destroy$.complete()</code> — leaks the Subject</li>
+      <li>Forgetting to clearInterval — the timer keeps running and may throw errors on a destroyed component</li>
+      <li>Not cleaning up third-party library instances — causes DOM reference leaks</li>
+      <li>Trying to make HTTP calls in ngOnDestroy — the component is gone before the call returns</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,93 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod12">
+    <span class="module-tag">Module 12 — Lifecycle Hooks</span>
+    <h1>ngDoCheck</h1>
+    <p class="subtitle">Custom change detection — fires every CD cycle, detecting mutations that Angular's default mechanism misses</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p><strong>ngDoCheck</strong> is an Angular lifecycle hook called on <em>every</em> change detection cycle. It is Angular's escape hatch for implementing custom change detection beyond what <code>ngOnChanges</code> provides. While <code>ngOnChanges</code> only detects reference changes on <code>&#64;Input()</code> properties, <code>ngDoCheck</code> can detect mutations <em>within</em> objects and arrays using Angular's <code>KeyValueDiffers</code> and <code>IterableDiffers</code> services.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Detects mutations inside objects and arrays (ngOnChanges cannot)</li>
+      <li>Enables custom diffing logic using <code>KeyValueDiffer</code> and <code>IterableDiffer</code></li>
+      <li>Angular itself uses it internally for NgFor (IterableDiffer) and NgClass (KeyValueDiffer)</li>
+      <li>Allows derived state recalculation when mutable data changes in place</li>
+      <li>Provides a hook into every CD cycle for monitoring and debugging purposes</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A shopping cart component receives an <code>items</code> array as <code>&#64;Input()</code>. The parent mutates items in-place (pushing new items, changing quantities). Since the array reference never changes, <code>ngOnChanges</code> never fires. <code>ngDoCheck</code> with <code>IterableDiffer</code> detects the internal mutations and recalculates the cart total efficiently.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's change detection runs as a tree walk from root to leaf components. For every component in the tree, Angular calls <code>ngDoCheck()</code> regardless of whether anything changed — it is always called. <code>KeyValueDiffer</code> and <code>IterableDiffer</code> maintain an internal snapshot of the last-seen state and compute a diff in O(n) time on each call. The differ only reports changes if something actually changed, so your <code>if (changes)</code> guard prevents unnecessary work. Angular's built-in structural directives (<code>*ngFor</code>, <code>NgClass</code>, <code>NgStyle</code>) all implement <code>DoCheck</code> and use Differs internally.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Detects deep mutations that ngOnChanges cannot see</li>
+        <li>Works with Angular's efficient Differ infrastructure (O(n) diffing)</li>
+        <li>Fine-grained control — you decide exactly what constitutes a "change"</li>
+        <li>Used by Angular internals — battle-tested approach for custom CD</li>
+        <li>Compatible with both Default and OnPush change detection strategies</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Fires extremely frequently — every CD cycle, even when nothing changed</li>
+        <li>Heavy logic in ngDoCheck directly impacts rendering performance</li>
+        <li>Boilerplate-heavy — requires injecting Differs and creating differ instances</li>
+        <li>Easy to introduce performance regressions if misused</li>
+        <li>Cannot be used alongside ngOnChanges on the same property effectively</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Always use <code>KeyValueDiffer</code> or <code>IterableDiffer</code> — never compare manually in a loop inside ngDoCheck</li>
+      <li>Guard with <code>if (changes)</code> before acting — the differ returns null if nothing changed</li>
+      <li>Keep all logic inside ngDoCheck extremely fast — it runs on every CD cycle</li>
+      <li>Prefer immutable data patterns over ngDoCheck whenever possible</li>
+      <li>Combine with <code>ChangeDetectionStrategy.OnPush</code> to reduce how often it fires</li>
+      <li>Never make HTTP calls or trigger side effects directly in ngDoCheck</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Writing heavy logic (loops, computations) directly in ngDoCheck without Differs</li>
+      <li>Making HTTP calls inside ngDoCheck — triggers on every event, causing API floods</li>
+      <li>Forgetting to initialize the Differ in the constructor before using it in ngDoCheck</li>
+      <li>Using ngDoCheck when ngOnChanges would suffice (immutable data approach)</li>
+      <li>Not guarding with <code>if (changes)</code> — running downstream logic on every CD cycle unnecessarily</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

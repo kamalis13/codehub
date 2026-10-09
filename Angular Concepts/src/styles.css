@@ -1,0 +1,191 @@
+/* Global reset + operator box styles shared by all components */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { font-family: 'Segoe UI', sans-serif; background: #f4f4f8; }
+
+/* ── Operator card ── */
+.operator-box {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 720px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.operator-box h2 {
+  font-size: 1.8rem;
+  color: #1e1e2f;
+  font-family: 'Courier New', monospace;
+}
+
+.operator-box .definition {
+  background: #eff1ff;
+  border-left: 4px solid #7c3aed;
+  padding: 0.8rem 1rem;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.95rem;
+  color: #374151;
+  line-height: 1.55;
+}
+
+.operator-box .note {
+  font-size: 0.82rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* ── Buttons ── */
+.operator-box button {
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  background: #7c3aed;
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: fit-content;
+  transition: background 0.15s;
+  margin-right: 0.5rem;
+}
+
+.operator-box button:hover {
+  background: #6d28d9;
+}
+
+.operator-box button:disabled {
+  background: #c4b5fd;
+  cursor: not-allowed;
+}
+
+/* ── Result list ── */
+.operator-box ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.operator-box ul li {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: #1e1e2f;
+}
+
+/* ── Inputs ── */
+.operator-box input[type="text"],
+.operator-box input:not([type="button"]):not([type="submit"]) {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+  max-width: 320px;
+}
+
+.operator-box input:focus {
+  border-color: #7c3aed;
+}
+
+/* ── Labels ── */
+.operator-box label {
+  font-size: 0.88rem;
+  color: #374151;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  max-width: 320px;
+}
+
+/* ═══════════════════════════════════════════
+   Angular Interview Masterclass — Global Styles
+   ═══════════════════════════════════════════ */
+
+.topic-wrapper { max-width: 860px; padding: 0 0.5rem 3rem; }
+
+.topic-header { border-radius: 14px; padding: 2rem 2.5rem; margin-bottom: 1.5rem; color: white; }
+
+.module-tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 0.25rem 0.85rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.topic-header h1 { font-size: 2rem; margin: 0.5rem 0 0.4rem; }
+.topic-header .subtitle { opacity: 0.85; font-size: 0.95rem; margin: 0; }
+
+/* Cards */
+.t-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.t-card h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.9rem;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.t-card > p { font-size: 0.9rem; color: #374151; line-height: 1.65; margin-bottom: 0.5rem; }
+
+.t-card ul { margin: 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem; }
+
+.t-card li { font-size: 0.88rem; color: #374151; line-height: 1.55; background: transparent; border: none; padding: 0; font-family: inherit; }
+
+/* Code block */
+.t-code { background: #1e1e2f; border-radius: 10px; padding: 1rem 1.25rem; margin-top: 0.75rem; }
+.t-code pre { color: #cdd6f4; font-size: 0.8rem; line-height: 1.65; margin: 0; white-space: pre-wrap; }
+
+/* Pros/Cons grid */
+.pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
+.t-card.pros { border-left: 4px solid #10b981; }
+.t-card.cons { border-left: 4px solid #ef4444; }
+.t-card.best-practices { border-left: 4px solid #f59e0b; }
+.t-card.mistakes { border-left: 4px solid #f43f5e; }
+
+/* Q&A */
+.qa-item { border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 0.75rem; overflow: hidden; }
+.qa-item:last-child { margin-bottom: 0; }
+.qa-q { background: #eff6ff; padding: 0.8rem 1rem; font-weight: 600; font-size: 0.875rem; color: #1e40af; border-bottom: 1px solid #e5e7eb; }
+.qa-a { padding: 0.8rem 1rem; font-size: 0.875rem; color: #374151; line-height: 1.6; }
+
+/* Module header gradients */
+.mod1  { background: linear-gradient(135deg, #1e3a5f 0%, #3b82f6 100%); }
+.mod2  { background: linear-gradient(135deg, #4c1d95 0%, #8b5cf6 100%); }
+.mod3  { background: linear-gradient(135deg, #064e3b 0%, #10b981 100%); }
+.mod4  { background: linear-gradient(135deg, #78350f 0%, #f59e0b 100%); }
+.mod5  { background: linear-gradient(135deg, #7f1d1d 0%, #ef4444 100%); }
+.mod6  { background: linear-gradient(135deg, #831843 0%, #ec4899 100%); }
+.mod7  { background: linear-gradient(135deg, #1e1b4b 0%, #6366f1 100%); }
+.mod8  { background: linear-gradient(135deg, #134e4a 0%, #14b8a6 100%); }
+.mod9  { background: linear-gradient(135deg, #78350f 0%, #d97706 100%); }
+.mod10 { background: linear-gradient(135deg, #0c4a6e 0%, #0ea5e9 100%); }
+.mod12 { background: linear-gradient(135deg, #1e293b 0%, #64748b 100%); }
+.mod13 { background: linear-gradient(135deg, #881337 0%, #f43f5e 100%); }
+.mod14 { background: linear-gradient(135deg, #164e63 0%, #06b6d4 100%); }
+.mod15 { background: linear-gradient(135deg, #1a2e05 0%, #65a30d 100%); }
+.mod16 { background: linear-gradient(135deg, #1c1917 0%, #78716c 100%); }
+.mod17 { background: linear-gradient(135deg, #312e81 0%, #6366f1 100%); }
+.mod18 { background: linear-gradient(135deg, #0f172a 0%, #334155 100%); }
+.mod19 { background: linear-gradient(135deg, #14532d 0%, #16a34a 100%); }

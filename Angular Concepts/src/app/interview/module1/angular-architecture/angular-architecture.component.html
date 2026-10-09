@@ -1,0 +1,96 @@
+<div class="topic-wrapper">
+  <div class="topic-header mod1">
+    <span class="module-tag">Module 1 — Angular Fundamentals</span>
+    <h1>Angular Architecture</h1>
+    <p class="subtitle">The 8 core building blocks — Modules, Components, Templates, Services, DI, Directives, Pipes, and Router.</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>Angular's architecture is built on <strong>8 core building blocks</strong> that work together to form a complete application. At the center is the <strong>Component</strong> — a self-contained unit of UI and logic. Components live inside <strong>NgModules</strong> (or standalone configurations), consume shared logic from <strong>Services</strong> via <strong>Dependency Injection</strong>, transform data with <strong>Pipes</strong>, extend HTML with <strong>Directives</strong>, and navigate between views via the <strong>Router</strong>. All of these are defined using TypeScript <strong>decorators</strong> (metadata annotations).</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Component model:</strong> Breaks complex UIs into reusable, testable, isolated pieces.</li>
+      <li><strong>DI system:</strong> Manages object creation and lifetime, enabling loose coupling and easy testing.</li>
+      <li><strong>Module system:</strong> Groups related features into cohesive units with clear public APIs.</li>
+      <li><strong>Template system:</strong> Declarative HTML-based views with Angular-specific syntax for data binding and directives.</li>
+      <li><strong>Services:</strong> Centralize shared business logic and state, keeping components lean.</li>
+      <li><strong>Router:</strong> Provides declarative, URL-driven navigation without page reloads.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A login feature demonstrates all 8 building blocks working together: the <strong>Router</strong> maps <code>/login</code> to <code>LoginComponent</code>; the <strong>Component</strong> handles the view logic; its <strong>Template</strong> uses <code>[(ngModel)]</code> (two-way binding) and <code>(click)</code> (event binding); a <strong>Directive</strong> adds input highlighting; a <strong>Pipe</strong> formats validation messages; <strong>AuthService</strong> (a <strong>Service</strong>) handles the HTTP call; the <strong>DI system</strong> injects AuthService; and the feature lives inside <strong>AuthModule</strong>.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's runtime builds an <strong>injector tree</strong> that mirrors the module/component hierarchy. The <strong>root injector</strong> holds app-wide singletons (services with <code>providedIn: 'root'</code>). Each module and component has its own injector for scoped services. When a component is rendered, Angular processes its template — resolving property bindings, registering event listeners, and instantiating child components. <strong>Change detection</strong> (triggered by Zone.js or Signals) traverses the component tree, comparing current and previous values and patching only changed DOM nodes. Components are destroyed when navigating away, triggering <code>ngOnDestroy</code> for cleanup.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Clear separation of concerns — component, service, template each have distinct roles</li>
+        <li>Hierarchical DI makes services testable with mock implementations</li>
+        <li>Reusable components, directives, and pipes across modules</li>
+        <li>Declarative templates are readable and close to HTML</li>
+        <li>Module boundaries enforce encapsulation in large codebases</li>
+        <li>Standard architecture means any Angular developer can navigate any Angular project</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Learning all 8 building blocks simultaneously is challenging for beginners</li>
+        <li>NgModule boilerplate (declarations, imports, exports) adds verbosity</li>
+        <li>Over-engineering risk — creating modules and services for trivial features</li>
+        <li>Circular dependency issues when services inject each other</li>
+        <li>Choosing between NgModule vs standalone architecture requires a decision</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Follow the Single Responsibility Principle — one component per file, one purpose per service</li>
+      <li>Use <code>providedIn: 'root'</code> for app-wide singleton services</li>
+      <li>Place shared components/pipes/directives in a SharedModule or shared/ folder</li>
+      <li>Place singleton services in CoreModule (or core/ with providedIn: 'root')</li>
+      <li>Use Smart/Dumb component pattern — smart (container) components fetch data; dumb (presentational) components display it</li>
+      <li>Prefer standalone components over NgModule for new Angular 15+ projects</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Importing BrowserModule in feature modules — only import it in AppModule</li>
+      <li>Creating God services with too many responsibilities</li>
+      <li>Putting HTTP calls directly in components instead of services</li>
+      <li>Forgetting to declare or import components (they just don't render, no clear error)</li>
+      <li>Creating circular service dependencies — A injects B, B injects A</li>
+      <li>Not exporting components from their module — they are invisible to other modules</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

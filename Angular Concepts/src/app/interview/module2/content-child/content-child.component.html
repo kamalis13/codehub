@@ -1,0 +1,107 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod2">
+    <span class="module-tag">Module 2 — Components</span>
+    <h1>&#64;ContentChild</h1>
+    <p class="subtitle">Accessing elements projected into a component via ng-content</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      <code>&#64;ContentChild</code> is a decorator that queries <strong>projected content</strong> — elements
+      passed into a component's <code>&lt;ng-content&gt;</code> slot by the parent consumer — and injects
+      a reference into the host component class. Unlike <code>&#64;ViewChild</code> which queries the component's
+      own template, <code>&#64;ContentChild</code> queries content that lives in the <em>parent's</em> template
+      but is rendered inside this component's slot.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li><strong>Inspect projected content</strong> — The host component can read or configure projected child components/elements programmatically.</li>
+      <li><strong>Flexible container components</strong> — A card or accordion can enforce constraints (e.g., only one header) by reading projected content.</li>
+      <li><strong>Coordinate between host and projected content</strong> — A tab group reads all projected <code>TabPanelComponent</code>s to build its navigation bar.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      A reusable <strong>CardComponent</strong> has two <code>&lt;ng-content&gt;</code> slots — one for
+      the header and one for the body. It uses <code>&#64;ContentChild(CardHeaderComponent)</code> to access
+      the projected header and read its <code>title</code> property in <code>ngAfterContentInit</code>.
+      This lets the card component log or act on the consumer-supplied header without forcing the consumer
+      to pass the title as a separate <code>&#64;Input</code>.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      Angular's content query system processes projected content <em>before</em> the host component's own
+      view is initialized. The <code>ngAfterContentInit</code> hook fires after all projected content is
+      initialized and <code>&#64;ContentChild</code>/<code>&#64;ContentChildren</code> references are resolved.
+      The projected content belongs to the <strong>parent's change detector</strong>, not the host's —
+      which means the host cannot directly trigger change detection on projected elements.
+      <code>&#64;ContentChildren</code> (plural) returns a live <code>QueryList</code> that emits on its
+      <code>changes</code> observable as projected items are dynamically added or removed.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Enables powerful, flexible container components (cards, modals, tabs)</li>
+        <li>Projected content keeps the consumer's template clean and declarative</li>
+        <li>Host can inspect and coordinate projected components without tight coupling</li>
+        <li>Works with both components and template reference variables</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Accessing before <code>ngAfterContentInit</code> yields <code>undefined</code></li>
+        <li>Projected content belongs to parent's change detection — host can't force an update</li>
+        <li>Creates implicit coupling between the host and the projected component's API</li>
+        <li>Harder to discover than <code>&#64;Input</code> — consumers must know what to project</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Access <code>&#64;ContentChild</code> only in <code>ngAfterContentInit</code> or later.</li>
+      <li>Use <code>&#64;ContentChildren</code> for scenarios with multiple projected items (tabs, list items).</li>
+      <li>Document which content types the component expects to receive via projection.</li>
+      <li>Use null-safe access (<code>this.header?.title</code>) since projection is always optional.</li>
+      <li>Prefer CSS attribute selectors in <code>ng-content select="..."</code> over component selectors for greater flexibility.</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Confusing <code>&#64;ContentChild</code> with <code>&#64;ViewChild</code> — projected vs own-template content.</li>
+      <li>Accessing the content child in <code>ngOnInit</code> — it is not yet available.</li>
+      <li>Trying to trigger change detection on projected content from the host component — projected content is owned by the parent.</li>
+      <li>Not handling the case where no content is projected — always null-check the result.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

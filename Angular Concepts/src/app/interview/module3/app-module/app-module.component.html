@@ -1,0 +1,108 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod3">
+    <span class="module-tag">Module 3 — Modules</span>
+    <h1>AppModule</h1>
+    <p class="subtitle">The root NgModule that bootstraps and wires up the entire Angular application</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>
+      <strong>AppModule</strong> is the root <code>NgModule</code> in every classic Angular application. Decorated with
+      <code>&#64;NgModule</code>, it tells Angular which components, directives, and pipes belong to the application,
+      which external modules to import, which services to provide globally, and which component to bootstrap into
+      <code>index.html</code>. Angular reads AppModule at startup to construct the full module factory and
+      dependency-injection tree before rendering anything on screen.
+    </p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Acts as the single entry point Angular uses to bootstrap the browser application.</li>
+      <li>Centralises global configuration — routing, HTTP, animations — so every feature module inherits them automatically.</li>
+      <li>Registers app-wide singleton providers (e.g., <code>AuthService</code>, HTTP interceptors) once in the root injector.</li>
+      <li>Declares which components are available for compilation before the app is served.</li>
+      <li>Defines the <em>bootstrap</em> component that Angular inserts into <code>&lt;app-root&gt;</code> in <code>index.html</code>.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>
+      In an e-commerce app, <code>AppModule</code> imports <code>BrowserModule</code> for browser APIs,
+      <code>AppRoutingModule</code> to handle navigation between pages (Home, Products, Cart, Checkout),
+      and <code>HttpClientModule</code> to enable REST calls. An <code>HTTP_INTERCEPTORS</code> token is
+      registered here so every HTTP request automatically attaches a JWT token — no feature module needs to know about it.
+    </p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>
+      When <code>main.ts</code> calls <code>platformBrowserDynamic().bootstrapModule(AppModule)</code>, Angular's
+      JIT compiler (or AOT pre-compiled factory) reads the <code>&#64;NgModule</code> metadata. It builds a
+      <strong>module factory</strong> — a compiled representation of all declared, imported, and exported tokens —
+      and creates a root <code>NgModuleRef</code>. This ref holds the root injector populated with all providers.
+      Angular then instantiates the <em>bootstrap</em> component, attaches it to the DOM, and starts the
+      change-detection zone, completing the startup sequence.
+    </p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Single, well-known place for global configuration and DI registration.</li>
+        <li>Familiar pattern understood by all Angular developers pre-Angular 14.</li>
+        <li>Integrates cleanly with lazy-loaded feature modules via the router.</li>
+        <li>Allows fine-grained control over what is available application-wide vs. feature-scoped.</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Can become a "god module" if too many declarations and providers are added directly.</li>
+        <li>Adds boilerplate — every component must be declared in some module.</li>
+        <li>Module resolution errors (e.g., "not a known element") can be cryptic.</li>
+        <li>Deprecated in favour of standalone components in Angular 17+ projects.</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Keep AppModule lean — only global setup, no feature components declared directly.</li>
+      <li>Move features into dedicated feature modules and import them lazily via the router.</li>
+      <li>Import <code>BrowserModule</code> only here; use <code>CommonModule</code> in feature modules.</li>
+      <li>Register singleton services in <code>CoreModule</code> or use <code>providedIn: 'root'</code> instead of AppModule providers.</li>
+      <li>Use <code>forRoot()</code> pattern for modules that need one-time configuration (e.g., <code>RouterModule.forRoot(routes)</code>).</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Declaring every component directly in AppModule instead of feature modules — kills maintainability.</li>
+      <li>Importing <code>BrowserModule</code> in a feature module — causes a duplicate-provider runtime error.</li>
+      <li>Providing services in AppModule that should be lazy-scoped — they become singletons when they shouldn't be.</li>
+      <li>Forgetting to add a new component to <code>declarations</code> — leads to "is not a known element" errors.</li>
+      <li>Importing large third-party modules globally that are only needed in one feature — bloats the initial bundle.</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,91 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod5">
+    <span class="module-tag">Module 5 — Directives</span>
+    <h1>Attribute Directive</h1>
+    <p class="subtitle">Change the look and behavior of existing elements without touching the DOM structure</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>An <strong>Attribute Directive</strong> changes the <em>appearance or behavior</em> of an existing DOM element, component, or directive. It is applied as an HTML attribute and does not add or remove DOM elements. Built-in attribute directives include <code>ngClass</code> and <code>ngStyle</code>. Custom attribute directives use <code>&#64;HostListener</code> for event handling and <code>&#64;HostBinding</code> for property binding on the host element.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Add reusable behavior to any element without wrapping it in a component</li>
+      <li>Dynamically apply CSS classes and inline styles based on component state</li>
+      <li>Listen to host element events (hover, click, focus) without touching the DOM directly</li>
+      <li>Bind to host element properties (aria attributes, classes, styles) declaratively</li>
+      <li>Encapsulate UI behavior (tooltip, highlight, drag-and-drop) as a reusable directive</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A <strong>HighlightDirective</strong> that changes an element's background color on hover — applied like a standard HTML attribute to any element, fully reusable across the app.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's compiler identifies all <code>&#64;Directive</code> selectors in the component's imports (or NgModule declarations). When a matching attribute is found in the template, Angular creates an instance of the directive class, injecting the host's <code>ElementRef</code> and any other DI tokens. <code>&#64;HostBinding</code> sets up property bindings on the host element during change detection. <code>&#64;HostListener</code> registers DOM event listeners that call the decorated methods. The directive participates in the full component lifecycle (ngOnInit, ngOnDestroy, etc.).</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Lightweight — no template, no view overhead</li>
+        <li>Highly reusable — apply to any element type</li>
+        <li>Encapsulates event handling cleanly via &#64;HostListener</li>
+        <li>Works with Angular's DI, change detection, and lifecycle hooks</li>
+        <li>Avoids direct DOM manipulation (ElementRef.nativeElement)</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Cannot render its own template (no HTML output)</li>
+        <li>Complex logic can become hard to test without a host element</li>
+        <li>Multiple directives on one element can interact unexpectedly</li>
+        <li>Debugging &#64;HostBinding issues can be tricky without DevTools</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Prefer <code>&#64;HostBinding</code> over directly accessing <code>ElementRef.nativeElement</code></li>
+      <li>Use a consistent naming convention: <code>appDirectiveName</code> to avoid conflicts</li>
+      <li>Make directives configurable via <code>&#64;Input()</code> for reusability</li>
+      <li>Clean up DOM event listeners or subscriptions in <code>ngOnDestroy</code></li>
+      <li>For SSR compatibility, avoid direct browser APIs — use Renderer2 as a fallback</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Directly accessing <code>nativeElement</code> instead of using <code>&#64;HostBinding</code></li>
+      <li>Forgetting to add the directive to the component's <code>imports</code> array (standalone)</li>
+      <li>Not cleaning up event listeners added manually inside the directive</li>
+      <li>Naming the directive selector without a prefix, causing conflicts with native attributes</li>
+      <li>Confusing <code>&#64;HostListener('click')</code> (directive host) with <code>(click)</code> (template)</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

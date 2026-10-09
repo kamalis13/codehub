@@ -1,0 +1,28 @@
+<div class="operator-box">
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+  <h2>scan()</h2>
+  <p class="definition">Applies an accumulator function over the source Observable and emits EACH intermediate accumulated value. Like <code>Array.reduce()</code>, but the result is a stream, not a single final value.</p>
+  <p class="note">Analogy: Like a running scoreboard — it doesn't wait for the game to end. Every basket updates the score in real time.</p>
+
+  <div class="demo-section">
+    <h3>Running Total Demo</h3>
+    <p class="note">Click the buttons to add numbers. scan() accumulates them and emits the running total after each addition.</p>
+    <div class="score-display">
+      <div class="score-label">Running Total</div>
+      <div class="score-value">{{ total }}</div>
+    </div>
+    <div class="btn-row">
+      <button (click)="add(1)">+1</button>
+      <button (click)="add(5)">+5</button>
+      <button (click)="add(10)">+10</button>
+      <button (click)="add(25)">+25</button>
+      <button class="reset-btn" (click)="reset()">Reset</button>
+    </div>
+    <ul class="result-list">
+      <li *ngFor="let r of items">{{ r }} = {{ total }}</li>
+    </ul>
+  </div>
+</div>

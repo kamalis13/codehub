@@ -1,0 +1,83 @@
+<div class="concept-box">
+
+  <!-- ── Header ── -->
+  <div class="concept-header async-header">
+    <span class="badge">🔢 Concept 2</span>
+    <h2>Asynchronous</h2>
+    <p class="tagline">"Start a task and move on — handle the result when it arrives."</p>
+  </div>
+
+  <!-- ── Definition card ── -->
+  <div class="def-card">
+    <div class="def-row">
+      <span class="def-icon">📖</span>
+      <div>
+        <strong>Definition</strong>
+        <p>Tasks run in the <em>background</em>. JavaScript doesn't wait — it continues running other code. When the background task finishes, it notifies you via a callback, Promise, or Observable.</p>
+      </div>
+    </div>
+    <div class="def-row">
+      <span class="def-icon">🍽️</span>
+      <div>
+        <strong>Real-life analogy</strong>
+        <p>Ordering food at a restaurant. You order, then chat with friends. The waiter brings your food when it's ready — you didn't stand at the kitchen door waiting.</p>
+      </div>
+    </div>
+    <div class="def-row">
+      <span class="def-icon">⚡</span>
+      <div>
+        <strong>Most common async tasks in Angular</strong>
+        <p>API calls · setTimeout · File reads · User clicks · WebSockets</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Sync vs Async comparison ── -->
+  <div class="compare-grid">
+    <div class="compare-card sync-card">
+      <strong>🔢 Synchronous</strong>
+      <pre [innerText]="syncCode"></pre>
+    </div>
+    <div class="compare-card async-card">
+      <strong>⚡ Asynchronous</strong>
+      <pre [innerText]="asyncCode"></pre>
+    </div>
+  </div>
+
+  <!-- ── Live demo ── -->
+  <div class="demo-section">
+    <div class="demo-label">▶ Live Demo — Watch async in action</div>
+    <button (click)="run()" [disabled]="running">Start async demo</button>
+    <div class="log">
+      <div *ngFor="let entry of log" class="log-line" [class.highlight]="entry.highlight">
+        <span class="log-time">{{ entry.time }}</span>
+        <span>{{ entry.msg }}</span>
+      </div>
+    </div>
+    <p class="note" *ngIf="log.length">
+      Notice: "C — after setTimeout" printed BEFORE the 2-second timer finished.
+      JavaScript kept going without waiting!
+    </p>
+  </div>
+
+  <!-- ── Pros / Cons ── -->
+  <div class="pro-con">
+    <div class="pro">
+      <strong>✅ Pros</strong>
+      <ul>
+        <li>Page stays responsive</li>
+        <li>Multiple tasks can run together</li>
+        <li>Essential for API calls & timers</li>
+      </ul>
+    </div>
+    <div class="con">
+      <strong>❌ Cons</strong>
+      <ul>
+        <li>Order of results is NOT guaranteed</li>
+        <li>Harder to read & debug</li>
+        <li>Need callbacks / Promises / Observables</li>
+      </ul>
+    </div>
+  </div>
+
+</div>

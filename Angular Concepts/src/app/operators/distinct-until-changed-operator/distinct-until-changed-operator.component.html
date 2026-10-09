@@ -1,0 +1,21 @@
+<div class="operator-box">
+
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+
+  <h2>distinctUntilChanged()</h2>
+  <p class="definition">Suppresses consecutive duplicate values — only emits when the value actually changes.</p>
+  <button (click)="run()">Run</button>
+  <div style="display:flex; gap:2rem">
+    <div>
+      <strong>Source (all values)</strong>
+      <ul><li *ngFor="let item of sourceValues">{{ item }}</li></ul>
+    </div>
+    <div>
+      <strong>After distinctUntilChanged</strong>
+      <ul><li *ngFor="let item of results">{{ item }}</li></ul>
+    </div>
+  </div>
+</div>

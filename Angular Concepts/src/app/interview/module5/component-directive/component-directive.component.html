@@ -1,0 +1,92 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod5">
+    <span class="module-tag">Module 5 — Directives</span>
+    <h1>Component Directive</h1>
+    <p class="subtitle">The most powerful directive — a directive with its own template and view</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>A <strong>Component Directive</strong> is a directive with a template. It is declared with the <code>&#64;Component</code> decorator, which internally extends <code>&#64;Directive</code>. Every Angular component is technically a directive — <code>&#64;Component</code> adds template, styles, and view-encapsulation on top of the base directive API. Components are the building blocks of Angular UIs.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Encapsulates HTML, CSS, and TypeScript logic into a single reusable unit</li>
+      <li>Enables component composition — complex UIs built from small, testable pieces</li>
+      <li>Provides a clear contract through <code>&#64;Input()</code> and <code>&#64;Output()</code> APIs</li>
+      <li>Supports view encapsulation so styles don't bleed into other components</li>
+      <li>Foundation for lazy loading, routing, and change detection tree</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A reusable <strong>UserCard</strong> component directive that accepts user data as inputs and renders a styled card — used across the application wherever a user profile card is needed.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular's compiler processes the <code>&#64;Component</code> decorator metadata to generate a component factory. At runtime, the Angular runtime matches the selector in the DOM, creates a component instance, attaches it to the change detection tree, and renders the template. Lifecycle hooks (ngOnInit, ngOnChanges, etc.) fire at defined phases. The component's view is linked to the component class so data binding updates the DOM automatically during change detection.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Fully encapsulates UI logic, template, and styles in one unit</li>
+        <li>Promotes reusability across the application</li>
+        <li>Independently testable with TestBed</li>
+        <li>Works with Angular's change detection and DI system seamlessly</li>
+        <li>Supports OnPush for high-performance rendering</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Heavier than plain attribute directives — creates its own view</li>
+        <li>Overhead of full component lifecycle when only behavior modification is needed</li>
+        <li>Can lead to over-componentisation (splitting too much) impacting readability</li>
+        <li>Each component adds to the bundle (mitigated by lazy loading)</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Follow the Single Responsibility Principle — one component, one concern</li>
+      <li>Use <code>standalone: true</code> and avoid NgModule boilerplate where possible</li>
+      <li>Use <code>ChangeDetectionStrategy.OnPush</code> for leaf/presentational components</li>
+      <li>Keep smart (container) and dumb (presentational) components clearly separated</li>
+      <li>Always use <code>templateUrl</code> and <code>styleUrl</code> for non-trivial components</li>
+      <li>Name selectors with a consistent app prefix (e.g., <code>app-</code>) to avoid conflicts</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Putting too much business logic directly in a component instead of a service</li>
+      <li>Forgetting to add a new component to the parent's <code>imports</code> array (standalone) or <code>declarations</code> (NgModule)</li>
+      <li>Using <code>Default</code> change detection everywhere instead of <code>OnPush</code> where appropriate</li>
+      <li>Mutating <code>&#64;Input</code> values directly inside the child component</li>
+      <li>Skipping <code>trackBy</code> in lists rendered by this component, causing performance issues</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>

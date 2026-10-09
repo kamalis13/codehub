@@ -1,0 +1,25 @@
+<div class="operator-box">
+  <div class="syntax-block">
+    <div class="syntax-label">Syntax</div>
+    <pre [innerText]="syntaxExample"></pre>
+  </div>
+  <h2>finalize()</h2>
+  <p class="definition">Calls a function when the Observable terminates — whether by <code>complete()</code>, <code>error()</code>, or <code>unsubscribe()</code>. Like a <code>finally</code> block in try-catch. Use it to hide loading spinners, release resources, or log cleanup.</p>
+  <p class="note">Analogy: Like a restaurant closing time — doesn't matter if the night was good or bad, the chairs go up and lights go off regardless.</p>
+
+  <div class="demo-section">
+    <h3>Live Demo</h3>
+    <p class="note">Notice that finalize() fires in both the success and error cases — it's guaranteed cleanup.</p>
+    <div class="loading-indicator" [class.active]="loading">
+      <span class="spinner" *ngIf="loading">⏳</span>
+      {{ loading ? 'Loading...' : 'Idle' }}
+    </div>
+    <div class="btn-row">
+      <button (click)="runSuccess()">Run (success)</button>
+      <button (click)="runError()" class="error-btn">Run (with error)</button>
+    </div>
+    <ul class="result-list">
+      <li *ngFor="let r of log">{{ r }}</li>
+    </ul>
+  </div>
+</div>

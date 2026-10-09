@@ -1,0 +1,88 @@
+﻿<div class="topic-wrapper">
+  <div class="topic-header mod7">
+    <span class="module-tag">Module 7 — Services</span>
+    <h1>Injector</h1>
+    <p class="subtitle">The container that holds and creates service instances</p>
+  </div>
+
+  <section class="t-card">
+    <h2>📌 Definition</h2>
+    <p>An Injector is Angular's internal container (registry + factory) that stores provider configurations and creates service instances on demand. Every Angular application has a tree of injectors mirroring the component tree. When a dependency is requested, Angular's injector resolves it by walking up the tree.</p>
+  </section>
+
+  <section class="t-card">
+    <h2>🤔 Why is it needed?</h2>
+    <ul>
+      <li>Manages the lifecycle of all injectable objects</li>
+      <li>Implements the singleton pattern at the appropriate scope</li>
+      <li>Enables hierarchical scoping — different components can get different service instances</li>
+      <li>Provides lazy instantiation — services are created only when first requested</li>
+      <li>Makes testing possible by swapping implementations at the injector level</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>💻 Syntax</h2>
+    <div class="t-code"><pre [innerText]="syntaxCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>🌐 Real-time Example</h2>
+    <p>A child component uses <code>&#64;SkipSelf()</code> to get the parent's <code>LogService</code> instance instead of its own, and <code>&#64;Optional()</code> for an analytics service that may not be configured in all environments.</p>
+    <div class="t-code"><pre [innerText]="exampleCode"></pre></div>
+  </section>
+
+  <section class="t-card">
+    <h2>⚙️ Internal Working</h2>
+    <p>Angular builds an injector tree parallel to the component tree. Each injector has a parent reference. When resolving a token, Angular starts at the component's ElementInjector, checks its registry, then walks up via parent references through ModuleInjector to the RootInjector and finally NullInjector. <code>&#64;Self</code> and <code>&#64;SkipSelf</code> modify this walk. The resolved instance is cached so subsequent lookups return the same object.</p>
+  </section>
+
+  <div class="pros-cons">
+    <section class="t-card pros">
+      <h2>✅ Advantages</h2>
+      <ul>
+        <li>Hierarchical scoping gives fine-grained control over service lifetime</li>
+        <li>Lazy instantiation — services created only when needed</li>
+        <li>Testing is easy — swap providers in TestBed at any injector level</li>
+        <li><code>&#64;Optional</code> prevents hard crashes for optional integrations</li>
+      </ul>
+    </section>
+    <section class="t-card cons">
+      <h2>❌ Disadvantages</h2>
+      <ul>
+        <li>Deep hierarchies make injection debugging complex</li>
+        <li>Component-level providers can create unexpected multiple instances</li>
+        <li><code>&#64;SkipSelf</code> misuse causes hard-to-find bugs</li>
+        <li>Understanding the full hierarchy requires experience</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="t-card best-practices">
+    <h2>🏆 Best Practices</h2>
+    <ul>
+      <li>Reserve component-level providers for truly scoped services</li>
+      <li>Use <code>&#64;Optional</code> for services that may not always be configured</li>
+      <li>Avoid injecting <code>Injector</code> directly — prefer explicit dependencies</li>
+      <li>Document component-level providers with a comment explaining why</li>
+    </ul>
+  </section>
+
+  <section class="t-card mistakes">
+    <h2>⚠️ Common Mistakes</h2>
+    <ul>
+      <li>Providing the same service at multiple levels unintentionally (duplicate instances)</li>
+      <li>Using <code>&#64;Self</code> when <code>&#64;SkipSelf</code> was intended</li>
+      <li>Forgetting <code>&#64;Optional</code> on optional services (crash if not provided)</li>
+      <li>Injecting <code>Injector</code> as a workaround instead of restructuring dependencies</li>
+    </ul>
+  </section>
+
+  <section class="t-card">
+    <h2>🎯 Interview Q&amp;A</h2>
+    <div class="qa-item" *ngFor="let qa of interviewQA">
+      <div class="qa-q">Q: {{ qa.q }}</div>
+      <div class="qa-a">A: {{ qa.a }}</div>
+    </div>
+  </section>
+</div>
