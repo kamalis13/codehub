@@ -37,6 +37,18 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: "Angular Concepts/dist/rxjs-learn/browser"
+      
+      
+      - name: Copy HTML, CSS and JavaScript projects
+        working-directory: Angular Concepts
+        run: |
+          mkdir -p "dist/rxjs-learn/browser/HTML Projects"
+          mkdir -p "dist/rxjs-learn/browser/CSS Projects"
+          mkdir -p "dist/rxjs-learn/browser/JavaScript Projects"
+          cp -R "../HTML Projects/." "dist/rxjs-learn/browser/HTML Projects/"
+          cp -R "../CSS Projects/." "dist/rxjs-learn/browser/CSS Projects/"
+          cp -R "../JavaScript Projects/." "dist/rxjs-learn/browser/JavaScript Projects/"
+      
 
   deploy:
     environment:
