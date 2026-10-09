@@ -170,6 +170,46 @@ body { font-family: 'Segoe UI', sans-serif; background: #f4f4f8; }
 .qa-q { background: #eff6ff; padding: 0.8rem 1rem; font-weight: 600; font-size: 0.875rem; color: #1e40af; border-bottom: 1px solid #e5e7eb; }
 .qa-a { padding: 0.8rem 1rem; font-size: 0.875rem; color: #374151; line-height: 1.6; }
 
+/* ── Responsive media queries ── */
+@media (max-width: 768px) {
+  .operator-box {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .operator-box h2 { font-size: 1.4rem; }
+
+  .operator-box input[type="text"],
+  .operator-box input:not([type="button"]):not([type="submit"]) {
+    max-width: 100%;
+  }
+
+  .operator-box label { max-width: 100%; }
+
+  .topic-wrapper { padding: 0 0.75rem 2rem; }
+
+  .topic-header {
+    padding: 1.2rem 1.2rem;
+    border-radius: 10px;
+  }
+
+  .topic-header h1 { font-size: 1.35rem; }
+  .topic-header .subtitle { font-size: 0.85rem; }
+
+  .t-card { padding: 1rem; }
+
+  .pros-cons { grid-template-columns: 1fr; }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .operator-box { padding: 1.5rem; }
+
+  .topic-header { padding: 1.5rem 1.75rem; }
+  .topic-header h1 { font-size: 1.65rem; }
+
+  .pros-cons { grid-template-columns: 1fr 1fr; }
+}
+
 /* Module header gradients */
 .mod1  { background: linear-gradient(135deg, #1e3a5f 0%, #3b82f6 100%); }
 .mod2  { background: linear-gradient(135deg, #4c1d95 0%, #8b5cf6 100%); }

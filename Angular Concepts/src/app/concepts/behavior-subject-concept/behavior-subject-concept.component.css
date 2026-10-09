@@ -59,3 +59,10 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 .summary-icon { font-size: 1.4rem; margin-bottom: 0.4rem; }
 .summary-card strong { display: block; font-size: 0.88rem; color: #1e293b; margin-bottom: 0.3rem; }
 .summary-card p { font-size: 0.8rem; color: #6b7280; margin: 0; }
+
+@media (max-width: 600px) {
+  .concept-header h2 { font-size: 1.4rem; }
+  .compare-visual { grid-template-columns: 1fr; }
+  .monitors { grid-template-columns: 1fr; }
+  .summary-grid { grid-template-columns: 1fr; }
+}

@@ -6,6 +6,11 @@
 .def-row { display: flex; gap: 0.8rem; align-items: flex-start; font-size: 0.9rem; line-height: 1.5; }
 .icon { font-size: 1.3rem; flex-shrink: 0; }
 .comparison-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+
+@media (max-width: 600px) {
+  .concept-header h1 { font-size: 1.4rem; }
+  .comparison-row { grid-template-columns: 1fr; }
+}
 .compare-card { border-radius: 10px; padding: 1.2rem; }
 .cold-card { background: #eff6ff; border: 1px solid #bfdbfe; }
 .hot-card { background: #fff7ed; border: 1px solid #fed7aa; }

@@ -531,8 +531,12 @@ export class AppComponent {
   interviewModules = INTERVIEW_MODULES;
   selected = 'sync';
   selectedInterview = 'what-is-angular';
+  sidebarOpen = false;
 
-  select(key: string) { this.selected = key; }
-  selectInterview(key: string) { this.selectedInterview = key; }
+  toggleSidebar() { this.sidebarOpen = !this.sidebarOpen; }
+  closeSidebar() { this.sidebarOpen = false; }
+
+  select(key: string) { this.selected = key; this.closeSidebar(); }
+  selectInterview(key: string) { this.selectedInterview = key; this.closeSidebar(); }
   setMode(mode: 'rxjs' | 'interview') { this.appMode = mode; }
 }

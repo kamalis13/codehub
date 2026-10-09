@@ -1,6 +1,14 @@
 <div class="app-layout">
+  <!-- Hamburger toggle (mobile only) -->
+  <button class="hamburger-btn" (click)="toggleSidebar()" [attr.aria-label]="sidebarOpen ? 'Close menu' : 'Open menu'">
+    {{ sidebarOpen ? '✕' : '☰' }}
+  </button>
+
+  <!-- Sidebar backdrop (mobile only) -->
+  <div class="sidebar-overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
+
   <!-- Sidebar navigation -->
-  <nav class="sidebar">
+  <nav class="sidebar" [class.open]="sidebarOpen">
     <h1 class="logo">Angular Masterclass</h1>
 
     <div class="mode-toggle">

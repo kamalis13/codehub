@@ -33,6 +33,11 @@ button:disabled { background: #c4b5fd; cursor: not-allowed; }
 .event-line.info { border-color: #bfdbfe; background: #eff6ff; color: #1d4ed8; }
 .ev-badge { font-size: 1rem; min-width: 1.5rem; }
 .rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+@media (max-width: 600px) {
+  .concept-header h2 { font-size: 1.4rem; }
+  .rules-grid { grid-template-columns: 1fr; }
+}
 .rule-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem; text-align: center; }
 .rule-icon { font-size: 1.4rem; margin-bottom: 0.4rem; }
 .rule-card strong { display: block; font-size: 0.9rem; color: #1e293b; }
